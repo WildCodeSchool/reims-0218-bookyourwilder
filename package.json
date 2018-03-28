@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/WildCodeSchool/reims-0218-bookyourwilder/issues"
   },
-  "homepage": "https://github.com/WildCodeSchool/reims-0218-bookyourwilder#readme"
+  "homepage": "https://github.com/WildCodeSchool/reims-0218-bookyourwilder#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
