@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const resource = require('../resource')
+const resource = require('resource.js')
 const app = express()
 
 app.use(express.static('public'))
