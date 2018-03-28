@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const resource = require('resource.js')
+const resource = require('./public/resource.js')
 const app = express()
 
 app.use(express.static('public'))
@@ -39,4 +39,4 @@ app.get('/', (req, res) => {
 
 })
 
-app.listen(8000)
+app.listen(8080)
