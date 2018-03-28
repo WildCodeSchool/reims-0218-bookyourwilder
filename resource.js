@@ -19,3 +19,7 @@ const wild = {
     places: ["La Loupe", "Reims", "Lille", "Paris"],
     sentences: ["Libérer les pieds pour libérer l'esprit", "Youpi"]
 }
+
+exports.wilder = wilder
+exports.promo = promo
+exports.wild = wild
