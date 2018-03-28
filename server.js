@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const resource = require('resource.js')
+const resource = require('./public/resource.js')
 const app = express()
 
 app.use(express.static('public'))
@@ -36,7 +36,45 @@ app.get('*', (req, res) => {
 
 // i will do something when receiving the homepage request
 app.get('/', (req, res) => {
-
+  alert("Accueil !")
+  res.send(html)
+  res.end()
 })
 
-app.listen(8000)
+app.get('/connect', (req, res) => {
+  alert("Connexion ou Inscription !")
+  res.send(html)
+  res.end()
+})
+
+app.get('/profil', (req, res) => {
+  alert("Profil !")
+  res.send(html)
+  res.end()
+})
+
+app.get('/admin', (req, res) => {
+  alert("Administration !")
+  res.send(html)
+  res.end()
+})
+
+app.get('/notif', (req, res) => {
+  alert("Notification !")
+  res.send(html)
+  res.end()
+})
+
+app.get('/offre', (req, res) => {
+  alert("Offres !")
+  res.send(html)
+  res.end()
+})
+
+app.get('/actu', (req, res) => {
+  alert("Actualité !")
+  res.send(html)
+  res.end()
+})
+
+app.listen(8080)
