@@ -7,10 +7,10 @@ const render = html => {
 const makeCard = item => `
   <div class="col-md-4">
     <div class="card mb-4 box-shadow">
-      <img class="card-img-top" src="${item.image}" alt="Thumbnail [100%x225]" />
+      <img class="card-img-top img-fluid" style="height: 150px" src="${item.img + item.nom}" alt="Thumbnail [100%x225]" />
       <div class="card-body">
         <p class="card-text" style="height: 80px">${item.bio}</p>
-        <a class="btn btn-primary" href="/users/${item.id}">${item.firstName}'s profile &raquo;</a>
+        <a class="btn btn-primary" href="/users/${item.id}">${item.prenom}'s profile &raquo;</a>
       </div>
     </div>
   </div>`

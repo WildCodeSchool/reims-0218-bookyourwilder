@@ -22,7 +22,7 @@ const html = `
   </head>
   <body>
   
-  <div id="main"></div>
+  <div id="main" class="container" ></div>
       
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
