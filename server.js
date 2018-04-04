@@ -48,11 +48,4 @@ app.get('*', (req, res) => {
   res.end()
 })
 
-// i'm sending the skeleton of the page (when i'm receiving any of the routes)
-app.get('*', (req, res) => {
-  res.send(html(``))
-  res.end()
-})
-
-
 app.listen(8080)
