@@ -22,7 +22,7 @@ const html = `
   </head>
   <body>
   
-  <div id="main"></div>
+  <div id="main" class="container" ></div>
       
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -34,6 +34,10 @@ const html = `
   </body>
 </html>`
 
+//CREATE
+
+
+//READ
 app.get('/wilders', (req, res) => {
   //renvoyer un arrayjson de  wilders
   res.json(wilders)
