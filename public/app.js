@@ -33,17 +33,17 @@ const controllers = {
 }
 
 
-const route = pathname => {
-
-}
-
-
-(() => {
-
-  ['/', '*'].forEach(
+// gére l'execution du routing coté client
+const routing = () => {
+  const routes = [
+    '/',
+    '*'
+  ]
+  routes.forEach(
     path => page(path, controllers[path])
   )
   page()
-  // route()
+}
 
-})()
+//appel cette fonction pour gérer les routes
+routing()
