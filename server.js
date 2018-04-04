@@ -8,9 +8,7 @@ let db
 app.use(express.static('public'))
 app.use(bodyParser.json())
 
-let contenuAjout = ""
-
-const html = (contenuAjout) => `
+const html = `
 <!doctype html>
 <htmusersSeedl lang="en">
   <head>
@@ -24,7 +22,7 @@ const html = (contenuAjout) => `
   </head>
   <body>
   
-  <div id="main">
+  <div id="main"></div>
       
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
