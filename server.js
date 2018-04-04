@@ -34,6 +34,10 @@ const html = `
   </body>
 </html>`
 
+//CREATE
+
+
+//READ
 app.get('/wilders', (req, res) => {
   //renvoyer un arrayjson de  wilders
   res.json(wilders)
