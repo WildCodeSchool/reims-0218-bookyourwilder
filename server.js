@@ -10,7 +10,7 @@ app.use(bodyParser.json())
 
 const html = `
 <!doctype html>
-<htmusersSeedl lang="en">
+<html lang="en">
   <head>
     <title>FaceYourWilder</title>
     <!-- Required meta tags -->

@@ -10,7 +10,7 @@ const makeCard = item => `
       <img class="card-img-top img-fluid" style="height: 150px" src="${item.img + item.nom}" alt="Thumbnail [100%x225]" />
       <div class="card-body">
         <p class="card-text" style="height: 80px">${item.bio}</p>
-        <a class="btn btn-primary" href="/wilders/${item.id}">${item.prenom}'s profile &raquo;</a>
+        <a class="btn btn-primary" href="/profile/${item.id}">${item.prenom}'s profile &raquo;</a>
       </div>
     </div>
   </div>`
@@ -29,7 +29,26 @@ const controllers = {
       </div>`)
     ),
 
-    '/profile': () => render('<h1>Page profile</h1>'),
+    '/profile/:wilderNumber': ctx => { // fonction anonyme qui prend en parametre ctx
+      const { wilderNumber } = ctx.params // objet anonyme qui a une propriété wilderNumber égale à params
+      fetch('/wilders') // dans la page profile aussi on a besoin des wilders existants
+        .then(res => res.json())  // le fetch me renvoit une reponse en json
+        .then(wilders => {        // la promesse précédente 
+          const currentWilder = wilders[wilderNumber]
+          htmlAdded = `
+            <div class="jumbotron text-center">
+              <h1 class="display-4">${currentWilder.prenom} ${currentWilder.nom}</h1>
+              <p class="lead">${currentWilder.bio.substr(0,100)}</p> <!--bio limited to 100 caractere-->
+              <hr class="my-4">
+              <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+              <p class="lead">
+                <a class="btn btn-primary btn-lg" href="#" role="button">detailed informations</a>
+              </p>
+            </div>
+        `
+        render(htmlAdded)
+        })
+    },
 
     '/notification': () => render('<h1>Page notification</h1>'),
 
@@ -48,7 +67,7 @@ const routing = () => {
   const routes = [
     '/',
     '/home',
-    '/profile',
+    '/profile/:wilderNumber',
     '/notification',
     '/flux',
     '/offre',
