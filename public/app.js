@@ -28,37 +28,11 @@ const serializeForm = form => {
 //routing coté client
 const controllers = {
 
-  '/': () => render(`
-  <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form action="" method="POST" class="form-inline my-2">
-          <div>
-            <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
-            <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
-          </div>
-        </form>
-      </div>
-    </nav>
-  </div>
-  <div class="container">
-    <div class="jumbotron formblock mt-5 mb-5" style="width: 50%; margin: 0 auto;">
-      <form action="" method="POST">
-        <h1 class="display-4">Inscrivez-vous</h1>
-        <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
-        <hr class="my-4">
-        <div class="form-group">
-          <input type="text" class="form-control" id="inputFirstName" aria-describedby="firstNameHelp" placeholder="Votre prénom" required>
-          <input type="text" class="form-control" id="inputName" aria-describedby="nameHelp" placeholder="Votre nom" required>
-          <input type="url" class="form-control" id="inputAvatar" aria-describedby="avatarHelp" placeholder="Lien vers une image de vous" required>
-          <textarea class="form-control" id="inputBio" aria-describedby="bioHelp" placeholder="Une petite description rapide de vous" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Valider</button>
-      </form>
-    </div>
-  </div>`),
+  //route login a modifier l'exemple (pour florian)
+  '/': () => {
+    render(
+    `<div class="container">
+      <div id="alert-box" class="hidden">
 
       </div>
       <form id="add-wilder">
@@ -79,7 +53,8 @@ const controllers = {
           <textarea name="bio" class="form-control" id="inputLastName" placeholder="Bio"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-      </form>`
+      </form>
+    </div>`
   )
     const form = document.getElementById('add-wilder')
     form.addEventListener('submit', e => {
@@ -112,34 +87,34 @@ const controllers = {
     .then(res => res.json())
     .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
     .then(album => render(
-    `<div class="jumbotron">
+    `<div class="container">
+      <div class="jumbotron">
         <h1 class="display-3">Hello, world!</h1>
         <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
         <p><a class="btn btn-primary btn-lg" href="/about" role="button">Learn more »</a></p>
         <p><a class="btn btn-success btn-lg" href="/" role="button">Add a wilder »</a></p>
       </div>
       <div class="row">${album}</div>
-    `)
+    </div>`)
   ),
 
   //redirection vers le profil d'un wilder (pour philippe)
   '/profil/:slug': ctx => {
     const { slug } = ctx.params
-    fetch('/wilders')   // besoin du tableau de wilders
-    .then(res => res.json())   // tableau de wilders dans un json
-    // on trouve le wilder tel que le wilder.slug corresponde au slug du parametre
-    .then(wilders => wilders.find(wilder => wilder.slug === slug))   
-    .then(wilder => render(`
-    <div class="jumbotron">
-      <h1 class="display-4">${wilder.firstName} ${wilder.lastName}</h1>
-      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-      <hr class="my-4">
-      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-      <p class="lead">
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-      </p>
-    </div>
-    `))
+    fetch('/wilders')
+    .then(res => res.json())
+    .then(wilders => wilders.find(wilder => wilder.slug === slug))
+    .then(wilder => render(`<div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <img src="${wilder.image}" alt="${wilder.firstName} ${wilder.lastName}" class="img-fluid" />
+        </div>
+        <div class="col-md-6">
+          <h1>${wilder.firstName} ${wilder.lastName}</h1>
+          <p>${wilder.bio}</p>
+        </div>
+      </div>
+    </div>`))
   },
 
   '/notification': () => render(`<h1>page notification</h1>`),
