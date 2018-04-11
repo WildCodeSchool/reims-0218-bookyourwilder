@@ -1,57 +1,23 @@
 [
-
     {
-        
-        "nom": "Hourlier",
-        "prenom": "Florian",
-        "img": "http://via.placeholder.com/150x150/?text=",
-        "codePromo": 1,
-        "bio": "A little introverted but experienced, he plays the role of the supervisor in projects.",
-        "parcoursPro": {
-            "0": ""
-        },
-        "parcoursEduc": {
-            "0": ""
-        },
-        "adresse": "here",
-        "tableauLien": {
-            "0": "http://facebook.fr"
-        }
+      "firstName": "Jack",
+      "lastName": "Sparrow",
+      "slug": "jack-sparrow",
+      "bio": "Jack Sparrow was a legendary pirate of the Seven Seas, and the irreverent trickster of the Caribbean.",
+      "image": "https://via.placeholder.com/640x480/?text=Jack%20Sparrow"
     },
     {
-        
-        "nom": "Millescamps",
-        "prenom": "Maxence",
-        "img": "http://via.placeholder.com/150x150/?text=",
-        "codePromo": 1,
-        "bio": "The youngest of the first promo of the wild code school of Reims. Its weak point: the kebab!",
-        "parcoursPro": {
-            "0": ""
-        },
-        "parcoursEduc": {
-            "0": ""
-        },
-        "adresse": "here",
-        "tableauLien": {
-            "0": "http://facebook.fr"
-        }
+      "firstName": "Elizabeth",
+      "lastName": "Swann",
+      "slug": "elizabeth-swann",
+      "bio": "Elizabeth Swann was the daughter of Governor Weatherby Swann.",
+      "image": "https://via.placeholder.com/640x480/?text=Elizabeth%20Swann"
     },
     {
-        
-        "nom": "Tarte",
-        "prenom": "Philippe",
-        "img": "http://via.placeholder.com/150x150/?text=",
-        "codePromo": 1,
-        "bio": "The Dean of the Reims' promo. Very optimistic, he manages to make fun everything he does.",
-        "parcoursPro": {
-            "0": ""
-        },
-        "parcoursEduc": {
-            "0": ""
-        },
-        "adresse": "here",
-        "tableauLien": {
-            "0": "http://facebook.fr"
-        }
+      "firstName": "Will",
+      "lastName": "Turner",
+      "slug": "will-turner",
+      "bio": "Will Turner, born William Turner Jr., was the only child of William \"Bootstrap Bill\" Turner.",
+      "image": "https://via.placeholder.com/640x480/?text=Will%20Turner"
     }
-]
+  ]

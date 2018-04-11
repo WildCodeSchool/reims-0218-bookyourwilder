@@ -36,4 +36,8 @@ Product Owner: LieLust
 
 ## Licensing
 
+<<<<<<< HEAD
 The project is licensed as [GNU GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). You can use/modify/distribute it in personal or commercial projects provided you give credit to all of the creators (Links are enough).
+=======
+The project is licensed as [GNU GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). You can use/modify/distribute it in personal or commercial projects provided you give credit to all of the creators (Links are enough).
+>>>>>>> 30343111db86daeb1a196e23be044d9929a9f8d1
