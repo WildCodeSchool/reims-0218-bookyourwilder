@@ -11,11 +11,17 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 
 const insertWilder = w => {
-  const { firstName, lastName, bio, image, slug } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, bio, image) VALUES(?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image)
+  const { firstName, lastName, bio, image, slug, title} = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, title) VALUES(?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, title)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
+
+/*   const insertElement = (elem,w) => {
+  const {elem} = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, title) VALUES(?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, title)
+  .then(() => db.get('SELECT last_insert_rowid() as id'))
+  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id)) */
 
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
@@ -38,11 +44,7 @@ const html = `
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <body>
-    <div class="container">
-
       <div id="main"></div>
-    </div>
-      
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

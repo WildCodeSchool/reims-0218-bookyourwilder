@@ -104,17 +104,89 @@ const controllers = {
     fetch('/wilders')
     .then(res => res.json())
     .then(wilders => wilders.find(wilder => wilder.slug === slug))
-    .then(wilder => render(`<div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <img src="${wilder.image}" alt="${wilder.firstName} ${wilder.lastName}" class="img-fluid" />
-        </div>
-        <div class="col-md-6">
-          <h1>${wilder.firstName} ${wilder.lastName}</h1>
-          <p>${wilder.bio}</p>
+    .then(wilder => {
+      const options_wilder = [{
+        "nom": "hobby",
+        "affichage": true,
+        "texte": "reading"
+      }, {
+        "nom": "reading",
+        "affichage": false,
+        "texte": "foundation"
+      }]
+
+      const displayOptionsWilder = (tableauOptions) => {
+        let htmlLis = ""
+        tableauOptions.forEach(option => htmlLis += (option["affichage"])?`<li>${option["nom"]}: ${option["texte"]}</li>`:''
+        )
+        console.log(htmlLis)
+        return htmlLis
+      }
+      render(`<div class="container text-center">
+      <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>`))
+      <div class="jumbotron">
+        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
+          Edit list of options
+        </button>
+        <h1 class="display-4">${wilder.firstName} ${wilder.lastName}</h1>
+        <p>${wilder.title}</p><!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+        <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
+        <p class="lead">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
+        <p class="lead">
+          <a class="btn btn-primary btn-lg" href="#" role="button">Read more</a>
+        </p>
+      </div>
+
+      <div class="jumbotron">
+      <h2>en option a affiche</h2>
+      <form>
+        <ul>
+          ${displayOptionsWilder(options_wilder)}
+        </ul>
+      </form>
+    </div>
+    </div>`)})
   },
 
   '/notification': () => render(`<h1>page notification</h1>`),

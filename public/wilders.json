@@ -2,22 +2,25 @@
     {
       "firstName": "philippe",
       "lastName": "TARTE",
-      "slug": "philippe-tarte",
+      "slug": "philippe-tarte", 
       "bio": "philippe TARTE is the dean of the team, ready to happyness",
-      "image": "https://via.placeholder.com/640x480/?text=Jack%20Sparrow"
+      "image": "https://via.placeholder.com/640x480/?text=philippe%20Tarte", 
+      "title": "dev"
     },
     {
       "firstName": "Elizabeth",
       "lastName": "Swann",
       "slug": "elizabeth-swann",
       "bio": "Elizabeth Swann was the daughter of Governor Weatherby Swann.",
-      "image": "https://via.placeholder.com/640x480/?text=Elizabeth%20Swann"
+      "image": "https://via.placeholder.com/640x480/?text=Elizabeth%20Swann",
+      "title": "pirate"
     },
     {
       "firstName": "Will",
       "lastName": "Turner",
       "slug": "will-turner",
       "bio": "Will Turner, born William Turner Jr., was the only child of William \"Bootstrap Bill\" Turner.",
-      "image": "https://via.placeholder.com/640x480/?text=Will%20Turner"
+      "image": "https://via.placeholder.com/640x480/?text=Will%20Turner",
+      "title": "pirate"
     }
   ]
