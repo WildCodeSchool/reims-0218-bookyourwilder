@@ -98,19 +98,20 @@ const controllers = {
   //redirection vers le profil d'un wilder (pour philippe)
   '/profil/:slug': ctx => {
     const { slug } = ctx.params
-    fetch('/wilders')   // besoin du wilder
+    fetch('/wilders')   // besoin du tableau de wilders
     .then(res => res.json())   // tableau de wilders dans un json
     // on trouve le wilder tel que le wilder.slug corresponde au slug du parametre
     .then(wilders => wilders.find(wilder => wilder.slug === slug))   
-    .then(wilder => render(`<div class="row">
-        <div class="col-md-6">
-          <img src="${wilder.image}" alt="${wilder.firstName} ${wilder.lastName}" class="img-fluid" />
-        </div>
-        <div class="col-md-6">
-          <h1>${wilder.firstName} ${wilder.lastName}</h1>
-          <p>${wilder.bio}</p>
-        </div>
-      </div>
+    .then(wilder => render(`
+    <div class="jumbotron">
+      <h1 class="display-4">${wilder.firstName} ${wilder.lastName}</h1>
+      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+      <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+      <p class="lead">
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+      </p>
+    </div>
     `))
   },
 
