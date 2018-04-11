@@ -31,8 +31,7 @@ const controllers = {
   //route login a modifier l'exemple (pour florian)
   '/': () => {
     render(
-    `<div class="container">
-      <div id="alert-box" class="hidden">
+    `<div id="alert-box" class="hidden">
 
       </div>
       <form id="add-wilder">
@@ -53,8 +52,7 @@ const controllers = {
           <textarea name="bio" class="form-control" id="inputLastName" placeholder="Bio"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>`
+      </form>`
   )
     const form = document.getElementById('add-wilder')
     form.addEventListener('submit', e => {
@@ -87,25 +85,24 @@ const controllers = {
     .then(res => res.json())
     .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
     .then(album => render(
-    `<div class="container">
-      <div class="jumbotron">
+    `<div class="jumbotron">
         <h1 class="display-3">Hello, world!</h1>
         <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
         <p><a class="btn btn-primary btn-lg" href="/about" role="button">Learn more »</a></p>
         <p><a class="btn btn-success btn-lg" href="/" role="button">Add a wilder »</a></p>
       </div>
       <div class="row">${album}</div>
-    </div>`)
+    `)
   ),
 
   //redirection vers le profil d'un wilder (pour philippe)
   '/profil/:slug': ctx => {
     const { slug } = ctx.params
-    fetch('/wilders')
-    .then(res => res.json())
-    .then(wilders => wilders.find(wilder => wilder.slug === slug))
-    .then(wilder => render(`<div class="container">
-      <div class="row">
+    fetch('/wilders')   // besoin du wilder
+    .then(res => res.json())   // tableau de wilders dans un json
+    // on trouve le wilder tel que le wilder.slug corresponde au slug du parametre
+    .then(wilders => wilders.find(wilder => wilder.slug === slug))   
+    .then(wilder => render(`<div class="row">
         <div class="col-md-6">
           <img src="${wilder.image}" alt="${wilder.firstName} ${wilder.lastName}" class="img-fluid" />
         </div>
@@ -114,7 +111,7 @@ const controllers = {
           <p>${wilder.bio}</p>
         </div>
       </div>
-    </div>`))
+    `))
   },
 
   '/notification': () => render(`<h1>page notification</h1>`),
