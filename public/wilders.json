@@ -3,21 +3,24 @@
         "id": 1,
         "nom": "Hourlier",
         "prenom": "Florian",
+        "img": "http://via.placeholder.com/150x150/?text=",
         "codePromo": 1,
-        "description": "Un peu introverti mais expérimenté, il joue le rôle du superviseur dans les projets."
+        "bio": "Un peu introverti mais expérimenté, il joue le rôle du superviseur dans les projets."
     },
     {
         "id": 2,
         "nom": "Millescamps",
         "prenom": "Maxence",
+        "img": "http://via.placeholder.com/150x150/?text=",
         "codePromo": 1,
-        "description": "Le benjamin de la première promo de Reims. Son point faible: le kebab !"
+        "bio": "Le benjamin de la première promo de Reims. Son point faible: le kebab !"
     },
     {
         "id": 3,
         "nom": "Tarte",
         "prenom": "Philippe",
+        "img": "http://via.placeholder.com/150x150/?text=",
         "codePromo": 1,
-        "description": "Le doyen de la promo rémoise. Très optimiste, il arrive à rendre amusant tout ce qu'il fait."
+        "bio": "Le doyen de la promo rémoise. Très optimiste, il arrive à rendre amusant tout ce qu'il fait."
     }
 ]
