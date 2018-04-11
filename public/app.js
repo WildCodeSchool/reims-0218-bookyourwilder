@@ -28,6 +28,7 @@ const serializeForm = form => {
 //routing coté client
 const controllers = {
 
+  //route login a modifier l'exemple (pour florian)
   '/': () => {
     render(
     `<div class="container">
@@ -80,6 +81,7 @@ const controllers = {
     })
   },
   
+  //page d'acceuil (et bouton temporaire en attendant la navbar)
   '/home': () =>
     fetch('/wilders')
     .then(res => res.json())
@@ -96,6 +98,7 @@ const controllers = {
     </div>`)
   ),
 
+  //redirection vers le profil d'un wilder (pour philippe)
   '/profil/:slug': ctx => {
     const { slug } = ctx.params
     fetch('/wilders')
