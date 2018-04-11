@@ -89,7 +89,55 @@ const html = `
     </div>
 
     <!-- footer -->
-      
+    <footer class="container-fluid mt-5" style="background: #35383a">
+        <div class="row justify-content-center text-center">
+            <div class="col-12">
+                <img src="../Téléchargements/logo.png" class="image-footer image-fluid" alt="#" style="height: 144px; width: 144px; margin-top: -72px">
+            </div>
+        </div>
+        <div class="row justify-content-around text-center">
+            <div class="col-12 col-md-6 col-lg-4 mt-5">
+                <h5>Les autres projets de la <br>Wild Code School Reims</h5>
+                <div class="list-group mt-4">
+                    <a href="#" class="mt-1 mb-1">
+                        <p>L'environnement de dév - <span>Team Artemap</span></p>
+                    </a>
+                    <a href="#" class="mt-1 mb-1">
+                        <p>Blog journée d'intégration - <span>Team Artefact</span></p>
+                    </a>
+                    <a href="#" class="mt-1 mb-1">
+                        <p>Playlist Wild Code School Reims - <span>Team Artezic</span></p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mt-5">
+                <h5>Plus d'infos</h5>
+                <a href="https://wildcodeschool.fr/" target="_blank"><button type="button" class="btn btn-primary mt-2 mb-2">Plus d'infos</button></a>
+                <h5>Déposer une offre de stage</h5>
+                <a href="https://wildcodeschool.fr/recruter-un-developpeur/" target="_blank"><button type="button" class="btn btn-primary mt-2 mb-2">Déposer une offre de stage</button></a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mt-5">
+                <h5>Suivez-nous sur les réseaux sociaux</h5>
+                <div class="d-flex flex-row justify-content-center mt-3">
+                    <div class="p-4">
+                        <a href="https://www.facebook.com/wildcodeschool/" target="_blank"><i class="fab fa-facebook-square rounded-circle"></i></a>
+                    </div>
+                    <div class="p-4">
+                        <a href="https://twitter.com/wildcodeschool" target="_blank"><i class="fab fa-twitter rounded-circle"></i></a>
+                    </div>
+                    <div class="p-4">
+                        <a href="https://www.instagram.com/wildcodeschool/" target="_blank"><i class="fab fa-instagram rounded-circle"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-around text-center">
+            <div class="col-12 mt-5">
+                <p class="copyright">Made with Love by Wild Code School Reims - <span>Team Artésien (Anahita - Arnaud G. - Maxence - Pierre)</span></p>
+            </div>
+        </div>
+    </footer>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
