@@ -1,24 +1,7 @@
 [
+
     {
-        "id": 0,
-        "nom": "Admin",
-        "prenom": "Admin",
-        "img": "http://via.placeholder.com/150x150/?text=",
-        "codePromo": 1,
-        "bio": "Everyone appreciate him.",
-        "parcoursPro": {
-            "0": ""
-        },
-        "parcoursEduc": {
-            "0": ""
-        },
-        "adresse": "here",
-        "tableauLien": {
-            "0": "http://facebook.fr"
-        }
-    },
-    {
-        "id": 1,
+        
         "nom": "Hourlier",
         "prenom": "Florian",
         "img": "http://via.placeholder.com/150x150/?text=",
@@ -36,7 +19,7 @@
         }
     },
     {
-        "id": 2,
+        
         "nom": "Millescamps",
         "prenom": "Maxence",
         "img": "http://via.placeholder.com/150x150/?text=",
@@ -54,7 +37,7 @@
         }
     },
     {
-        "id": 3,
+        
         "nom": "Tarte",
         "prenom": "Philippe",
         "img": "http://via.placeholder.com/150x150/?text=",

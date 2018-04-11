@@ -1,0 +1,17 @@
+[
+    {
+        "id": 0,
+        "nom": "hobby",
+        "affichage": true,
+        "contenu": {"name": "jeux en ligne (World of Tanks)"
+        }
+    },
+    {
+        "id": 1,
+        "nom": "liste lecture",
+        "affichage": true,
+        "contenu": {"names": [  "Fondation",
+                                "Wang"]
+        }
+    }
+]

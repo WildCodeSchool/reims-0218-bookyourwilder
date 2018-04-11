@@ -33,7 +33,7 @@ const controllers = {
       const { wilderNumber } = ctx.params // objet anonyme qui a une propriété wilderNumber égale à params
       fetch('/wilders') // dans la page profile aussi on a besoin des wilders existants
         .then(res => res.json())  // le fetch me renvoit une reponse en json
-        .then(wilders => {        // la promesse précédente 
+        .then(wilders => {        // résolution de la promesse précédente 
           const currentWilder = wilders[wilderNumber]
           htmlAdded = `
             <div class="jumbotron text-center">
