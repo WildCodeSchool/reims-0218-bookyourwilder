@@ -35,7 +35,7 @@ const controllers = {
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <a class="navbar-brand" href="#">Déjà inscrit ?</a>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <form action="" method="POST" class="form-inline my-2">
+              <form action="/wilders" method="POST" class="form-inline my-2">
                   <div>
                       <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
                       <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
@@ -47,19 +47,32 @@ const controllers = {
   </div>
   <div class="container">
       <div class="jumbotron formblock mt-5 mb-5" style="width: 50%; margin: 0 auto;">
-        <form action="" method="POST">
-            <!--<img src="css/WCS.png" id="logo">-->
-            <h1 class="display-4">Inscrivez-vous</h1>
-            <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
-            <hr class="my-4">
-            <div class="form-group">
-                <input type="text" class="form-control" id="inputFirstName" aria-describedby="firstNameHelp" placeholder="Votre prénom" required>
-                <input type="text" class="form-control" id="inputName" aria-describedby="nameHelp" placeholder="Votre nom" required>
-                <input type="url" class="form-control" id="inputUrl" aria-describedby="urlHelp" placeholder="Votre avatar" required>
-                <textarea class="form-control" id="inputBio" aria-describedby="bioHelp" placeholder="Une petite description rapide de vous" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Valider</button>
-        </form>
+        <form id="add-wilder">
+          <h1 class="display-4">Inscrivez-vous</h1>
+          <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
+          <hr class="my-4">
+          <div class="form-group">
+              <label for="inputFirstName">Prénom</label>
+              <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="Votre prénom">
+              <label for="inputLastName">Nom</label>
+              <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Votre nom">
+          </div>
+          <div class="form-group">
+              <label for="inputMail">Adresse mail</label>
+              <input required name="mail" type="mail" class="form-control" id="inputMail" placeholder="Votre adresse mail (ex: john.doe@a.co)">
+          </div>
+          <div class="form-group">
+              <label for="password">Choisissez un mot de passe</label>
+              <input required name="password" type="password" class="form-control" id="inputPass" placeholder="Privilégiez un mot de passe compliqué (au moins 8 caractères)">
+              <label for="password">Confirmez ce mot de passe</label>
+              <input required name="password" type="password" class="form-control" id="inputPass" placeholder="Confirmez le mot de passe saisi ci-dessus">
+          </div>
+          <div class="form-group">
+              <label for="inputBio">Description</label>
+              <textarea required name="bio" class="form-control" id="inputBio" placeholder="Une brève description de vous"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Valider l'inscription</button>
+      </form>
     </div>
 </div>`
   )
