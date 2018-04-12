@@ -4,20 +4,26 @@
       "lastName": "Sparrow",
       "slug": "jack-sparrow",
       "bio": "Jack Sparrow was a legendary pirate of the Seven Seas, and the irreverent trickster of the Caribbean.",
-      "image": "https://via.placeholder.com/640x480/?text=Jack%20Sparrow"
+      "image": "https://via.placeholder.com/640x480/?text=Jack%20Sparrow",
+      "mail": "jj@jj.jj",
+      "mdp": "jj@jj.jj"
     },
     {
       "firstName": "Elizabeth",
       "lastName": "Swann",
       "slug": "elizabeth-swann",
       "bio": "Elizabeth Swann was the daughter of Governor Weatherby Swann.",
-      "image": "https://via.placeholder.com/640x480/?text=Elizabeth%20Swann"
+      "image": "https://via.placeholder.com/640x480/?text=Elizabeth%20Swann",
+      "mail": "ee@ee.ee",
+      "mdp": "ee@ee.ee"
     },
     {
       "firstName": "Will",
       "lastName": "Turner",
       "slug": "will-turner",
       "bio": "Will Turner, born William Turner Jr., was the only child of William \"Bootstrap Bill\" Turner.",
-      "image": "https://via.placeholder.com/640x480/?text=Will%20Turner"
+      "image": "https://via.placeholder.com/640x480/?text=Will%20Turner",
+      "mail": "ww@ww.ww",
+      "mdp": "ww@ww.ww"
     }
   ]

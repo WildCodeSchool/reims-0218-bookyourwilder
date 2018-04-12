@@ -5,7 +5,9 @@ CREATE TABLE users (
   firstName VARCHAR(60),
   lastName VARCHAR(60),
   bio TEXT,
-  image VARCHAR(255)
+  image VARCHAR(255),
+  mail VARCHAR(255),
+  mdp TEXT
 );
 
 -- Down
