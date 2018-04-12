@@ -11,8 +11,8 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 
 const insertWilder = w => {
-  const { firstName, lastName, bio, image, slug } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, bio, image) VALUES(?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image)
+  const { firstName, lastName, bio, image, slug, mail, mdp } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
