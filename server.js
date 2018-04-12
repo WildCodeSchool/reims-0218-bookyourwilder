@@ -41,9 +41,9 @@ const html = `
   <body>
 
   <!-- barnav -->
-  <div class="container-fluid bg-dark">
+  <div class="container-fluid bg-dark mb-5">
     <nav class="navbar navbar-expand-lg navbar-dark ">
-      <a class="navbar-brand" href="#"><img src="../Téléchargements/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+      <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -51,13 +51,13 @@ const html = `
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Acceuil</a>
+            <a class="nav-link" href="/home">Acceuil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Flux</a>
+            <a class="nav-link" href="/flux">Flux</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Notification</a>
+            <a class="nav-link" href="/notification">Notification</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,7 +71,7 @@ const html = `
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Admin</a>
+            <a class="nav-link" href="/admin">Admin</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -83,16 +83,14 @@ const html = `
   </div>
 
     <!-- contenu -->
-    <div class="container">
-
       <div id="main"></div>
-    </div>
+
 
     <!-- footer -->
-    <footer class="container-fluid mt-5" style="background: #35383a">
+    <footer class="container-fluid mt-5">
         <div class="row justify-content-center text-center">
             <div class="col-12">
-                <img src="../Téléchargements/logo.png" class="image-footer image-fluid" alt="#" style="height: 144px; width: 144px; margin-top: -72px">
+                <img src="/images/logo.png" class="image-footer image-fluid" alt="#">
             </div>
         </div>
         <div class="row justify-content-around text-center">
