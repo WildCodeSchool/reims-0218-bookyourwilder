@@ -115,33 +115,14 @@ const controllers = {
         "texte": "foundation"
       }]
 
-      const displayOptionsWilder = (tableauOptions) => {
+      const displayOptionsWilder = (tableauOptions, hasCheckbox, useDisplay) => {
         let htmlLis = ""
-        tableauOptions.forEach(option => htmlLis += (option["affichage"])?`<li>${option["nom"]}: ${option["texte"]}</li>`:''
+        // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li
+        tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li>${option["nom"]}: ${option["texte"]} ${(hasCheckbox)?`<input type='checkbox' ${(option["affichage"])?'checked':''}>`:''}</li>`:''
         )
-        console.log(htmlLis)
         return htmlLis
       }
       render(`<div class="container text-center">
-      <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="jumbotron">
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
           Edit list of options
@@ -154,17 +135,19 @@ const controllers = {
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit the options of the profile</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
-                ...
+              <div class="modal-body" id="editeur">
+                <ul>
+                  ${displayOptionsWilder(options_wilder,true, false)}
+                </ul>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id="btnChangeOption">Save changes</button>
               </div>
             </div>
           </div>
@@ -173,20 +156,27 @@ const controllers = {
         <hr class="my-4">
         <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
         <p class="lead">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
-        <p class="lead">
-          <a class="btn btn-primary btn-lg" href="#" role="button">Read more</a>
-        </p>
+        <button type="button" class="btn btn-primary" id="displayBio">Save changes</button>
       </div>
 
       <div class="jumbotron">
       <h2>en option a affiche</h2>
       <form>
         <ul>
-          ${displayOptionsWilder(options_wilder)}
+          ${displayOptionsWilder(options_wilder, false, true)}
         </ul>
       </form>
     </div>
-    </div>`)})
+    </div>`)
+    const btnChangeOption = document.getElementById('btnChangeOption')
+    // je prend tous les li qui sont dans ma div editeur d'option
+    const listeLi = document.querySelectorAll("#editeur li")
+    btnChangeOption.addEventListener('click', e => {
+      listeLi.forEach(li => {console.log(li)
+
+    })
+    })
+  })
   },
 
   '/notification': () => render(`<h1>page notification</h1>`),
