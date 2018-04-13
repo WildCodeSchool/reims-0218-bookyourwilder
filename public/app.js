@@ -182,7 +182,7 @@ const controllers = {
       const listNotifications = document.getElementById('listNotifications')
       alertBox.className = 'alert alert-success'
       alertBox.innerHTML = `Successfully`
-      listNotifications.innerHTML = `${data.notifications}`
+      listNotifications.innerHTML = `${notifications}`
     })
   })
 })},
