@@ -35,5 +35,4 @@ SCRUM Master: PhiTarte
 Product Owner: LieLust
 
 ## Licensing
-
 The project is licensed as [GNU GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). You can use/modify/distribute it in personal or commercial projects provided you give credit to all of the creators (Links are enough).
