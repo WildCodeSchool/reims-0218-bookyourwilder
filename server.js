@@ -4,18 +4,34 @@ const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
+const notificationsSeed = require('./public/notifications.json')
 let db
 
 // permet de servir les ressources statiques du dossier public
 app.use(express.static('public'))
 app.use(bodyParser.json())
 
+// insertWilder dans la db
 const insertWilder = w => {
   const { firstName, lastName, bio, image, slug, mail, mdp } = w
   return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
+
+// insertNotification dans la db
+const insertNotification = n => {
+  const { notifications } = n
+  return db.get('INSERT INTO notifications( texte ) VALUES(?)', notifications)
+  .then(() => db.get('SELECT last_insert_rowid() as id'))
+  .then(({ id }) => db.get('SELECT * from notifications WHERE id = ?', id))
+}
+
+// insertFlux dans la db
+
+// insertOption_profil dans la db
+
+
 
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
@@ -24,6 +40,8 @@ const dbPromise = Promise.resolve()
   return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
+.then(() => Promise.map(notificationsSeed, n => insertNotification(n)))
+
 
 const html = `
 <!doctype html>
@@ -57,7 +75,7 @@ const html = `
             <a class="nav-link" href="/flux">Flux</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/notification">Notification</a>
+            <a class="nav-link" href="/page-notification">Notification</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,23 +106,18 @@ const html = `
 
     <!-- footer -->
     <footer class="container-fluid mt-5">
-        <div class="row justify-content-center text-center">
-            <div class="col-12">
-                <img src="/images/logo.png" class="image-footer image-fluid" alt="#">
-            </div>
-        </div>
         <div class="row justify-content-around text-center">
             <div class="col-12 col-md-6 col-lg-4 mt-5">
                 <h5>Les autres projets de la <br>Wild Code School Reims</h5>
                 <div class="list-group mt-4">
                     <a href="#" class="mt-1 mb-1">
-                        <p>L'environnement de dév - <span>Team Artemap</span></p>
+                        <p>Mario Kart Contest</p>
                     </a>
                     <a href="#" class="mt-1 mb-1">
-                        <p>Blog journée d'intégration - <span>Team Artefact</span></p>
+                        <p>Artezic Reloaded</p>
                     </a>
                     <a href="#" class="mt-1 mb-1">
-                        <p>Playlist Wild Code School Reims - <span>Team Artezic</span></p>
+                        <p>World Cup Pronostics</p>
                     </a>
                 </div>
             </div>
@@ -131,7 +144,7 @@ const html = `
         </div>
         <div class="row justify-content-around text-center">
             <div class="col-12 mt-5">
-                <p class="copyright">Made with Love by Wild Code School Reims - <span>Team Artésien (Anahita - Arnaud G. - Maxence - Pierre)</span></p>
+                <p class="copyright">Made with Love by Wild Code School Reims - <span>Team Book Your Wilder (Maxence - Florian - Philippe)</span></p>
             </div>
         </div>
     </footer>
@@ -157,9 +170,19 @@ app.post('/wilders', (req, res) => {
   .then(record => res.json(record))
 })
 
+app.post('/notifications', (req, res) => {
+  return insertNotification(req.body)
+  .then(record => res.json(record))
+})
+
 //READ
 app.get('/wilders', (req, res) => {
   db.all('SELECT * from users')
+  .then(records => res.json(records))
+})
+
+app.get('/notifications', (req, res) => {
+  db.all('SELECT * from notifications')
   .then(records => res.json(records))
 })
 

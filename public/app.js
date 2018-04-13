@@ -16,6 +16,13 @@ const makeCard = item => `
     </div>
   </div>`
 
+  const makeNotification = item => `
+  <div class="col-12">
+    <div class="jumbotron">
+      <h2>${item.texte}</h2>
+    </div>
+  </div>`
+
 const serializeForm = form => {
   const data = {}
   const elements = form.getElementsByClassName('form-control')
@@ -35,7 +42,7 @@ const controllers = {
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <a class="navbar-brand" href="#">Déjà inscrit ?</a>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <form action="/wilders" method="POST" class="form-inline my-2">
+              <form class="form-inline my-2">
                   <div>
                       <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
                       <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
@@ -46,16 +53,19 @@ const controllers = {
       </nav>
   </div>
   <div class="container">
+    <div id="alert-box" class="hidden"></div>
       <div class="jumbotron formblock mt-5 mb-5" style="width: 50%; margin: 0 auto;">
-        <form id="add-wilder">
+        <form id="add-wilder" method="POST">
           <h1 class="display-4">Inscrivez-vous</h1>
           <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
           <hr class="my-4">
           <div class="form-group">
-              <label for="inputFirstName">Prénom</label>
-              <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="Votre prénom">
-              <label for="inputLastName">Nom</label>
-              <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Votre nom">
+            <label for="inputFirstName">Prenom</label>
+            <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="Entrer votre prenom">
+          </div>
+          <div class="form-group">
+            <label for="inputLastName">Nom</label>
+            <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Entrer votre nom">
           </div>
           <div class="form-group">
               <label for="inputMail">Adresse mail</label>
@@ -63,9 +73,11 @@ const controllers = {
           </div>
           <div class="form-group">
               <label for="password">Choisissez un mot de passe</label>
-              <input required name="password" type="password" class="form-control" id="inputPass" placeholder="Privilégiez un mot de passe compliqué (au moins 8 caractères)">
-              <label for="password">Confirmez ce mot de passe</label>
-              <input required name="password" type="password" class="form-control" id="inputPass" placeholder="Confirmez le mot de passe saisi ci-dessus">
+              <input required name="password" type="password" class="form-control" id="inputPassword" placeholder="Privilégiez un mot de passe compliqué (au moins 8 caractères)">
+          </div>
+          <div class="form-group">
+              <label for="confirmPassword">Confirmez ce mot de passe</label>
+              <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez le mot de passe saisi ci-dessus">
           </div>
           <div class="form-group">
               <label for="inputBio">Description</label>
@@ -109,9 +121,7 @@ const controllers = {
     .then(album => render(
     `<div class="container">
       <div class="jumbotron">
-        <h1 class="display-3">Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="/about" role="button">Learn more »</a></p>
+        <h1 class="display-3">Hello, Wilders !</h1>
         <p><a class="btn btn-success btn-lg" href="/" role="button">Add a wilder »</a></p>
       </div>
       <div class="row">${album}</div>
@@ -137,7 +147,45 @@ const controllers = {
     </div>`))
   },
 
-  '/notification': () => render(`<h1>page notification</h1>`),
+  '/page-notification': () => {
+  fetch('/notifications')
+  .then(res => res.json())
+  .then(notifications => notifications.reduce((carry, notifications) => carry + makeNotification(notifications), ''))
+  .then(listNotifications => {
+    render(
+  `<div class="container">
+    <div id="alert-box" class="hidden"></div>
+    <form method="POST" id="add-notifications" class="form-inline mt-4 mb-4">
+      <input required name="notifications" type="text" class="form-control" id="inputNotifications" placeholder="Message" style="width:90%">
+      <button class="btn btn-success my-2 my-sm-0" type="submit">Envoyer</button>
+    </form>
+    <div class="row" id="listNotifications">${listNotifications}</div>
+  </div>`)
+
+  const form = document.getElementById("add-notifications")
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    const data = serializeForm(form)
+    fetch('/notifications', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    fetch('/notifications')
+    .then(res => res.json())
+    .then(notifications => notifications.reduce((carry, notifications) => carry + makeNotification(notifications), ''))
+    .then(notifications => {
+      const alertBox = document.getElementById('alert-box')
+      const listNotifications = document.getElementById('listNotifications')
+      alertBox.className = 'alert alert-success'
+      alertBox.innerHTML = `Successfully`
+      listNotifications.innerHTML = `${data.notifications}`
+    })
+  })
+})},
 
   '/flux': () => render('<h1>page flux</h1>'),
 
@@ -152,7 +200,7 @@ const routing = () => {
     '/',
     '/home',
     '/profil/:slug',
-    '/notification',
+    '/page-notification',
     '/flux',
     '/admin',
     '*'
