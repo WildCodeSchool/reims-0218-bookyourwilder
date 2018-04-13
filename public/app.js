@@ -31,20 +31,7 @@ const controllers = {
   //route login a modifier l'exemple (pour florian)
   '/': () => {
     render(`
-      <div class="container-fluid text-center">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <form action="/wilders" method="POST" class="form-inline my-2">
-                  <div>
-                      <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
-                      <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
-                      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
-                  </div>
-              </form>
-          </div>
-      </nav>
-  </div>
+      <div class="container-fluid text-center" id="navbarDejaInscrit"></div>
   <div class="container">
       <div class="jumbotron formblock mt-5 mb-5" style="width: 50%; margin: 0 auto;">
         <form id="add-wilder">
@@ -72,6 +59,7 @@ const controllers = {
               <textarea required name="bio" class="form-control" id="inputBio" placeholder="Une brève description de vous"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Valider l'inscription</button>
+          <div id="alert-box"></div>
       </form>
     </div>
 </div>`
@@ -99,6 +87,19 @@ const controllers = {
         alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
       })
     })
+    const navbarDejaInscrit = document.getElementById("navbarMenu")
+    navbarDejaInscrit.innerHTML = `<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Déjà inscrit ?</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form action="/wilders" method="POST" class="form-inline my-2">
+            <div>
+                <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
+                <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
+            </div>
+        </form>
+    </div>
+</nav>`
   },
   
   //page d'acceuil (et bouton temporaire en attendant la navbar)
@@ -137,13 +138,46 @@ const controllers = {
     </div>`))
   },
 
-  '/notification': () => render(`<h1>page notification</h1>`),
+  '/notification': () => render(`<p>Nulla dictum tellus id nisl sodales, sed sagittis urna tincidunt. Donec ultrices tellus ut odio accumsan molestie. Ut malesuada velit ligula, non vehicula augue condimentum in. Pellentesque ex dolor, fermentum id auctor at, condimentum id lacus. Quisque dignissim sed tortor sit amet sollicitudin. Aenean quis egestas sem, eu elementum orci. Sed vel mauris a lorem dapibus tristique. Proin sagittis suscipit pellentesque. Aliquam luctus semper odio eu congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vel tristique leo. Aenean et congue augue, a ornare orci. Aliquam molestie nec augue eget molestie. Aliquam imperdiet pulvinar elit et sodales. Praesent pulvinar nunc vel sapien bibendum, ut feugiat arcu auctor. Nam maximus diam sodales tempus rhoncus. Phasellus eget consequat tellus. Phasellus iaculis nulla turpis, vitae facilisis tortor tempor id. Sed condimentum orci laoreet velit sollicitudin suscipit. Vivamus gravida quam sed tellus interdum, id cursus lectus tincidunt. Fusce maximus odio eget justo fermentum auctor ut eu eros. Phasellus nec viverra ex. Nullam elit lacus, auctor quis lobortis vel, aliquet eget magna. Quisque eget leo quis nisl fermentum bibendum vel vel arcu. Suspendisse luctus a enim vel tincidunt. Morbi sodales dictum odio vel vestibulum. Vestibulum tellus dolor, tincidunt a lobortis ut, vehicula et ipsum. Duis vulputate neque in ex fringilla, sit amet feugiat lectus consectetur. </p>`),
 
-  '/flux': () => render('<h1>page flux</h1>'),
+  '/flux': () => render('<p>Nulla dictum tellus id nisl sodales, sed sagittis urna tincidunt. Donec ultrices tellus ut odio accumsan molestie. Ut malesuada velit ligula, non vehicula augue condimentum in. Pellentesque ex dolor, fermentum id auctor at, condimentum id lacus. Quisque dignissim sed tortor sit amet sollicitudin. Aenean quis egestas sem, eu elementum orci. Sed vel mauris a lorem dapibus tristique. Proin sagittis suscipit pellentesque. Aliquam luctus semper odio eu congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vel tristique leo. Aenean et congue augue, a ornare orci. Aliquam molestie nec augue eget molestie. Aliquam imperdiet pulvinar elit et sodales. Praesent pulvinar nunc vel sapien bibendum, ut feugiat arcu auctor. Nam maximus diam sodales tempus rhoncus. Phasellus eget consequat tellus. Phasellus iaculis nulla turpis, vitae facilisis tortor tempor id. Sed condimentum orci laoreet velit sollicitudin suscipit. Vivamus gravida quam sed tellus interdum, id cursus lectus tincidunt. Fusce maximus odio eget justo fermentum auctor ut eu eros. Phasellus nec viverra ex. Nullam elit lacus, auctor quis lobortis vel, aliquet eget magna. Quisque eget leo quis nisl fermentum bibendum vel vel arcu. Suspendisse luctus a enim vel tincidunt. Morbi sodales dictum odio vel vestibulum. Vestibulum tellus dolor, tincidunt a lobortis ut, vehicula et ipsum. Duis vulputate neque in ex fringilla, sit amet feugiat lectus consectetur. </p>'),
 
-  '/admin': () => render('<h1>page admin</h1>'),
+  '/admin': () => render(`<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
+  <a class="navbar-brand p-3" href="#">Administration</a>
+  <p class="p-6">Bienvenue sur votre panneau d'administration.</p>
+  <button class="btn btn-outline-danger my-2 my-sm-0 p-3" type="submit">Se déconnecter</button>
+</nav>
 
-  '*': () => render('<h1>Not Found</h1>')
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-xs-12 col-md-5 mt-2 mb-2">
+      <div class="adminPanel bg-info jumbotron">
+        <h1 class="display-4">Bloc 1</h1>
+        <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-5 md-offset-2  mt-2 mb-2">
+      <div class="adminPanel bg-info jumbotron">
+        <h1 class="display-4">Bloc 2</h1>
+        <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-5 mt-2 mb-2">
+      <div class="adminPanel bg-info jumbotron">
+        <h1 class="display-4">Bloc 3</h1>
+        <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-5 md-offset-2 mt-2 mb-2">
+      <div class="adminPanel bg-info jumbotron">
+        <h1 class="display-4">Bloc 4</h1>
+        <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
+      </div>
+    </div>
+  </div>
+</div>`),
+
+  '*': () => render('<p> Nulla dictum tellus id nisl sodales, sed sagittis urna tincidunt. Donec ultrices tellus ut odio accumsan molestie. Ut malesuada velit ligula, non vehicula augue condimentum in. Pellentesque ex dolor, fermentum id auctor at, condimentum id lacus. Quisque dignissim sed tortor sit amet sollicitudin. Aenean quis egestas sem, eu elementum orci. Sed vel mauris a lorem dapibus tristique. Proin sagittis suscipit pellentesque. Aliquam luctus semper odio eu congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vel tristique leo. Aenean et congue augue, a ornare orci. Aliquam molestie nec augue eget molestie. Aliquam imperdiet pulvinar elit et sodales. Praesent pulvinar nunc vel sapien bibendum, ut feugiat arcu auctor. Nam maximus diam sodales tempus rhoncus. Phasellus eget consequat tellus. Phasellus iaculis nulla turpis, vitae facilisis tortor tempor id. Sed condimentum orci laoreet velit sollicitudin suscipit. Vivamus gravida quam sed tellus interdum, id cursus lectus tincidunt. Fusce maximus odio eget justo fermentum auctor ut eu eros. Phasellus nec viverra ex. Nullam elit lacus, auctor quis lobortis vel, aliquet eget magna. Quisque eget leo quis nisl fermentum bibendum vel vel arcu. Suspendisse luctus a enim vel tincidunt. Morbi sodales dictum odio vel vestibulum. Vestibulum tellus dolor, tincidunt a lobortis ut, vehicula et ipsum. Duis vulputate neque in ex fringilla, sit amet feugiat lectus consectetur. </p>')
 }
 
 // gére l'execution du routing coté client
