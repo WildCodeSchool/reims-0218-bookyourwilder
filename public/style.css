@@ -66,7 +66,8 @@ footer .copyright {
 .image-footer {
     height: 144px;
     width: 144px;
-    margin-top: -72px;
+    margin-top: 1em;
+    float: right;
 }
 
 footer .btn-primary {
@@ -82,4 +83,8 @@ footer .btn-primary:hover{
 
 footer .btn-primary:hover a{
     text-decoration: none;
+}
+
+#main {
+    margin: 0 2em;
 }

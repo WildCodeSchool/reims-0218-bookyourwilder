@@ -59,8 +59,8 @@ const html = `
   <body>
 
   <!-- barnav -->
-  <div class="container-fluid bg-dark mb-5">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <div class="container-fluid bg-dark mb-5" id="navbarMenu">
+    <nav class="navbar navbar-expand-lg navbar-dark">
       <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -69,27 +69,19 @@ const html = `
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/home">Acceuil</a>
+            <a class="nav-link" href="/home">Accueil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/flux">Flux</a>
+            <a class="nav-link" href="/flux">Dernières news</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/page-notification">Notification</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Profil
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarProfil">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Action 2</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Action 3</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="" id="navbarProfil">Profil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/admin">Admin</a>
+            <a class="nav-link" href="/admin">Administration</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -122,13 +114,11 @@ const html = `
                 </div>
             </div>
             <div class="col-12 col-md-6 col-lg-4 mt-5">
-                <h5>Plus d'infos</h5>
+                <h5>Plus d'infos sur l'école</h5>
                 <a href="https://wildcodeschool.fr/" target="_blank"><button type="button" class="btn btn-primary mt-2 mb-2">Plus d'infos</button></a>
-                <h5>Déposer une offre de stage</h5>
-                <a href="https://wildcodeschool.fr/recruter-un-developpeur/" target="_blank"><button type="button" class="btn btn-primary mt-2 mb-2">Déposer une offre de stage</button></a>
             </div>
             <div class="col-12 col-md-6 col-lg-4 mt-5">
-                <h5>Suivez-nous sur les réseaux sociaux</h5>
+                <h5>Suivez-nous sur les réseaux sociaux !</h5>
                 <div class="d-flex flex-row justify-content-center mt-3">
                     <div class="p-4">
                         <a href="https://www.facebook.com/wildcodeschool/" target="_blank"><i class="fab fa-facebook-square rounded-circle"></i></a>
