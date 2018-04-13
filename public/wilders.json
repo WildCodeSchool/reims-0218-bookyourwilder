@@ -1,0 +1,29 @@
+[
+    {
+      "firstName": "Florian",
+      "lastName": "Hourlier",
+      "slug": "florian-hourlier",
+      "bio": "Bonjour madame, bonjour monsieur !",
+      "image": "https://via.placeholder.com/640x480/?text=Florian%20Hourlier",
+      "mail": "florian.hourlier@hotmail",
+      "mdp": "jj@jj.jj"
+    },
+    {
+      "firstName": "Maxence",
+      "lastName": "Millescamps",
+      "slug": "maxence-millescamps",
+      "bio": "Bonjour kebab, bonjour coca !",
+      "image": "https://via.placeholder.com/640x480/?text=Maxence%20Millescamps",
+      "mail": "?",
+      "mdp": "ee@ee.ee"
+    },
+    {
+      "firstName": "Philippe",
+      "lastName": "Tarte",
+      "slug": "philippe-tarte",
+      "bio": "Bonjour youpi, bonjour youpi !",
+      "image": "https://via.placeholder.com/640x480/?text=Philippe%20Tarte",
+      "mail": "?",
+      "mdp": "ww@ww.ww"
+    }
+  ]

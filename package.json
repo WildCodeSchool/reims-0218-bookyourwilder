@@ -1,0 +1,27 @@
+{
+  "name": "reims-0218-bookyourwilder",
+  "version": "1.0.0",
+  "description": "## team members",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WildCodeSchool/reims-0218-bookyourwilder.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WildCodeSchool/reims-0218-bookyourwilder/issues"
+  },
+  "homepage": "https://github.com/WildCodeSchool/reims-0218-bookyourwilder#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "commitizen": "^2.9.6",
+    "express": "^4.16.3",
+    "gitignore": "^0.6.0",
+    "sqlite": "^2.9.1"
+  }
+}
