@@ -1,0 +1,94 @@
+footer{
+    background: #35383a;
+    background-image: url("/images/logo_trans.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.fa-linkedin-in:hover {
+    background-color:#0077b5;
+    color: white;
+}
+
+.fa-github:hover {
+    background-color:#6c757d;
+    color: white;
+}
+
+.fa-envelope:hover {
+    background-color:#0077b5;
+    color: white;
+}
+
+a > .rounded-circle {
+    font-size: 2em;
+    background: white;
+    padding: 0.3em;
+}
+
+footer .rounded-circle {
+    background: white;
+    color: #498b84;
+}
+
+footer .rounded-circle:hover {
+    background: #498b84;
+    color: white;
+}
+
+.list-group-item {
+    border : none;
+}
+
+.list-group > a {
+    color: #46a79d;
+    text-decoration: none;
+}
+
+.list-group > a:hover {
+    color: #498b84;
+}
+
+span {
+    font-style: italic;
+}
+
+.bg {
+    background: #35383a;
+}
+
+footer h5{
+    color: white;
+    font-size: 1.5em;
+}
+
+footer .copyright {
+    color: white;
+}
+
+.image-footer {
+    height: 144px;
+    width: 144px;
+    margin-top: 1em;
+    float: right;
+}
+
+footer .btn-primary {
+    background: white;
+    color: #498b84;
+    border-color: #498b84;
+}
+
+footer .btn-primary:hover{
+    background: #498b84;
+    border-color: #498b84;
+}
+
+footer .btn-primary:hover a{
+    text-decoration: none;
+}
+
+#main {
+    margin: 0 2em;
+}
