@@ -4,18 +4,34 @@ const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
+const notificationsSeed = require('./public/notifications.json')
 let db
 
 // permet de servir les ressources statiques du dossier public
 app.use(express.static('public'))
 app.use(bodyParser.json())
 
+// insertWilder dans la db
 const insertWilder = w => {
   const { firstName, lastName, bio, image, slug, mail, mdp } = w
   return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
+
+// insertNotification dans la db
+const insertNotification = n => {
+  const { notifications } = n
+  return db.get('INSERT INTO notifications( texte ) VALUES(?)', notifications)
+  .then(() => db.get('SELECT last_insert_rowid() as id'))
+  .then(({ id }) => db.get('SELECT * from notifications WHERE id = ?', id))
+}
+
+// insertFlux dans la db
+
+// insertOption_profil dans la db
+
+
 
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
@@ -24,12 +40,13 @@ const dbPromise = Promise.resolve()
   return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
+.then(() => Promise.map(notificationsSeed, n => insertNotification(n)))
 
 const html = `
 <!doctype html>
 <html lang="en">
   <head>
-    <title>FaceYourWilder</title>
+    <title>BookYourWilder</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -41,38 +58,42 @@ const html = `
   <body>
 
   <!-- barnav -->
-  <div class="container-fluid bg-dark mb-5" id="navbarMenu">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
+  <div class="container-fluid bg-dark" id="navbarMenu">
+  <nav class="navbar navbar-expand-lg navbar-dark ">
+      <a class="navbar-brand" href="/home"><img src="../Téléchargements/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/home">Accueil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/flux">Dernières news</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/notification">Notifications</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="navbarProfil">Profil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin">Administration</a>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
-          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
-        </form>
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="/home">Acceuil</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/flux">Flux</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/page-notification">Notification</a>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarProfil">
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Action 2</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Action 3</a>
+                  </div>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/admin">Admin</a>
+              </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
+          </form>
       </div>
-    </nav>
-  </div>
+  </nav>
+</div>
 
     <!-- contenu -->
       <div id="main"></div>
@@ -88,10 +109,10 @@ const html = `
                         <p>Mario Kart Contest</p>
                     </a>
                     <a href="#" class="mt-1 mb-1">
-                        <p>World Cup 2018 Pronostics</p>
+                        <p>Artezic Reloaded</p>
                     </a>
                     <a href="#" class="mt-1 mb-1">
-                        <p>Artézic Evolution</p>
+                        <p>World Cup Pronostics</p>
                     </a>
                 </div>
             </div>
@@ -116,7 +137,7 @@ const html = `
         </div>
         <div class="row justify-content-around text-center">
             <div class="col-12 mt-5">
-                <p class="copyright">Projet réalisé par l'équipe [NOM] - F.Hourlier, M.Millescamps, P.Tarte</p>
+                <p class="copyright">Made with Love by Wild Code School Reims - <span>Team Book Your Wilder (Maxence - Florian - Philippe)</span></p>
             </div>
         </div>
     </footer>
@@ -142,9 +163,19 @@ app.post('/wilders', (req, res) => {
   .then(record => res.json(record))
 })
 
+app.post('/notifications', (req, res) => {
+  return insertNotification(req.body)
+  .then(record => res.json(record))
+})
+
 //READ
 app.get('/wilders', (req, res) => {
   db.all('SELECT * from users')
+  .then(records => res.json(records))
+})
+
+app.get('/notifications', (req, res) => {
+  db.all('SELECT * from notifications')
   .then(records => res.json(records))
 })
 
