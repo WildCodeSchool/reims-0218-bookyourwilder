@@ -115,17 +115,17 @@ const controllers = {
         "texte": "foundation"
       }]
 
-      const displayOptionsWilder = (tableauOptions, hasCheckbox, useDisplay) => {
+      const displayOptionsWilder = (tableauOptions, useDisplay) => {
         let htmlLis = ""
         // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li
-        tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li>${option["nom"]}: ${option["texte"]} ${(hasCheckbox)?`<input type='checkbox' ${(option["affichage"])?'checked':''}>`:''}</li>`:''
+        tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li>${option["nom"]}: ${option["texte"]}</li>`:''
         )
         return htmlLis
       }
       render(`<div class="container text-center">
       <div class="jumbotron">
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
-          Edit list of options
+          Edit profile
         </button>
         <h1 class="display-4">${wilder.firstName} ${wilder.lastName}</h1>
         <p>${wilder.title}</p><!-- Button trigger modal -->
@@ -135,19 +135,36 @@ const controllers = {
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit the options of the profile</h5>
+                <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body" id="editeur">
-                <ul>
-                  ${displayOptionsWilder(options_wilder,true, false)}
-                </ul>
+                <form id="changeProfile">
+                  <fieldset class="form-group row">
+                    <label for="inputFirstName" class="col-12 col-sm-6">First Name</label>
+                    <label for="inputLastName" class="col-12 col-sm-6">Last name</label>
+                    <input name="firstName" type="text" class="form-control col-12 col-sm-6" id="inputFirstName" placeholder="Enter first name">
+                    <input name="lastName" type="text" class="form-control col-12 col-sm-6" id="inputLastName" placeholder="Enter last name">
+                  </fieldset>
+                  <div class="form-group row">
+                    <label for="inputImageUrl" class="col-12 col-sm-6">Image URL</label>
+                    <input name="image" type="text" class="form-control" id="inputImageUrl" placeholder="Enter image URL">
+                  </div>
+                  <div class="form-group">
+                    <label for="inputBio" class="col-12 col-sm-6">Bio</label>
+                    <textarea name="bio" class="form-control" id="inputLastName" placeholder="Bio"></textarea>
+                  </div>
+                  <hr>
+                  <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
+                  </div>
+                </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnChangeOption">Save changes</button>
+                <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
               </div>
             </div>
           </div>
@@ -168,16 +185,32 @@ const controllers = {
       </form>
     </div>
     </div>`)
-    const btnChangeOption = document.getElementById('btnChangeOption')
-    // je prend tous les li qui sont dans ma div editeur d'option
-    const listeLi = document.querySelectorAll("#editeur li")
-    btnChangeOption.addEventListener('click', e => {
-      listeLi.forEach(li => {console.log(li)
-
-    })
-    })
-  })
-  },
+    const formChangeProfile = document.getElementById('changeProfile')
+    formChangeProfile.addEventListener('submit', e => {
+      e.preventDefault()
+      const data = serializeForm(form)
+      // si je n'ait pas remplit l'image, je mets un placeholder
+      if(! data.image) {
+        const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
+        data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
+      }
+//      fetch('/wilders', {
+//       method: 'UPDATE',
+//        headers: {
+//          'Accept': 'application/json, text/plain, */*',
+//          'Content-Type': 'application/json'
+ //       },
+//        body: JSON.stringify(data)
+//      })
+//      .then(res => res.json())
+//      .then(wilder => {
+//        const alertBox = document.getElementById('alert-box')
+//        alertBox.className = 'alert alert-success'
+//        alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
+//      })
+    }) // fermeture de l'eventlistener sur le formChangeProfile
+  }) // fermeture du dernier then
+  },  // fermeture de la route
 
   '/notification': () => render(`<h1>page notification</h1>`),
 
