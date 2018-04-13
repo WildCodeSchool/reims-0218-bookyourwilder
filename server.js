@@ -58,38 +58,42 @@ const html = `
   <body>
 
   <!-- barnav -->
-  <div class="container-fluid bg-dark mb-5" id="navbarMenu">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
+  <div class="container-fluid bg-dark" id="navbarMenu">
+  <nav class="navbar navbar-expand-lg navbar-dark ">
+      <a class="navbar-brand" href="/home"><img src="../Téléchargements/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/home">Accueil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/flux">Dernières news</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/page-notification">Notification</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="" id="navbarProfil">Profil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin">Administration</a>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
-          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
-        </form>
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="/home">Acceuil</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/flux">Flux</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/page-notification">Notification</a>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarProfil">
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Action 2</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Action 3</a>
+                  </div>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/admin">Admin</a>
+              </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
+          </form>
       </div>
-    </nav>
-  </div>
+  </nav>
+</div>
 
     <!-- contenu -->
       <div id="main"></div>

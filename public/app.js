@@ -236,7 +236,7 @@ const controllers = {
   },  // fermeture de la route
 
 
-  '/page-notification': () => {
+  '/flux': () => {
   fetch('/notifications')
   .then(res => res.json())
   .then(notifications => notifications.reduce((carry, notifications) => carry + makeNotification(notifications), ''))
@@ -276,7 +276,7 @@ const controllers = {
   })
 })},
 
-  '/flux': () => render('<p>page flux</p>'),
+  '/page-notification': () => render('<h1>Page Notification</h1>'),
 
   '/admin': () => render(`<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
       <a class="navbar-brand p-3" href="#">Administration</a>
@@ -312,14 +312,8 @@ const controllers = {
         </div>
       </div>
     </div>`),
-        
-  '/notification': () => render(`<h1>page notification</h1>`),
 
-  '/flux': () => render('<h1>page flux</h1>'),
-
-  '/admin': () => render('<h1>page admin</h1>'),
-
-  '*': () => render('<p> Nulla dictum tellus id nisl sodales, sed sagittis urna tincidunt. Donec ultrices tellus ut odio accumsan molestie. Ut malesuada velit ligula, non vehicula augue condimentum in. Pellentesque ex dolor, fermentum id auctor at, condimentum id lacus. Quisque dignissim sed tortor sit amet sollicitudin. Aenean quis egestas sem, eu elementum orci. Sed vel mauris a lorem dapibus tristique. Proin sagittis suscipit pellentesque. Aliquam luctus semper odio eu congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vel tristique leo. Aenean et congue augue, a ornare orci. Aliquam molestie nec augue eget molestie. Aliquam imperdiet pulvinar elit et sodales. Praesent pulvinar nunc vel sapien bibendum, ut feugiat arcu auctor. Nam maximus diam sodales tempus rhoncus. Phasellus eget consequat tellus. Phasellus iaculis nulla turpis, vitae facilisis tortor tempor id. Sed condimentum orci laoreet velit sollicitudin suscipit. Vivamus gravida quam sed tellus interdum, id cursus lectus tincidunt. Fusce maximus odio eget justo fermentum auctor ut eu eros. Phasellus nec viverra ex. Nullam elit lacus, auctor quis lobortis vel, aliquet eget magna. Quisque eget leo quis nisl fermentum bibendum vel vel arcu. Suspendisse luctus a enim vel tincidunt. Morbi sodales dictum odio vel vestibulum. Vestibulum tellus dolor, tincidunt a lobortis ut, vehicula et ipsum. Duis vulputate neque in ex fringilla, sit amet feugiat lectus consectetur. </p>')
+  '*': () => render('<h1>Not Found</h1>')
 }
 
 // gére l'execution du routing coté client
