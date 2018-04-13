@@ -1,5 +1,9 @@
 footer{
     background: #35383a;
+    background-image: url("/images/logo_trans.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .fa-linkedin-in:hover {
@@ -66,7 +70,8 @@ footer .copyright {
 .image-footer {
     height: 144px;
     width: 144px;
-    margin-top: -72px;
+    margin-top: 1em;
+    float: right;
 }
 
 footer .btn-primary {
@@ -82,4 +87,8 @@ footer .btn-primary:hover{
 
 footer .btn-primary:hover a{
     text-decoration: none;
+}
+
+#main {
+    margin: 0 2em;
 }
