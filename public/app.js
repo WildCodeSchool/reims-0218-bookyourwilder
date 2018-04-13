@@ -115,10 +115,10 @@ const controllers = {
         "texte": "foundation"
       }]
 
-      const displayOptionsWilder = (tableauOptions, useDisplay) => {
+      const displayOptionsWilder = (tableauOptions, useDisplay, displayOrChange) => {
         let htmlLis = ""
-        // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li
-        tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li>${option["nom"]}: ${option["texte"]}</li>`:''
+        // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
+        tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`:""
         )
         return htmlLis
       }
@@ -142,24 +142,31 @@ const controllers = {
               </div>
               <div class="modal-body" id="editeur">
                 <form id="changeProfile">
-                  <fieldset class="form-group row">
-                    <label for="inputFirstName" class="col-12 col-sm-6">First Name</label>
-                    <label for="inputLastName" class="col-12 col-sm-6">Last name</label>
-                    <input name="firstName" type="text" class="form-control col-12 col-sm-6" id="inputFirstName" placeholder="Enter first name">
-                    <input name="lastName" type="text" class="form-control col-12 col-sm-6" id="inputLastName" placeholder="Enter last name">
+                  <fieldset class="form-group">
+                    <div class="row justify-content-around">
+                      <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                      <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+                    </div>
+                    <div class="row justify-content-around">
+                      <input name="firstName" type="text" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                      <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                    </div>
                   </fieldset>
-                  <div class="form-group row">
-                    <label for="inputImageUrl" class="col-12 col-sm-6">Image URL</label>
-                    <input name="image" type="text" class="form-control" id="inputImageUrl" placeholder="Enter image URL">
-                  </div>
-                  <div class="form-group">
-                    <label for="inputBio" class="col-12 col-sm-6">Bio</label>
-                    <textarea name="bio" class="form-control" id="inputLastName" placeholder="Bio"></textarea>
-                  </div>
+                  <fieldset class="form-group row justify-content-around">
+                    <label for="inputImageUrl" class="col-11">Image URL</label>
+                    <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                  </fieldset>
+                  <fieldset class="form-group row justify-content-around">
+                    <label for="inputBio" class="col-11">Bio</label>
+                    <textarea name="bio" class="form-control col-11" id="inputLastName" placeholder="${wilder.bio}"></textarea>
+                  </fieldset>
                   <hr>
                   <div class="modal-header">
                     <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
                   </div>
+                  <ul>
+                    ${displayOptionsWilder(options_wilder, false, true)}
+                  </ul>
                 </form>
               </div>
               <div class="modal-footer">
@@ -173,14 +180,14 @@ const controllers = {
         <hr class="my-4">
         <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
         <p class="lead">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
-        <button type="button" class="btn btn-primary" id="displayBio">Save changes</button>
+        <button type="button" class="btn btn-primary" id="displayBio">Read more</button>
       </div>
 
       <div class="jumbotron">
-      <h2>en option a affiche</h2>
+      <h2>options to display:</h2>
       <form>
         <ul>
-          ${displayOptionsWilder(options_wilder, false, true)}
+          ${displayOptionsWilder(options_wilder, true, false)}
         </ul>
       </form>
     </div>
