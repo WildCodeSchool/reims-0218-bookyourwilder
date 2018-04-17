@@ -19,6 +19,7 @@ CREATE TABLE users (
   mail VARCHAR(255),
   urlFb VARCHAR(100),
   urlTw VARCHAR(100),
+  urlLi VARCHAR(100),
   mdp TEXT
 );
 

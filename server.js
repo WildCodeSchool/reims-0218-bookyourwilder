@@ -13,8 +13,8 @@ app.use(bodyParser.json())
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, mail, urlFb, urlTw, mdp } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, urlFb, urlTw, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, urlFb, urlTw, mail, mdp)
+  const { firstName, lastName, title, bio, image, slug, mail, urlFb, urlTw, urlLi, mdp } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, urlFb, urlTw, urlLi, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, urlFb, urlTw, urlLi, mail, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }

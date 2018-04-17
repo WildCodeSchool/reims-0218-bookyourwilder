@@ -191,6 +191,26 @@ const controllers = {
                     <label for="inputBio" class="col-11">Bio</label>
                     <textarea name="bio" class="form-control col-11" id="inputLastName" placeholder="${wilder.bio}"></textarea>
                   </fieldset>
+                  <fieldset class="form-group">
+                    <div class="row justify-content-around">
+                      <label for="inputUrlFb" class="col-12 col-sm-5">url Facebook</label>
+                      <label for="inputUrlTw" class="col-12 col-sm-5">url Twitter</label>
+                    </div>
+                    <div class="row justify-content-around">
+                      <input name="urlFb" type="text" class="form-control col-12 col-sm-5" id="inputUrlFb" placeholder="${wilder.urlFb}">
+                      <input name="urlTw" type="text" class="form-control col-12 col-sm-5" id="inputUrlTw" placeholder="${wilder.urlTw}">
+                    </div>
+                  </fieldset>
+                  <fieldset class="form-group">
+                    <div class="row justify-content-around">
+                      <label for="inputUrlLi" class="col-12 col-sm-5">url LinkedIn</label>
+                      <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                    </div>
+                    <div class="row justify-content-around">
+                      <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputUrlLi" placeholder="${wilder.urlLi}">
+                      <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                    </div>
+                  </fieldset>
                   <hr>
                   <div class="modal-header">
                     <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>

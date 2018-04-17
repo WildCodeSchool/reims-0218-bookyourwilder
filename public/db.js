@@ -15,8 +15,8 @@ const dbPromise = Promise.resolve()
 .then(() => Promise.map(notificationsSeed, n => insertNotification(n)))
 
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, urlFb, urlTw, mail, mdp } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, urlFb, urlTw, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, urlFb, urlTw, mail, mdp)
+  const { firstName, lastName, title, bio, image, slug, urlFb, urlTw, urlLi, mail, mdp } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, urlFb, urlTw, urlLi, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, urlFb, urlTw, urlLi, mail, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
@@ -31,12 +31,9 @@ const insertNotification = n => {
 
 // updateWilder dans la db
 const updateWilder = (w, propertyName, propertyValue) => {
-  const { firstName, lastName, title, bio, image, slug, urlFb, urlTw, mail, mdp } = w
-  return db.get('UPDATE users SET (slug, firstName, lastName, title, bio, image, urlFb, urlTw, mail, mdp) = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, urlFb, urlTw, mail, mdp)
-  .then(() => {
-    const sqliteQuery = `SELECT id from users where ${propertyName}='${propertyValue}'`
-    console.log(sqliteQuery)
-    return db.get(sqliteQuery)})
+  const { firstName, lastName, title, bio, image, slug, urlFb, urlTw, urlLi, mail, mdp } = w
+  return db.get('UPDATE users SET (slug, firstName, lastName, title, bio, image, urlFb, urlTw, urlLi, mail, mdp) = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, urlFb, urlTw, urlLi, mail, mdp)
+  .then(() => db.get(`SELECT id from users where ${propertyName}='${propertyValue}'`))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
 
