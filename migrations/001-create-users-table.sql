@@ -1,7 +1,6 @@
 -- Up
 CREATE TABLE option_profil (
   id INTEGER PRIMARY KEY,
-  title VARCHAR(40),
   nom_option VARCHAR(45),
   affichage_option TINYINT,
   texte_option TINYTEXT,
@@ -12,11 +11,14 @@ CREATE TABLE option_profil (
 CREATE TABLE users (
   id INTEGER PRIMARY KEY,
   slug VARCHAR(255),
+  title VARCHAR(40),
   firstName VARCHAR(60),
   lastName VARCHAR(60),
   bio TEXT,
   image VARCHAR(255),
   mail VARCHAR(255),
+  urlFb VARCHAR(100),
+  urlTw VARCHAR(100),
   mdp TEXT
 );
 

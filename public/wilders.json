@@ -2,28 +2,37 @@
     {
       "firstName": "Florian",
       "lastName": "Hourlier",
+      "title": "dev Web",
       "slug": "florian-hourlier",
       "bio": "Bonjour madame, bonjour monsieur !",
       "image": "https://via.placeholder.com/640x480/?text=Florian%20Hourlier",
       "mail": "florian.hourlier@hotmail",
+      "urlFb": "FaceBook à florian",
+      "urlTw": "",
       "mdp": "jj@jj.jj"
     },
     {
       "firstName": "Maxence",
       "lastName": "Millescamps",
+      "title": "dev Web",
       "slug": "maxence-millescamps",
       "bio": "Bonjour kebab, bonjour coca !",
       "image": "https://via.placeholder.com/640x480/?text=Maxence%20Millescamps",
       "mail": "?",
+      "urlFb": "",
+      "urlTw": "twitter a maxence",
       "mdp": "ee@ee.ee"
     },
     {
       "firstName": "Philippe",
       "lastName": "Tarte",
+      "title": "dev Web",
       "slug": "philippe-tarte",
       "bio": "Bonjour youpi, bonjour youpi !",
       "image": "https://via.placeholder.com/640x480/?text=Philippe%20Tarte",
       "mail": "?",
+      "urlFb": "rien pour moi",
+      "urlTw": "rien pour moi",
       "mdp": "ww@ww.ww"
     }
   ]

@@ -13,11 +13,13 @@ app.use(bodyParser.json())
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, bio, image, slug, mail, mdp } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
+  const { firstName, lastName, title, bio, image, slug, mail, urlFb, urlTw, mdp } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, urlFb, urlTw, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, urlFb, urlTw, mail, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
+
+const {updateWilder} = require('./public/db')
 
 // insertNotification dans la db
 const insertNotification = n => {
@@ -177,6 +179,10 @@ app.get('/wilders', (req, res) => {
 app.get('/notifications', (req, res) => {
   db.all('SELECT * from notifications')
   .then(records => res.json(records))
+})
+
+app.put('/profile/:slug', (req, res) => {
+    updateWilder(req.body.wilder, 'lastName', 'tarte')
 })
 
 // route par défaut qui renvoit le code html/css/js complet de l'application
