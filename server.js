@@ -4,6 +4,7 @@ const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
+const optionsSeed = require('./public/wilders_options.json')
 const notificationsSeed = require('./public/notifications.json')
 let db
 
@@ -18,6 +19,14 @@ const insertWilder = w => {
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
+
+// insertOption dans la db
+const insertOption = o => {
+    const { nom_option, affichage_option, texte_option, wilder_id } = o
+    return db.get('INSERT INTO option_profil(nom_option, affichage_option, texte_option, wilder_id) VALUES(?, ?, ?, ?)', nom_option, affichage_option, texte_option, wilder_id)
+    .then(() => db.get('SELECT last_insert_rowid() as id'))
+    .then(({ id }) => db.get('SELECT * from option_profil WHERE id = ?', id))
+  }
 
 const {updateWilder} = require('./public/db')
 
@@ -43,6 +52,7 @@ const dbPromise = Promise.resolve()
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
 .then(() => Promise.map(notificationsSeed, n => insertNotification(n)))
+.then(() => Promise.map(optionsSeed, o => insertNotification(o)))
 
 const html = `
 <!doctype html>
@@ -55,14 +65,14 @@ const html = `
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href=style.css>
+    <link rel="stylesheet" href="style.css">
     </head>
   <body>
 
   <!-- barnav -->
   <div class="container-fluid bg-dark" id="navbarMenu">
   <nav class="navbar navbar-expand-lg navbar-dark ">
-      <a class="navbar-brand" href="/home"><img src="../Téléchargements/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+      <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -175,6 +185,12 @@ app.get('/wilders', (req, res) => {
   db.all('SELECT * from users')
   .then(records => res.json(records))
 })
+
+//READ
+app.get('/options', (req, res) => {
+    db.all('SELECT * from option_profil')
+    .then(records => res.json(records))
+  })
 
 app.get('/notifications', (req, res) => {
   db.all('SELECT * from notifications')
