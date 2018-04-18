@@ -182,6 +182,12 @@ app.get('/notifications', (req, res) => {
   .then(records => res.json(records))
 })
 
+//UPDATE
+app.put('/profil/:slug', function(req, res) {
+    res.send(`The new name is ${req.body.prenom}`);
+  });
+
+
 // route par défaut qui renvoit le code html/css/js complet de l'application
 app.get('*', (req, res) => {
   // to test log du path
