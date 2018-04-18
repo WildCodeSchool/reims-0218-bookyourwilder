@@ -15,7 +15,8 @@ app.use(bodyParser.json())
 const insertWilder = w => {
   const { firstName, lastName, bio, image, slug, mail, mdp } = w
   return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
-  .then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+  .then(() => db.get('SELECT last_insert_rowid() as id'))
+  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
 
 // insertNotification dans la db
@@ -30,7 +31,20 @@ const insertNotification = n => {
 
 // insertOption_profil dans la db
 
+// Update account
+// TODO: need to add image in query ?
+const updateAccount = ua => {
+    const { firstName, lastName, bio, image, slug, mail, mdp, editedWilder } = ua
+    return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, mdp = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, mdp, editedWilder)
+    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+}
 
+// Update profile options
+const updateProfile = up => {
+    const { title, nomOption, affichageOption, texteOption, editedWilder } = up
+    return db.get("UPDATE option_profil SET title = ?, nom_option = ?, affichage_option = ?, texte_option = ? WHERE wilder_id = ?;", title, nomOption, affichageOption, texteOption, editedWilder)
+    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+}
 
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
