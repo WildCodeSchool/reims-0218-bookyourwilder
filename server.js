@@ -174,6 +174,12 @@ app.get('/wilders', (req, res) => {
   .then(records => res.json(records))
 })
 
+//READ
+app.get('/profil', (req, res) => {
+    db.all('SELECT * from users')
+    .then(records => res.json(records))
+  })
+
 app.get('/notifications', (req, res) => {
   db.all('SELECT * from notifications')
   .then(records => res.json(records))
