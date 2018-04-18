@@ -31,7 +31,20 @@ const insertNotification = n => {
 
 // insertOption_profil dans la db
 
+// Update account
+// TODO: need to add image in query ?
+const updateAccount = ua => {
+    const { firstName, lastName, bio, image, slug, mail, mdp, editedWilder } = ua
+    return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, mdp = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, mdp, editedWilder)
+    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+}
 
+// Update profile options
+const updateProfile = up => {
+    const { title, nomOption, affichageOption, texteOption, editedWilder } = up
+    return db.get("UPDATE option_profil SET title = ?, nom_option = ?, affichage_option = ?, texte_option = ? WHERE wilder_id = ?;", title, nomOption, affichageOption, texteOption, editedWilder)
+    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+}
 
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
@@ -53,14 +66,14 @@ const html = `
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href=style.css>
+    <link rel="stylesheet" href="style.css">
     </head>
   <body>
 
   <!-- barnav -->
   <div class="container-fluid bg-dark" id="navbarMenu">
   <nav class="navbar navbar-expand-lg navbar-dark ">
-      <a class="navbar-brand" href="/home"><img src="../Téléchargements/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+      <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
