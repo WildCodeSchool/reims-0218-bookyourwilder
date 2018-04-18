@@ -15,7 +15,8 @@ app.use(bodyParser.json())
 const insertWilder = w => {
   const { firstName, lastName, bio, image, slug, mail, mdp } = w
   return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
-  .then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+  .then(() => db.get('SELECT last_insert_rowid() as id'))
+  .then(({ id }) => db.get('SELECT * from notifications WHERE id = ?', id))
 }
 
 // insertNotification dans la db
@@ -29,7 +30,6 @@ const insertNotification = n => {
 // insertFlux dans la db
 
 // insertOption_profil dans la db
-
 
 
 const dbPromise = Promise.resolve()
@@ -182,8 +182,9 @@ app.get('/notifications', (req, res) => {
 })
 
 //UPDATE
-app.put('/profil/:slug', function(req, res) {
-    res.send(`The new name is ${req.body.prenom}`);
+app.put('/wilder', function(req, res) {
+    return updateProfil(req.body)
+    .then(record => res.json(record))
   });
 
 
