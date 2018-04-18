@@ -209,7 +209,7 @@ const controllers = {
         </div>
         <hr class="my-4">
         <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
-        <p class="lead" id="bioArea"></p>
+        <p class="lead" id="bioArea">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
         ${(wilder.bio.length>50)?'<button type="button" class="btn btn-primary" id="displayBio">Read more</button>':''}
       </div>
       
