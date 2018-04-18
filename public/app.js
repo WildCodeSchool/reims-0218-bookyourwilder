@@ -130,7 +130,7 @@ const controllers = {
     navbarDejaInscrit.innerHTML = `<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Déjà inscrit ?</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form action="/wilders" method="POST" class="form-inline my-2">
+    <form action="/wilders" method="POST" class="form-inline my-2">
             <div>
                 <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
                 <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
@@ -138,12 +138,12 @@ const controllers = {
             </div>
         </form>
     </div>
-</nav>`
+    </nav>`
   },
   
   //page d'acceuil (et bouton temporaire en attendant la navbar)
   '/home': () =>
-    fetch('/wilders')
+  fetch('/wilders')
     .then(res => res.json())
     .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
     .then(album => render(

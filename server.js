@@ -15,8 +15,7 @@ app.use(bodyParser.json())
 const insertWilder = w => {
   const { firstName, lastName, bio, image, slug, mail, mdp } = w
   return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
-  .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
+  .then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
 }
 
 // insertNotification dans la db
