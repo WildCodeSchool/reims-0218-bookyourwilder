@@ -53,14 +53,14 @@ const html = `
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href=style.css>
+    <link rel="stylesheet" href="style.css">
     </head>
   <body>
 
   <!-- barnav -->
   <div class="container-fluid bg-dark" id="navbarMenu">
   <nav class="navbar navbar-expand-lg navbar-dark ">
-      <a class="navbar-brand" href="/home"><img src="../Téléchargements/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+      <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -86,6 +86,9 @@ const html = `
               <li class="nav-item">
                   <a class="nav-link" href="/admin">Admin</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Add a wilder</a>
+              </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
               <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -100,19 +103,19 @@ const html = `
 
 
     <!-- footer -->
-    <footer class="container-fluid mt-5">
+    <footer class="container-fluid pt-5 bg">
         <div class="row justify-content-around text-center">
             <div class="col-12 col-md-6 col-lg-4 mt-5">
                 <h5>Les autres projets de la <br>Wild Code School Reims</h5>
                 <div class="list-group mt-4">
                     <a href="#" class="mt-1 mb-1">
-                        <p>Mario Kart Contest</p>
+                        Mario Kart Contest
                     </a>
                     <a href="#" class="mt-1 mb-1">
-                        <p>Artezic Reloaded</p>
+                        Artezic Reloaded
                     </a>
                     <a href="#" class="mt-1 mb-1">
-                        <p>World Cup Pronostics</p>
+                        World Cup Pronostics
                     </a>
                 </div>
             </div>
