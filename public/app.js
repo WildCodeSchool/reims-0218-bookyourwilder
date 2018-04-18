@@ -132,10 +132,14 @@ const controllers = {
   //redirection vers le profil d'un wilder (pour philippe)
   '/profil/:slug': ctx => {
     const { slug } = ctx.params
-    fetch('/wilders')
+    fetch('/profile') // demande au serveur de récupérer un json de la select avec join
     .then(res => res.json())
-    .then(wilders => wilders.find(wilder => wilder.slug === slug))
+    .then(wilders => {
+      console.log(wilders)
+      return wilders.find(wilder => wilder.slug === slug)
+    })
     .then(wilder => {
+      console.log(wilder)
       const options_wilder = [{
         "nom": "hobby",
         "affichage": true,
@@ -222,10 +226,10 @@ const controllers = {
       </form>
     </div>
     </div>`)
-    const form = document.getElementById('changeProfile')
+    const formProfile = document.getElementById('changeProfile')
     form.addEventListener('submit', e => {
       e.preventDefault()
-      const data = serializeForm(form)
+      const data = serializeForm(formProfile)
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`

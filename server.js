@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
 const notificationsSeed = require('./public/notifications.json')
+const optionsSeed = require('./public/wilders_options.json')
 let db
 
 // permet de servir les ressources statiques du dossier public
@@ -18,6 +19,13 @@ const insertWilder = w => {
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
 }
+
+/* const insertOptions = o => {
+    const { nom, affichage, contenu } = o
+    return db.get('INSERT INTO option_profil(nom_option, affichage_option, texte-option) VALUES(?, ?, ?)', nom, affichage, contenu)
+    .then(() => db.get('SELECT last_insert_rowid() as id'))
+    .then(({ id }) => db.get("SELECT * FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+  } */
 
 // insertNotification dans la db
 const insertNotification = n => {
@@ -41,6 +49,7 @@ const dbPromise = Promise.resolve()
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
 .then(() => Promise.map(notificationsSeed, n => insertNotification(n)))
+//.then(() => Promise.map(optionsSeed, o => insertOptions(o)))
 
 const html = `
 <!doctype html>
@@ -175,8 +184,8 @@ app.get('/wilders', (req, res) => {
 })
 
 //READ
-app.get('/profil', (req, res) => {
-    db.all("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id")
+app.get('/profile', (req, res) => {
+    db.all("SELECT * FROM users JOIN option_profil ON users.id = option_profil.wilder_id")
     .then(records => res.json(records))
   })
 
