@@ -209,10 +209,10 @@ const controllers = {
         </div>
         <hr class="my-4">
         <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
-        <p class="lead">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
-        <button type="button" class="btn btn-primary" id="displayBio">Read more</button>
+        <p class="lead" id="bioArea"></p>
+        ${(wilder.bio.length>50)?'<button type="button" class="btn btn-primary" id="displayBio">Read more</button>':''}
       </div>
-
+      
       <div class="jumbotron">
       <h2>options to display:</h2>
       <form>
@@ -222,6 +222,26 @@ const controllers = {
       </form>
     </div>
     </div>`)
+    const btnReadMore = document.getElementById('displayBio')
+    const pBio = document.getElementById('bioArea')
+    // si j'ai un bouton Read more, je peux faire des échanges de contenu entre bio complete et bio limitée
+    if (typeof(btnReadMore) !== 'undefined') {
+      btnReadMore.addEventListener('click', e => {
+        if (btnReadMore.innerHTML==='Read more') {
+          btnReadMore.innerHTML='Read less'
+          pBio.innerHTML=wilder.bio
+        }
+        else {
+          btnReadMore.innerHTML='Read more'
+          pBio.innerHTML=wilder.bio.substr(0,50)+'...'
+        }
+      })
+    }
+    btnReadMore.addEventListener('click', e => {
+      const innerP = pBio.innerHTML
+      const innerB = btnReadMore.innerHTML
+    })
+
     const formChangeProfile = document.getElementById('changeProfile')
     formChangeProfile.addEventListener('submit', e => {
       e.preventDefault()
