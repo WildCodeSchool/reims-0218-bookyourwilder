@@ -172,7 +172,7 @@ const controllers = {
                 </button>
               </div>
               <div class="modal-body" id="editeur">
-                <form id="changeProfile">
+                <form id="changeProfile" method="PUT">
                   <fieldset class="form-group">
                     <div class="row justify-content-around">
                       <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
@@ -222,6 +222,29 @@ const controllers = {
       </form>
     </div>
     </div>`)
+    const form = document.getElementById('changeProfile')
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      const data = serializeForm(form)
+      if(! data.image) {
+        const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
+        data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
+      }
+      fetch('/profil', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(wilder => {
+        const alertBox = document.getElementById('alert-box')
+        alertBox.className = 'alert alert-success'
+        alertBox.innerHTML = `Successfully modified options)`
+      })
+    })
     const btnReadMore = document.getElementById('displayBio')
     const pBio = document.getElementById('bioArea')
     // si j'ai un bouton Read more, je peux faire des échanges de contenu entre bio complete et bio limitée
