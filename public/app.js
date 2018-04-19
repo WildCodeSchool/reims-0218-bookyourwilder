@@ -11,7 +11,7 @@ const makeCard = item => `
       <img class="card-img-top" src="${item.image}" alt="Thumbnail [100%x225]" />
       <div class="card-body">
         <p class="card-text" style="height: 80px">${item.bio}</p>
-        <a class="btn btn-primary" href="/profil/${item.slug}">${item.firstName}'s profile &raquo;</a>
+        <a class="btn btn-primary" href="/profil/${item.id}">${item.firstName}'s profile &raquo;</a>
       </div>
     </div>
   </div>`
@@ -32,7 +32,7 @@ const serializeForm = form => {
   return data
 }
 
-const displayWilder = (w,idZone) =>{
+/* const displayWilder = (w,idZone) =>{
   // je sélectionne tous les input situés dans le fieldset wilder
   const inputs = document.querySelectorAll(`#${idZone} input`)
   console.log(inputs)
@@ -41,7 +41,7 @@ const displayWilder = (w,idZone) =>{
 
   }
 
-}
+} */
 
 //routing coté client
 const controllers = {
@@ -141,12 +141,12 @@ const controllers = {
   ),
 
   //redirection vers le profil d'un wilder (pour philippe)
-  '/profil/:slug': ctx => {
-    const { slug } = ctx.params
+  '/profil/:wilder_id': ctx => {
+    const { wilder_id } = ctx.params
     fetch('/wilders') // demande au serveur de récupérer un json de la select avec join
     .then(res => res.json())
     .then(wilders => {
-      return wilders.find(wilder => wilder.slug === slug)
+      return wilders.find(wilder => wilder.id == wilder_id)
     })
     .then(wilder => {
       const options_wilder = [{
@@ -187,6 +187,7 @@ const controllers = {
               <div class="modal-body" id="editeur">
                 <form id="changeProfile">
                   <fieldset id="fsWilder">
+                    <input type="hidden" name="wilderChange_id" class="form-control">
                     <fieldset class="form-group" id="nameWilder">
                       <div class="row justify-content-around">
                         <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
@@ -269,9 +270,10 @@ const controllers = {
       const inputs = document.querySelectorAll(`#fsWilder input`)
       inputs.forEach(input => {
         if (typeof(input.getAttribute('value'))==='undefined'  || input.getAttribute('value')==='') input.setAttribute('value',`wilder.${input.getAttribute('name')}`)
-        console.log(input)
       })
+      console.log(inputs)
       const data = serializeForm(formProfile)
+      console.log(data)
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
@@ -286,12 +288,9 @@ const controllers = {
       })
     })
 
-    // je dois avoir un champ caché slug afin que le formulaire l'envoie
-    const inputHidden = document.createElement('input')
-    const champCache = nameWilder.appendChild(inputHidden)
-    champCache.setAttribute('type','hidden')
-    champCache.setAttribute('value',wilder.firstName+'-'+wilder.lastName)
-    champCache.setAttribute('name','slug')
+    // je dois avoir un champ caché id afin que le formulaire l'envoie
+    const champCache = document.getElementsByName('wilderChange_id')
+    champCache[0].setAttribute('value',wilder.id)
 
     const btnReadMore = document.getElementById('displayBio')
     const pBio = document.getElementById('bioArea')
@@ -397,7 +396,7 @@ const routing = () => {
   const routes = [
     '/',
     '/home',
-    '/profil/:slug',
+    '/profil/:wilder_id',
     '/page-notification',
     '/flux',
     '/admin',
