@@ -32,6 +32,17 @@ const serializeForm = form => {
   return data
 }
 
+const displayWilder = (w,idZone) =>{
+  // je sélectionne tous les input situés dans le fieldset wilder
+  const inputs = document.querySelectorAll(`#${idZone} input`)
+  console.log(inputs)
+  console.log(w)
+  for (let index=0; index<6; index++) {
+
+  }
+
+}
+
 //routing coté client
 const controllers = {
 
@@ -132,9 +143,11 @@ const controllers = {
   //redirection vers le profil d'un wilder (pour philippe)
   '/profil/:slug': ctx => {
     const { slug } = ctx.params
-    fetch('/wilders')
+    fetch('/wilders') // demande au serveur de récupérer un json de la select avec join
     .then(res => res.json())
-    .then(wilders => wilders.find(wilder => wilder.slug === slug))
+    .then(wilders => {
+      return wilders.find(wilder => wilder.slug === slug)
+    })
     .then(wilder => {
       const options_wilder = [{
         "nom": "hobby",
@@ -173,31 +186,55 @@ const controllers = {
               </div>
               <div class="modal-body" id="editeur">
                 <form id="changeProfile">
-                  <fieldset class="form-group">
-                    <div class="row justify-content-around">
-                      <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
-                      <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
-                    </div>
-                    <div class="row justify-content-around">
-                      <input name="firstName" type="text" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                      <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
-                    </div>
-                  </fieldset>
-                  <fieldset class="form-group row justify-content-around">
-                    <label for="inputImageUrl" class="col-11">Image URL</label>
-                    <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
-                  </fieldset>
-                  <fieldset class="form-group row justify-content-around">
-                    <label for="inputBio" class="col-11">Bio</label>
-                    <textarea name="bio" class="form-control col-11" id="inputLastName" placeholder="${wilder.bio}"></textarea>
+                  <fieldset id="fsWilder">
+                    <fieldset class="form-group" id="nameWilder">
+                      <div class="row justify-content-around">
+                        <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                        <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="firstName" type="text" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                        <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                      </div>
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputImageUrl" class="col-11">Image URL</label>
+                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputBio" class="col-11">Bio</label>
+                      <textarea name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                    </fieldset>
+                    <fieldset class="form-group">
+                      <div class="row justify-content-around">
+                        <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                        <label for="inputMdp" class="col-12 col-sm-5">Mdp</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                        <input name="mdp" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.mdp}">
+                      </div>
+                    </fieldset>
+                    <fieldset class="form-group" id="links">
+                      <div class="row justify-content-around">
+                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
+                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                      </div>
+                    </fieldset>
                   </fieldset>
                   <hr>
-                  <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
-                  </div>
-                  <ul>
-                    ${displayOptionsWilder(options_wilder, false, true)}
-                  </ul>
+                  <fieldset id="fsOptions">
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
+                    </div>
+                    <ul>
+                      ${displayOptionsWilder(options_wilder, false, true)}
+                    </ul>
+                  </fieldset>
                 </form>
               </div>
               <div class="modal-footer">
@@ -209,10 +246,10 @@ const controllers = {
         </div>
         <hr class="my-4">
         <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
-        <p class="lead">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
-        <button type="button" class="btn btn-primary" id="displayBio">Read more</button>
+        <p class="lead" id="bioArea">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
+        ${(wilder.bio.length>50)?'<button type="button" class="btn btn-primary" id="displayBio">Read more</button>':''}
       </div>
-
+      
       <div class="jumbotron">
       <h2>options to display:</h2>
       <form>
@@ -222,16 +259,55 @@ const controllers = {
       </form>
     </div>
     </div>`)
-    const formChangeProfile = document.getElementById('changeProfile')
-    formChangeProfile.addEventListener('submit', e => {
+    const formProfile = document.getElementById('changeProfile')
+    const nameWilder = document.getElementById('nameWilder')
+    // click sur "save changes"
+    const btnSaveChanges = document.getElementById('btnChangeOption')
+    btnSaveChanges.addEventListener('click',e => {
       e.preventDefault()
-      const data = serializeForm(form)
-      // si je n'ait pas remplit l'image, je mets un placeholder
+      // je doit remplir les champs vide avec les valeur du wilder
+      const inputs = document.querySelectorAll(`#fsWilder input`)
+      inputs.forEach(input => {
+        if (typeof(input.getAttribute('value'))==='undefined'  || input.getAttribute('value')==='') input.setAttribute('value',`wilder.${input.getAttribute('name')}`)
+        console.log(input)
+      })
+      const data = serializeForm(formProfile)
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
-    }) // fermeture de l'eventlistener sur le formChangeProfile
+      fetch('/wilders', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+    })
+
+    // je dois avoir un champ caché slug afin que le formulaire l'envoie
+    const inputHidden = document.createElement('input')
+    const champCache = nameWilder.appendChild(inputHidden)
+    champCache.setAttribute('type','hidden')
+    champCache.setAttribute('value',wilder.firstName+'-'+wilder.lastName)
+    champCache.setAttribute('name','slug')
+
+    const btnReadMore = document.getElementById('displayBio')
+    const pBio = document.getElementById('bioArea')
+    // si j'ai un bouton Read more, je peux faire des échanges de contenu entre bio complete et bio limitée
+    if (typeof(btnReadMore) !== 'undefined') {
+      btnReadMore.addEventListener('click', e => {
+        if (btnReadMore.innerHTML==='Read more') {
+          btnReadMore.innerHTML='Read less'
+          pBio.innerHTML=wilder.bio
+        }
+        else {
+          btnReadMore.innerHTML='Read more'
+          pBio.innerHTML=wilder.bio.substr(0,50)+'...'
+        }
+      })
+    }
   }) // fermeture du dernier then
   },  // fermeture de la route
 
