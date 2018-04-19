@@ -159,11 +159,14 @@ const controllers = {
         "texte": "foundation"
       }]
 
-      const displayOptionsWilder = (tableauOptions, useDisplay, displayOrChange) => {
+      const displayOptionsWilder = (tableauOptions, useDisplay, displayOrChange, showCheckboxes) => {
         let htmlLis = ""
         // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
         tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`:""
         )
+        if (!showCheckboxes) {
+          htmlLis += `<input type="checkbox">Afficher sur votre profil ?`
+        }
         return htmlLis
       }
       render(`<div class="container text-center">
@@ -232,7 +235,7 @@ const controllers = {
                       <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
                     </div>
                     <ul>
-                      ${displayOptionsWilder(options_wilder, false, true)}
+                      ${displayOptionsWilder(options_wilder, false, true, false)}
                     </ul>
                   </fieldset>
                 </form>
@@ -254,7 +257,7 @@ const controllers = {
       <h2>options to display:</h2>
       <form>
         <ul>
-          ${displayOptionsWilder(options_wilder, true, false)}
+          ${displayOptionsWilder(options_wilder, true, false, true)}
         </ul>
       </form>
     </div>
