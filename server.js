@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
 const notificationsSeed = require('./public/notifications.json')
-const optionsSeed = require('./public/wilders_options.json')
+/* const optionsSeed = require('./public/wilders_options.json') */
 let db
 
 // permet de servir les ressources statiques du dossier public
@@ -20,9 +20,17 @@ const insertWilder = w => {
   .then(({ id }) => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
 }
 
-/* const insertOptions = o => {
+// updateWilder dans la db
+    const updateWilder = w => {
+    const { firstName, lastName, bio, image, mail, mdp } = w
+    const slug = w.firstName+'-'+w.lastName
+    const requete = `UPDATE users SET slug='${slug}', firstName='${firstName}', lastName='${lastName}', bio='${bio}', image='${image}', mail='${mail}', mdp='${mdp}' where slug='${slug}'`
+    return db.get(requete)
+}
+
+/* const insertOptions = (o) => {
     const { nom, affichage, contenu } = o
-    return db.get('INSERT INTO option_profil(nom_option, affichage_option, texte-option) VALUES(?, ?, ?)', nom, affichage, contenu)
+    return db.get('INSERT INTO option_profil(nom_option, affichage_option, texte_option, wilder_id) VALUES(?, ?, ?, ?)', nom, affichage, contenu, userNumber)
     .then(() => db.get('SELECT last_insert_rowid() as id'))
     .then(({ id }) => db.get("SELECT * FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
   } */
@@ -49,7 +57,7 @@ const dbPromise = Promise.resolve()
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
 .then(() => Promise.map(notificationsSeed, n => insertNotification(n)))
-//.then(() => Promise.map(optionsSeed, o => insertOptions(o)))
+/* .then(() => Promise.map(optionsSeed, o => insertOptions(o))) */
 
 const html = `
 <!doctype html>
@@ -184,10 +192,10 @@ app.get('/wilders', (req, res) => {
 })
 
 //READ
-app.get('/profile', (req, res) => {
+/* app.get('/profile', (req, res) => {
     db.all("SELECT * FROM users JOIN option_profil ON users.id = option_profil.wilder_id")
     .then(records => res.json(records))
-  })
+  }) */
 
 app.get('/notifications', (req, res) => {
   db.all('SELECT * from notifications')
@@ -200,5 +208,11 @@ app.get('*', (req, res) => {
   res.send(html)
   res.end()
 })
+
+//update
+app.put('/wilders', (req, res) => {
+    return updateWilder(req.body)
+    .then(record => res.json(record))
+  })
 
 app.listen(8080)
