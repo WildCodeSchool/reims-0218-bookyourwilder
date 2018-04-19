@@ -6,6 +6,8 @@
       "bio": "Bonjour madame, bonjour monsieur !",
       "image": "https://via.placeholder.com/640x480/?text=Florian%20Hourlier",
       "mail": "florian.hourlier@hotmail",
+      "urlLi": "Linkedin florian",
+      "urlGh": "Github florian",
       "mdp": "jj@jj.jj"
     },
     {
@@ -15,6 +17,8 @@
       "bio": "Bonjour kebab, bonjour coca !",
       "image": "https://via.placeholder.com/640x480/?text=Maxence%20Millescamps",
       "mail": "?",
+      "urlLi": "Linkedin maxence",
+      "urlGh": "Github maxence",
       "mdp": "ee@ee.ee"
     },
     {
@@ -24,6 +28,8 @@
       "bio": "Voici une mega super bio super longue pour tester l'affichage dans la page de profiles. Pourtant on aurait beaucoup de choses à dire.",
       "image": "https://via.placeholder.com/640x480/?text=Philippe%20Tarte",
       "mail": "?",
+      "urlLi": "Linkedin philippe",
+      "urlGh": "Github philippe",
       "mdp": "ww@ww.ww"
     }
   ]

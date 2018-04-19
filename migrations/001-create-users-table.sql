@@ -17,6 +17,8 @@ CREATE TABLE users (
   bio TEXT,
   image VARCHAR(255),
   mail VARCHAR(255),
+  urlLi VARCHAR(100),
+  urlGh VARCHAR(100),
   mdp TEXT
 );
 

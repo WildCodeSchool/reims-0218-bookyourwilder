@@ -215,6 +215,16 @@ const controllers = {
                         <input name="mdp" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.mdp}">
                       </div>
                     </fieldset>
+                    <fieldset class="form-group" id="links">
+                      <div class="row justify-content-around">
+                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
+                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                      </div>
+                    </fieldset>
                   </fieldset>
                   <hr>
                   <fieldset id="fsOptions">
