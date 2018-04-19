@@ -22,9 +22,10 @@ const insertWilder = w => {
 
 // updateWilder dans la db
     const updateWilder = w => {
-    const { firstName, lastName, bio, image, mail, urlLi, urlGh, mdp } = w
+        console.log(w)
+    const { firstName, lastName, bio, image, mail, urlLi, urlGh, mdp , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    const requete = `UPDATE users SET slug='${slug}', firstName='${firstName}', lastName='${lastName}', bio='${bio}', image='${image}', mail='${mail}', urlLi='${urlLi}', urlGh='${urlGh}',mdp='${mdp}' where slug='${slug}'`
+    const requete = `UPDATE users SET slug='${slug}', firstName='${firstName}', lastName='${lastName}', bio='${bio}', image='${image}', mail='${mail}', urlLi='${urlLi}', urlGh='${urlGh}',mdp='${mdp}' where id='${wilderChange_id}'`
     return db.get(requete)
 }
 
