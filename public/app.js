@@ -276,10 +276,18 @@ const controllers = {
       inputs.forEach(input => {
         if (input.attributes['value']===' ') 
           input.setAttribute('value',input.attributes['placeholder'])
-        console.log(input)
       })
 
       const data = serializeForm(formProfile)
+
+      // je dois remplir les champs vides dans l'objet data
+
+      const proprietes = Object.keys(data)
+
+      proprietes.forEach(propriete => {
+        if (data[propriete]==='') data[propriete]=wilder[propriete]
+      })
+
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
