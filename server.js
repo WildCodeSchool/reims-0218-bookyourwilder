@@ -14,18 +14,17 @@ app.use(bodyParser.json())
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, bio, image, slug, mail, urlLi, urlGh, mdp } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, urlLi, urlGh, mdp)
+  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, mdp } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+  .then(({ id }) => db.get("SELECT firstName, lastName, title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
 }
 
 // updateWilder dans la db
     const updateWilder = w => {
-        console.log(w)
-    const { firstName, lastName, bio, image, mail, urlLi, urlGh, mdp , wilderChange_id} = w
+    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    const requete = `UPDATE users SET slug='${slug}', firstName='${firstName}', lastName='${lastName}', bio='${bio}', image='${image}', mail='${mail}', urlLi='${urlLi}', urlGh='${urlGh}',mdp='${mdp}' where id='${wilderChange_id}'`
+    const requete = `UPDATE users SET slug='${slug}', firstName='${firstName}', lastName='${lastName}', title='${title}', bio='${bio}', image='${image}', mail='${mail}', urlLi='${urlLi}', urlGh='${urlGh}',mdp='${mdp}' where id='${wilderChange_id}'`
     return db.get(requete)
 }
 

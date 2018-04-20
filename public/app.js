@@ -194,9 +194,13 @@ const controllers = {
                         <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="firstName" type="text" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                        <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
                         <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
                       </div>
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputTitle" class="col-11">Title</label>
+                      <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputImageUrl" class="col-11">Image URL</label>
@@ -266,14 +270,16 @@ const controllers = {
     const btnSaveChanges = document.getElementById('btnChangeOption')
     btnSaveChanges.addEventListener('click',e => {
       e.preventDefault()
+
       // je doit remplir les champs vide avec les valeur du wilder
       const inputs = document.querySelectorAll(`#fsWilder input`)
       inputs.forEach(input => {
-        if (typeof(input.getAttribute('value'))==='undefined'  || input.getAttribute('value')==='') input.setAttribute('value',`wilder.${input.getAttribute('name')}`)
+        if (input.attributes['value']===' ') 
+          input.setAttribute('value',input.attributes['placeholder'])
+        console.log(input)
       })
-      console.log(inputs)
+
       const data = serializeForm(formProfile)
-      console.log(data)
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`

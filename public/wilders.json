@@ -2,6 +2,7 @@
     {
       "firstName": "Florian",
       "lastName": "Hourlier",
+      "title": "dev web",
       "slug": "Florian-Hourlier",
       "bio": "Bonjour madame, bonjour monsieur !",
       "image": "https://via.placeholder.com/640x480/?text=Florian%20Hourlier",
@@ -13,6 +14,7 @@
     {
       "firstName": "Maxence",
       "lastName": "Millescamps",
+      "title": "dev web",
       "slug": "Maxence-Millescamps",
       "bio": "Bonjour kebab, bonjour coca !",
       "image": "https://via.placeholder.com/640x480/?text=Maxence%20Millescamps",
@@ -24,6 +26,7 @@
     {
       "firstName": "philippe",
       "lastName": "tarte",
+      "title": "dev web",
       "slug": "philippe-tarte",
       "bio": "Voici une mega super bio super longue pour tester l'affichage dans la page de profiles. Pourtant on aurait beaucoup de choses à dire.",
       "image": "https://via.placeholder.com/640x480/?text=Philippe%20Tarte",
