@@ -4,7 +4,7 @@ const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
-const notificationsSeed = require('./public/notifications.json')
+const fluxsSeed = require('./public/fluxs.json')
 let db
 
 // permet de servir les ressources statiques du dossier public
@@ -16,15 +16,15 @@ const insertWilder = w => {
   const { firstName, lastName, bio, image, slug, mail, mdp } = w
   return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from notifications WHERE id = ?', id))
+  .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
-// insertNotification dans la db
-const insertNotification = n => {
-  const { notifications } = n
-  return db.get('INSERT INTO notifications( texte ) VALUES(?)', notifications)
+// insertflux dans la db
+const insertflux = f => {
+  const { fluxs } = f
+  return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from notifications WHERE id = ?', id))
+  .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
 // insertFlux dans la db
@@ -39,7 +39,6 @@ const dbPromise = Promise.resolve()
   return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
-.then(() => Promise.map(notificationsSeed, n => insertNotification(n)))
 
 const html = `
 <!doctype html>
@@ -71,7 +70,7 @@ const html = `
                   <a class="nav-link" href="/flux">Flux</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="/page-notification">Notification</a>
+                  <a class="nav-link" href="/notification">Notification</a>
               </li>
               <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
@@ -165,8 +164,8 @@ app.post('/wilders', (req, res) => {
   .then(record => res.json(record))
 })
 
-app.post('/notifications', (req, res) => {
-  return insertNotification(req.body)
+app.post('/fluxs', (req, res) => {
+  return insertflux(req.body)
   .then(record => res.json(record))
 })
 
@@ -176,17 +175,10 @@ app.get('/wilders', (req, res) => {
   .then(records => res.json(records))
 })
 
-app.get('/notifications', (req, res) => {
-  db.all('SELECT * from notifications')
+app.get('/fluxs', (req, res) => {
+  db.all('SELECT * FROM fluxs ORDER BY Id DESC LIMIT 20')
   .then(records => res.json(records))
 })
-
-//UPDATE
-app.put('/wilder', function(req, res) {
-    return updateProfil(req.body)
-    .then(record => res.json(record))
-  });
-
 
 // route par défaut qui renvoit le code html/css/js complet de l'application
 app.get('*', (req, res) => {

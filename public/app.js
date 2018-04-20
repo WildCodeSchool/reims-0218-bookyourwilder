@@ -47,12 +47,13 @@ const makeCard = item => `
     </div>
   </div>`
 
-  const makeNotification = item => `
+  const makeflux = item => `
   <div class="col-12">
-    <div class="jumbotron">
-      <h2>${item.texte}</h2>
+    <div class="jumbotron msg-flux">
+      <p>${item.texte}</p>
     </div>
-  </div>`
+  </div>
+  `
 
 const serializeForm = form => {
   const data = {}
@@ -69,10 +70,10 @@ const controllers = {
   //route login a modifier l'exemple (pour florian)
   '/': () => {
     render(`
-  <div class="container-fluid text-center bg-inscription pt-5 pb-5" id="navbarDejaInscrit"></div>
-  <div class="container">
+  <div class="container-fluid" id="navbarDejaInscrit"></div>
+  <div class="container-fluid inscription pt-5 pb-5">
     <div id="alert-box" class="hidden"></div>
-      <div class="jumbotron formblock pt-5 pb-5" style="width: 50%; margin: 0 auto;">
+      <div class="jumbotron formblock" style="width: 50%; margin: 0 auto;">
         <form id="add-wilder" method="POST">
           <h1 class="display-4">Inscrivez-vous</h1>
           <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
@@ -125,13 +126,16 @@ const controllers = {
         alertBox.className = 'alert alert-success'
         alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
       })
+      window.setTimeout(() =>
+      { window.location = "/home"; },500);
     })
     const navbarDejaInscrit = document.getElementById("navbarMenu")
-    navbarDejaInscrit.innerHTML = `<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    navbarDejaInscrit.innerHTML = `
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
     <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <form action="/wilders" method="POST" class="form-inline my-2">
-            <div>
+    <form method="POST" class="form-inline my-2">
+            <div class="justify-content-center">
                 <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
                 <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
@@ -203,7 +207,7 @@ const controllers = {
                 </button>
               </div>
               <div class="modal-body" id="editeur">
-                <form id="changeProfile">
+                <form id="changeProfile" method='POST'>
                   <fieldset class="form-group">
                     <div class="row justify-content-around">
                       <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
@@ -268,25 +272,25 @@ const controllers = {
 
 
   '/flux': () => {
-  fetch('/notifications')
+  fetch('/fluxs')
   .then(res => res.json())
-  .then(notifications => notifications.reduce((carry, notifications) => carry + makeNotification(notifications), ''))
-  .then(listNotifications => {
+  .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
+  .then(listFluxs => {
     render(
   `<div class="container">
     <div id="alert-box" class="hidden"></div>
-    <form method="POST" id="add-notifications" class="form-inline mt-4 mb-4">
-      <input required name="notifications" type="text" class="form-control" id="inputNotifications" placeholder="Message" style="width:90%">
-      <button class="btn btn-success my-2 my-sm-0" type="submit">Envoyer</button>
+    <form method="POST" id="add-fluxs" class="form-inline mt-4 mb-4">
+      <input required name="fluxs" type="text" class="form-control " id="inputFluxs" placeholder="Message" style="width:90%">
+      <button class="btn btn-success ml-2" type="submit">Envoyer</button>
     </form>
-    <div class="row" id="listNotifications">${listNotifications}</div>
+    <div class="row" id="listFluxs">${listFluxs}</div>
   </div>`)
 
-  const form = document.getElementById("add-notifications")
+  const form = document.getElementById("add-fluxs")
   form.addEventListener('submit', e => {
     e.preventDefault()
     const data = serializeForm(form)
-    fetch('/notifications', {
+    fetch('/fluxs', {
       method: 'POST',
       headers: {
         'Accept': 'application/json, text/plain, */*',
@@ -294,20 +298,20 @@ const controllers = {
       },
       body: JSON.stringify(data)
     })
-    fetch('/notifications')
+    fetch('/fluxs')
     .then(res => res.json())
-    .then(notifications => notifications.reduce((carry, notifications) => carry + makeNotification(notifications), ''))
-    .then(notifications => {
+    .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
+    .then(fluxs => {
       const alertBox = document.getElementById('alert-box')
-      const listNotifications = document.getElementById('listNotifications')
+      const listFluxs = document.getElementById('listFluxs')
       alertBox.className = 'alert alert-success'
       alertBox.innerHTML = `Successfully`
-      listNotifications.innerHTML = `${notifications}`
+      listFluxs.innerHTML = `${fluxs}`
     })
   })
 })},
 
-  '/page-notification': () => render('<h1>Page Notification</h1>'),
+  '/notification': () => render('<h1>Page notification</h1>'),
 
   '/admin': () => render(`<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
       <a class="navbar-brand p-3" href="#">Administration</a>
@@ -353,8 +357,8 @@ const routing = () => {
     '/',
     '/home',
     '/profil/:slug',
-    '/page-notification',
     '/flux',
+    '/notification',
     '/admin',
     '*'
   ]

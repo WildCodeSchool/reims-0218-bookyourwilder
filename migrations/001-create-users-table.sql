@@ -27,7 +27,7 @@ CREATE TABLE notifications (
   FOREIGN KEY(wilder_id) REFERENCES users(id)
 );
 
-CREATE TABLE flux (
+CREATE TABLE fluxs (
   id INTEGER PRIMARY KEY,
   texte TEXT,
   wilder_id INTEGER,
@@ -37,5 +37,5 @@ CREATE TABLE flux (
 -- Down
 DROP TABLE users;
 DROP TABLE notifications;
-DROP TABLE flux;
+DROP TABLE fluxs;
 DROP TABLE option_profil;
