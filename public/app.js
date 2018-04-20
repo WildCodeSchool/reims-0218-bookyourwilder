@@ -268,7 +268,7 @@ const controllers = {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary close" data-dismiss="modal" id="btnChangeOption">Save changes</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" id="btnChangeOption">Save changes</button>
               </div>
             </div>
           </div>
