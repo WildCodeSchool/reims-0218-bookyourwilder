@@ -127,7 +127,7 @@ const controllers = {
         alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
       })
       window.setTimeout(() =>
-      { window.location = "/home"; },250);
+      { window.location = "/home"; },1000);
     })
     const navbarDejaInscrit = document.getElementById("navbarMenu")
     navbarDejaInscrit.innerHTML = `
@@ -195,7 +195,7 @@ const controllers = {
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
           Edit profile
         </button>
-        <h1 class="display-4">${wilder.firstName} ${wilder.lastName}</h1>
+        <h1 class="display-4" id="h1NameProfil">${wilder.firstName} ${wilder.lastName}</h1>
         <p>${wilder.title}</p><!-- Button trigger modal -->
 
         <!-- Modal -->
@@ -268,7 +268,7 @@ const controllers = {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
+                <button type="submit" class="btn btn-primary close" data-dismiss="modal" id="btnChangeOption">Save changes</button>
               </div>
             </div>
           </div>
@@ -307,7 +307,6 @@ const controllers = {
       // je dois remplir les champs vides dans l'objet data
 
       const proprietes = Object.keys(data)
-
       proprietes.forEach(propriete => {
         if (data[propriete]==='') data[propriete]=wilder[propriete]
       })
@@ -324,10 +323,13 @@ const controllers = {
         },
         body: JSON.stringify(data)
       })
-      window.setTimeout(() =>
-      { window.location = `/profil/${wilder_id}`; },250);
-    })
 
+    // afficher le NOUVEAU wilder (lignes 198, 199, 278, 279, 286)
+
+      
+
+  })
+ 
     // je dois avoir un champ caché id afin que le formulaire l'envoie
     const champCache = document.getElementsByName('wilderChange_id')
     champCache[0].setAttribute('value',wilder.id)
