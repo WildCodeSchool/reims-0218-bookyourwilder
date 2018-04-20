@@ -1,5 +1,35 @@
-footer{
-    background: #35383a;
+h1, h4 {
+    font-family: alwyn-new-web, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+h5 {
+    font-family: alwyn-new-web, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+}
+
+p {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.card-body a {
+    color: orange;
+}
+
+.btn-warning {
+    color: white;
+}
+
+.card:hover .btn-warning {
+    background: white;
+    color: orange;
+}
+
+.card:hover {
+    background: orange;
+    color: white;
 }
 
 .fa-linkedin-in:hover {
@@ -13,7 +43,7 @@ footer{
 }
 
 .fa-envelope:hover {
-    background-color:#0077b5;
+    background-color:#2b746c;
     color: white;
 }
 
@@ -21,6 +51,22 @@ a > .rounded-circle {
     font-size: 2em;
     background: white;
     padding: 0.3em;
+}
+
+.card {
+    box-shadow: 1px 2px 20px rgba(0,0,0,0.5);
+}
+
+.card-body h5 {
+    height: 48px;
+}
+
+.card-body .taille {
+    height: 120px;
+}
+
+.card-footer {
+    color: black;
 }
 
 footer .rounded-circle {
@@ -33,12 +79,30 @@ footer .rounded-circle:hover {
     color: white;
 }
 
+.modal-header {
+    background: orange;
+    border-radius: 0px;
+}
+
+.modal-title {
+    color: white;
+}
+
+.nav-link:hover {
+    color: orangered;
+}
+
+.image{
+    margin-top: -87px;
+    box-shadow: 1px 2px 20px rgba(0,0,0,0.5);
+}
+
 .list-group-item {
     border : none;
 }
 
 .list-group > a {
-    color: #46a79d;
+    color: #80cbc4;
     text-decoration: none;
 }
 
@@ -66,8 +130,7 @@ footer .copyright {
 .image-footer {
     height: 144px;
     width: 144px;
-    margin-top: 1em;
-    float: right;
+    margin-top: -72px;
 }
 
 footer .btn-primary {
@@ -85,6 +148,16 @@ footer .btn-primary:hover a{
     text-decoration: none;
 }
 
-#main {
-    margin: 0 2em;
+#main > .inscription{
+    background-image: linear-gradient(0deg, rgba(15, 29, 94, 0.7), rgba(15, 29, 94, 0.7)), url("/images/wild-code-school-lyon-open-space.jpg");
+	background-size: cover;
+	background-position: center;
+	height: 100%;
+	width: 100%;
+}
+
+.msg-flux{
+    border: 2px solid grey;
+    border-radius: 20px;
+    padding: 1em;
 }

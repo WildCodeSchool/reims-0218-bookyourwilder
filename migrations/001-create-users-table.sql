@@ -1,7 +1,6 @@
 -- Up
 CREATE TABLE option_profil (
   id INTEGER PRIMARY KEY,
-  title VARCHAR(40),
   nom_option VARCHAR(45),
   affichage_option TINYINT,
   texte_option TINYTEXT,
@@ -11,12 +10,15 @@ CREATE TABLE option_profil (
 
 CREATE TABLE users (
   id INTEGER PRIMARY KEY,
+  title VARCHAR(40),
   slug VARCHAR(255),
   firstName VARCHAR(60),
   lastName VARCHAR(60),
   bio TEXT,
   image VARCHAR(255),
   mail VARCHAR(255),
+  urlLi VARCHAR(100),
+  urlGh VARCHAR(100),
   mdp TEXT
 );
 
@@ -27,7 +29,7 @@ CREATE TABLE notifications (
   FOREIGN KEY(wilder_id) REFERENCES users(id)
 );
 
-CREATE TABLE flux (
+CREATE TABLE fluxs (
   id INTEGER PRIMARY KEY,
   texte TEXT,
   wilder_id INTEGER,
@@ -37,5 +39,5 @@ CREATE TABLE flux (
 -- Down
 DROP TABLE users;
 DROP TABLE notifications;
-DROP TABLE flux;
+DROP TABLE fluxs;
 DROP TABLE option_profil;

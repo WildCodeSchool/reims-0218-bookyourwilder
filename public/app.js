@@ -6,22 +6,54 @@ const render = html => {
 
 // renvoit le html d'une card bootstrap pour un wilder
 const makeCard = item => `
-  <div class="col-md-4">
-    <div class="card mb-4 box-shadow">
+  <div class="col-md-4 mt-5">
+    <!--<div class="card mb-4 box-shadow">
       <img class="card-img-top" src="${item.image}" alt="Thumbnail [100%x225]" />
       <div class="card-body">
         <p class="card-text" style="height: 80px">${item.bio}</p>
-        <a class="btn btn-primary" href="/profil/${item.slug}">${item.firstName}'s profile &raquo;</a>
+        <a class="btn btn-primary" href="/profil/${item.id}">${item.firstName}'s profile &raquo;</a>
+      </div>
+    </div>-->
+
+    
+    <div class="card text-center mb-5 box-shadow">
+      <div class="card-body">
+          <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
+          <h4 class="card-title">${item.firstName}</h4>
+          <h4 class="card-title">${item.lastName}</h4>
+          <h5 class="card-text text-muted">Curieuse, passionnée, observatrice</h5>
+          <p class="card-text taille">${item.bio}</p>
+          <div class="d-flex flex-row justify-content-center">
+              <div class="p-4">
+                  <a href="#" target="_blank">
+                    <i class="fab fa-linkedin-in rounded-circle"></i>
+                  </a>
+              </div>
+              <div class="p-4">
+                  <a href="#" target="_blank">
+                    <i class="fab fa-github rounded-circle"></i>
+                  </a>
+              </div>
+              <div class="p-4">
+                  <a href="#">
+                    <i class="fas fa-envelope rounded-circle"></i>
+                  </a>
+              </div>
+          </div>
+      </div>
+      <div class="card-footer">
+        <a class="btn btn-warning" href="/profil/${item.id}">${item.firstName}'s profile &raquo;</a>
       </div>
     </div>
   </div>`
 
-  const makeNotification = item => `
+  const makeflux = item => `
   <div class="col-12">
-    <div class="jumbotron">
-      <h2>${item.texte}</h2>
+    <div class="jumbotron msg-flux">
+      <p>${item.texte}</p>
     </div>
-  </div>`
+  </div>
+  `
 
 const serializeForm = form => {
   const data = {}
@@ -38,10 +70,10 @@ const controllers = {
   //route login a modifier l'exemple (pour florian)
   '/': () => {
     render(`
-  <div class="container-fluid text-center" id="navbarDejaInscrit"></div>
-  <div class="container">
+  <div class="container-fluid" id="navbarDejaInscrit"></div>
+  <div class="container-fluid inscription pt-5 pb-5">
     <div id="alert-box" class="hidden"></div>
-      <div class="jumbotron formblock mt-5 mb-5" style="width: 50%; margin: 0 auto;">
+      <div class="jumbotron formblock" style="width: 50%; margin: 0 auto;">
         <form id="add-wilder" method="POST">
           <h1 class="display-4">Inscrivez-vous</h1>
           <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
@@ -66,11 +98,7 @@ const controllers = {
               <label for="confirmPassword">Confirmez ce mot de passe</label>
               <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez le mot de passe saisi ci-dessus">
           </div>
-          <div class="form-group">
-              <label for="inputBio">Description</label>
-              <textarea required name="bio" class="form-control" id="inputBio" placeholder="Une brève description de vous"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Valider l'inscription</button>
+          <button type="submit" class="btn btn-success btn-lg btn-block mt-5">Valider l'inscription</button>
           <div id="alert-box"></div>
       </form>
     </div>
@@ -82,7 +110,7 @@ const controllers = {
       const data = serializeForm(form)
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
-        data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
+        data.image = `https://via.placeholder.com/480x480/?text=${fullName}`
       }
       fetch('/wilders', {
         method: 'POST',
@@ -98,13 +126,16 @@ const controllers = {
         alertBox.className = 'alert alert-success'
         alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
       })
+      window.setTimeout(() =>
+      { window.location = "/home"; },250);
     })
     const navbarDejaInscrit = document.getElementById("navbarMenu")
-    navbarDejaInscrit.innerHTML = `<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    navbarDejaInscrit.innerHTML = `
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
     <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <form action="/wilders" method="POST" class="form-inline my-2">
-            <div>
+    <form method="POST" class="form-inline my-2">
+            <div class="justify-content-center">
                 <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
                 <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
@@ -121,20 +152,26 @@ const controllers = {
     .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
     .then(album => render(
     `<div class="container">
-    <div class="jumbotron">
-        <h1 class="display-3">Hello, Wilders !</h1>
-        <p><a class="btn btn-success btn-lg" href="/" role="button">Add a wilder »</a></p>
+      <div class="row mt-5 mb-5">
+          <div class="col">
+              <div class="info-header mb-5 text-center">
+                  <h1 class="text-warning pb-3">Nos Wilders</h1>
+                  <p class="lead pb-3">La Wild Code School forme ses élèves au métier de développeur web en 5 mois suivis d’un stage en entreprise. Vous trouverez sur ce site web, réalisé par eux, les profils des élèves “Wilders” de Reims et les liens vers leurs Linkedin etc. respectifs. Cette 1ère promotion "Artémis", avide de connaissance, se forme intensivement au métier du développeur web. Bientôt Javascript et React n'auront plus aucun secret pour eux.</p>
+              </div>
+          </div>
       </div>
       <div class="row">${album}</div>
     </div>`)
   ),
 
   //redirection vers le profil d'un wilder (pour philippe)
-  '/profil/:slug': ctx => {
-    const { slug } = ctx.params
-    fetch('/wilders')
+  '/profil/:wilder_id': ctx => {
+    const { wilder_id } = ctx.params
+    fetch('/wilders') // demande au serveur de récupérer un json de la select avec join
     .then(res => res.json())
-    .then(wilders => wilders.find(wilder => wilder.slug === slug))
+    .then(wilders => {
+      return wilders.find(wilder => wilder.id == wilder_id)
+    })
     .then(wilder => {
       const options_wilder = [{
         "nom": "hobby",
@@ -173,31 +210,60 @@ const controllers = {
               </div>
               <div class="modal-body" id="editeur">
                 <form id="changeProfile">
-                  <fieldset class="form-group">
-                    <div class="row justify-content-around">
-                      <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
-                      <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
-                    </div>
-                    <div class="row justify-content-around">
-                      <input name="firstName" type="text" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                      <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
-                    </div>
-                  </fieldset>
-                  <fieldset class="form-group row justify-content-around">
-                    <label for="inputImageUrl" class="col-11">Image URL</label>
-                    <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
-                  </fieldset>
-                  <fieldset class="form-group row justify-content-around">
-                    <label for="inputBio" class="col-11">Bio</label>
-                    <textarea name="bio" class="form-control col-11" id="inputLastName" placeholder="${wilder.bio}"></textarea>
+                  <fieldset id="fsWilder">
+                    <input type="hidden" name="wilderChange_id" class="form-control">
+                    <fieldset class="form-group" id="nameWilder">
+                      <div class="row justify-content-around">
+                        <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                        <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                        <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                      </div>
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputTitle" class="col-11">Title</label>
+                      <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputImageUrl" class="col-11">Image URL</label>
+                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputBio" class="col-11">Bio</label>
+                      <textarea name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                    </fieldset>
+                    <fieldset class="form-group">
+                      <div class="row justify-content-around">
+                        <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                        <label for="inputMdp" class="col-12 col-sm-5">Mdp</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                        <input name="mdp" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.mdp}">
+                      </div>
+                    </fieldset>
+                    <fieldset class="form-group" id="links">
+                      <div class="row justify-content-around">
+                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
+                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                      </div>
+                    </fieldset>
                   </fieldset>
                   <hr>
-                  <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
-                  </div>
-                  <ul>
-                    ${displayOptionsWilder(options_wilder, false, true)}
-                  </ul>
+                  <fieldset id="fsOptions">
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
+                    </div>
+                    <ul>
+                      ${displayOptionsWilder(options_wilder, false, true)}
+                    </ul>
+                  </fieldset>
                 </form>
               </div>
               <div class="modal-footer">
@@ -209,10 +275,10 @@ const controllers = {
         </div>
         <hr class="my-4">
         <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
-        <p class="lead">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
-        <button type="button" class="btn btn-primary" id="displayBio">Read more</button>
+        <p class="lead" id="bioArea">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
+        ${(wilder.bio.length>50)?'<button type="button" class="btn btn-primary" id="displayBio">Read more</button>':''}
       </div>
-
+      
       <div class="jumbotron">
       <h2>options to display:</h2>
       <form>
@@ -222,40 +288,89 @@ const controllers = {
       </form>
     </div>
     </div>`)
-    const formChangeProfile = document.getElementById('changeProfile')
-    formChangeProfile.addEventListener('submit', e => {
+    const formProfile = document.getElementById('changeProfile')
+    const nameWilder = document.getElementById('nameWilder')
+    // click sur "save changes"
+    const btnSaveChanges = document.getElementById('btnChangeOption')
+    btnSaveChanges.addEventListener('click',e => {
       e.preventDefault()
-      const data = serializeForm(form)
-      // si je n'ait pas remplit l'image, je mets un placeholder
+
+      // je doit remplir les champs vide avec les valeur du wilder
+      const inputs = document.querySelectorAll(`#fsWilder input`)
+      inputs.forEach(input => {
+        if (input.attributes['value']===' ') 
+          input.setAttribute('value',input.attributes['placeholder'])
+      })
+
+      const data = serializeForm(formProfile)
+
+      // je dois remplir les champs vides dans l'objet data
+
+      const proprietes = Object.keys(data)
+
+      proprietes.forEach(propriete => {
+        if (data[propriete]==='') data[propriete]=wilder[propriete]
+      })
+
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
-    }) // fermeture de l'eventlistener sur le formChangeProfile
+      fetch('/wilders', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      window.setTimeout(() =>
+      { window.location = `/profil/${wilder_id}`; },250);
+    })
+
+    // je dois avoir un champ caché id afin que le formulaire l'envoie
+    const champCache = document.getElementsByName('wilderChange_id')
+    champCache[0].setAttribute('value',wilder.id)
+
+    const btnReadMore = document.getElementById('displayBio')
+    const pBio = document.getElementById('bioArea')
+    // si j'ai un bouton Read more, je peux faire des échanges de contenu entre bio complete et bio limitée
+    if (typeof(btnReadMore) !== 'undefined') {
+      btnReadMore.addEventListener('click', e => {
+        if (btnReadMore.innerHTML==='Read more') {
+          btnReadMore.innerHTML='Read less'
+          pBio.innerHTML=wilder.bio
+        }
+        else {
+          btnReadMore.innerHTML='Read more'
+          pBio.innerHTML=wilder.bio.substr(0,50)+'...'
+        }
+      })
+    }
   }) // fermeture du dernier then
   },  // fermeture de la route
 
 
   '/flux': () => {
-  fetch('/notifications')
+  fetch('/fluxs')
   .then(res => res.json())
-  .then(notifications => notifications.reduce((carry, notifications) => carry + makeNotification(notifications), ''))
-  .then(listNotifications => {
+  .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
+  .then(listFluxs => {
     render(
   `<div class="container">
     <div id="alert-box" class="hidden"></div>
-    <form method="POST" id="add-notifications" class="form-inline mt-4 mb-4">
-      <input required name="notifications" type="text" class="form-control" id="inputNotifications" placeholder="Message" style="width:90%">
-      <button class="btn btn-success my-2 my-sm-0" type="submit">Envoyer</button>
+    <form method="POST" id="add-fluxs" class="form-inline mt-4 mb-4">
+      <input required name="fluxs" type="text" class="form-control " id="inputFluxs" placeholder="Message" style="width:90%">
+      <button class="btn btn-success ml-2" type="submit">Envoyer</button>
     </form>
-    <div class="row" id="listNotifications">${listNotifications}</div>
+    <div class="row" id="listFluxs">${listFluxs}</div>
   </div>`)
 
-  const form = document.getElementById("add-notifications")
+  const form = document.getElementById("add-fluxs")
   form.addEventListener('submit', e => {
     e.preventDefault()
     const data = serializeForm(form)
-    fetch('/notifications', {
+    fetch('/fluxs', {
       method: 'POST',
       headers: {
         'Accept': 'application/json, text/plain, */*',
@@ -263,20 +378,20 @@ const controllers = {
       },
       body: JSON.stringify(data)
     })
-    fetch('/notifications')
+    fetch('/fluxs')
     .then(res => res.json())
-    .then(notifications => notifications.reduce((carry, notifications) => carry + makeNotification(notifications), ''))
-    .then(notifications => {
+    .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
+    .then(fluxs => {
       const alertBox = document.getElementById('alert-box')
-      const listNotifications = document.getElementById('listNotifications')
+      const listFluxs = document.getElementById('listFluxs')
       alertBox.className = 'alert alert-success'
       alertBox.innerHTML = `Successfully`
-      listNotifications.innerHTML = `${notifications}`
+      listFluxs.innerHTML = `${fluxs}`
     })
   })
 })},
 
-  '/page-notification': () => render('<h1>Page Notification</h1>'),
+  '/notification': () => render('<h1>Page notification</h1>'),
 
   '/admin': () => render(`<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
       <a class="navbar-brand p-3" href="#">Administration</a>
@@ -321,9 +436,9 @@ const routing = () => {
   const routes = [
     '/',
     '/home',
-    '/profil/:slug',
-    '/page-notification',
+    '/profil/:wilder_id',
     '/flux',
+    '/notification',
     '/admin',
     '*'
   ]

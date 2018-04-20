@@ -4,7 +4,7 @@ const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
-const notificationsSeed = require('./public/notifications.json')
+const fluxsSeed = require('./public/fluxs.json')
 let db
 
 // permet de servir les ressources statiques du dossier public
@@ -13,18 +13,27 @@ app.use(bodyParser.json())
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, bio, image, slug, mail, mdp } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, bio, image, mail, mdp) VALUES(?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, bio, image, mail, mdp)
+  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, mdp } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
+  .then(({ id }) => db.get("SELECT firstName, lastName, title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
 }
 
-// insertNotification dans la db
-const insertNotification = n => {
-  const { notifications } = n
-  return db.get('INSERT INTO notifications( texte ) VALUES(?)', notifications)
+// updateWilder dans la db
+    const updateWilder = w => {
+    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp , wilderChange_id} = w
+    const slug = w.firstName+'-'+w.lastName
+    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}"`
+    return db.get(requete)
+}
+
+
+// insertflux dans la db
+const insertflux = f => {
+  const { fluxs } = f
+  return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from notifications WHERE id = ?', id))
+  .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
 // insertFlux dans la db
@@ -53,7 +62,6 @@ const dbPromise = Promise.resolve()
   return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
-.then(() => Promise.map(notificationsSeed, n => insertNotification(n)))
 
 const html = `
 <!doctype html>
@@ -85,7 +93,7 @@ const html = `
                   <a class="nav-link" href="/flux">Flux</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="/page-notification">Notification</a>
+                  <a class="nav-link" href="/notification">Notification</a>
               </li>
               <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
@@ -98,6 +106,9 @@ const html = `
               </li>
               <li class="nav-item">
                   <a class="nav-link" href="/admin">Admin</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Add a wilder</a>
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -113,19 +124,19 @@ const html = `
 
 
     <!-- footer -->
-    <footer class="container-fluid mt-5">
+    <footer class="container-fluid pt-5 bg">
         <div class="row justify-content-around text-center">
             <div class="col-12 col-md-6 col-lg-4 mt-5">
                 <h5>Les autres projets de la <br>Wild Code School Reims</h5>
                 <div class="list-group mt-4">
                     <a href="#" class="mt-1 mb-1">
-                        <p>Mario Kart Contest</p>
+                        Mario Kart Contest
                     </a>
                     <a href="#" class="mt-1 mb-1">
-                        <p>Artezic Reloaded</p>
+                        Artezic Reloaded
                     </a>
                     <a href="#" class="mt-1 mb-1">
-                        <p>World Cup Pronostics</p>
+                        World Cup Pronostics
                     </a>
                 </div>
             </div>
@@ -176,8 +187,8 @@ app.post('/wilders', (req, res) => {
   .then(record => res.json(record))
 })
 
-app.post('/notifications', (req, res) => {
-  return insertNotification(req.body)
+app.post('/fluxs', (req, res) => {
+  return insertflux(req.body)
   .then(record => res.json(record))
 })
 
@@ -187,10 +198,16 @@ app.get('/wilders', (req, res) => {
   .then(records => res.json(records))
 })
 
-app.get('/notifications', (req, res) => {
-  db.all('SELECT * from notifications')
+app.get('/fluxs', (req, res) => {
+  db.all('SELECT * FROM fluxs ORDER BY Id DESC LIMIT 20')
   .then(records => res.json(records))
 })
+
+//update
+app.put('/wilders', (req, res) => {
+    return updateWilder(req.body)
+    .then(record => res.json(record))
+  })
 
 // route par défaut qui renvoit le code html/css/js complet de l'application
 app.get('*', (req, res) => {
