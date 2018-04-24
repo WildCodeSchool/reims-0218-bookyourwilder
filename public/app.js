@@ -6,17 +6,7 @@ const render = html => {
 
 // renvoit le html d'une card bootstrap pour un wilder
 const makeCard = item => `
-  <div class="col-md-4 mt-5">
-    <!--<div class="card mb-4 box-shadow">
-      <img class="card-img-top" src="${item.image}" alt="Thumbnail [100%x225]" />
-      <div class="card-body">
-        <p class="card-text" style="height: 80px">${item.bio}</p>
-        <a class="btn btn-primary" href="/profil/${item.id}">${item.firstName}'s profile &raquo;</a>
-      </div>
-    </div>-->
-
-    
-    <div class="card text-center mb-5 box-shadow">
+  <div class="card text-center mb-5 box-shadow">
       <div class="card-body">
           <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
           <h4 class="card-title">${item.firstName}</h4>
@@ -99,7 +89,6 @@ const controllers = {
               <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez le mot de passe saisi ci-dessus">
           </div>
           <button type="submit" class="btn btn-success btn-lg btn-block mt-5">Valider l'inscription</button>
-          <div id="alert-box"></div>
       </form>
     </div>
 </div>`
@@ -120,14 +109,8 @@ const controllers = {
         },
         body: JSON.stringify(data)
       })
-      .then(res => res.json())
-      .then(wilder => {
-        const alertBox = document.getElementById('alert-box')
-        alertBox.className = 'alert alert-success'
-        alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
-      })
-      window.setTimeout(() =>
-      { window.location = "/home"; },250);
+      // window.setTimeout(() =>
+      // { window.location = "/home"; },250);
     })
     const navbarDejaInscrit = document.getElementById("navbarMenu")
     navbarDejaInscrit.innerHTML = `
@@ -145,7 +128,6 @@ const controllers = {
     </nav>`
   },
   
-  //page d'acceuil (et bouton temporaire en attendant la navbar)
   '/home': () =>
   fetch('/wilders')
     .then(res => res.json())

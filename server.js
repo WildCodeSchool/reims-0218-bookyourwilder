@@ -2,21 +2,26 @@ const sqlite = require('sqlite')
 const express = require('express')
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
+const passport = require('passport')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
 const fluxsSeed = require('./public/fluxs.json')
 let db
 
+require('./public/passport-strategy')
+const auth = require('./public/auth')
+
 // permet de servir les ressources statiques du dossier public
 app.use(express.static('public'))
 app.use(bodyParser.json())
+app.use('/auth', auth)
 
 // insertWilder dans la db
 const insertWilder = w => {
   const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, mdp } = w
   return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get("SELECT firstName, lastName, title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
 
 // updateWilder dans la db
@@ -202,6 +207,10 @@ app.get('/fluxs', (req, res) => {
   db.all('SELECT * FROM fluxs ORDER BY Id DESC LIMIT 20')
   .then(records => res.json(records))
 })
+
+app.get('/test', passport.authenticate('jwt', {session: false}), (req, res) => {
+    res.send(`authorized for user ${req.user.username} with id ${req.user.id}`)
+  })
 
 //update
 app.put('/wilders', (req, res) => {
