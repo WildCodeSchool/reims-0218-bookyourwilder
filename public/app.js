@@ -12,6 +12,7 @@ const makeCard = item => `
             <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
             <h4 class="card-title">${item.firstName}</h4>
             <h4 class="card-title">${item.lastName}</h4>
+            <h5 class="card-text text-muted">${item.title}</h5>
             <p class="card-text taille">${item.bio}</p>
             <div class="d-flex flex-row justify-content-center">
                 <div class="p-4">
@@ -153,10 +154,10 @@ const controllers = {
     </div>`)
   ),
 
-  //redirection vers le profil d'un wilder (pour philippe)
+  // routing of a wilder's profile
   '/profil/:wilder_id': ctx => {
     const { wilder_id } = ctx.params
-    fetch('/wilders') // demande au serveur de récupérer un json de la select avec join
+    fetch('/wilders') // reading of wilder in database
     .then(res => res.json())
     .then(wilders => {
       return wilders.find(wilder => wilder.id == wilder_id)
@@ -187,9 +188,13 @@ const controllers = {
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
           Edit profile
         </button>
-        <h1 class="display-4" id="h1NameProfil">${wilder.firstName} ${wilder.lastName}</h1>
-        <p>${wilder.title}</p><!-- Button trigger modal -->
-
+        <h1 class="display-4" id="h1NameProfil"></h1>
+        <p id="pTitle"></p>
+        <hr class="my-4">
+        <p class="lead" id="bioArea"></p>
+        <div id="divBtnReadMore"></div>
+        <hr>
+        <div id="divLinks" class="row"></div>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
@@ -260,35 +265,90 @@ const controllers = {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary close" data-dismiss="modal" id="btnChangeOption">Save changes</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" id="btnChangeOption">Save changes</button>
               </div>
-              <hr class="my-4">
-              <p class="lead" id="bioArea">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
-              ${(wilder.bio.length>50)?'<button type="button" class="btn btn-primary" id="displayBio">Read more</button>':''}
-          </div>
-          <div class="jumbotron">
-              <h2>options to display:</h2>
-              <form>
-                  <ul>
-                      ${displayOptionsWilder(options_wilder, true, false, true)}
-                  </ul>
-              </form>
-          </div>
-      </div>`)
-    const formProfile = document.getElementById('changeProfile')
-    const nameWilder = document.getElementById('nameWilder')
+            </div>
+        </div>
+      </div>
+      <div class="jumbotron">
+      <h2>options to display:</h2>
+      <form>
+        <ul>
+          ${displayOptionsWilder(options_wilder, true, false)}
+        </ul>
+      </form>
+    </div>
+    </div>`)
+
+    // define display wilder function in profile jumbotron
+
+    const pBio = document.getElementById('bioArea')
+    const pTitle = document.getElementById('pTitle')
+    const h1NameProfil = document.getElementById('h1NameProfil')
+    const divBtnReadMore = document.getElementById('divBtnReadMore')
+    const divLinks = document.getElementById('divLinks')
+    let readMore = true
+
+    const displayCard = (titleText, bodyText) => {
+      return `
+      <div class="card col-12 col-sm-4">
+        <div class="card-body">
+          <h5 class="card-title">${titleText}</h5>
+          <p class="card-text">${bodyText}</p>
+        </div>
+      </div>`
+    }
     
+    const displayWilderInProfile = (wilderToDisplay) => {
+      h1NameProfil.innerHTML=wilderToDisplay.firstName+' '+wilderToDisplay.lastName
+      pTitle.innerHTML=wilderToDisplay.title
+      if (wilderToDisplay.bio.length>50) {
+        divBtnReadMore.innerHTML=`<button type="button" class="btn btn-primary" id="btnReadMore"></button>`
+        const btnReadMore = document.getElementById('btnReadMore')
+        if (readMore) {
+          btnReadMore.innerHTML='Read More'
+          pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
+        }
+        else {
+          pBio.innerHTML=wilderToDisplay.bio
+          btnReadMore.innerHTML='Read Less'
+        }
+        btnReadMore.addEventListener('click', () => {
+          if (readMore) { // 'read more' button
+            pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
+            btnReadMore.innerHTML='Read More'
+            readMore=false
+          }
+          else {          // 'Read Less' button
+            pBio.innerHTML=wilderToDisplay.bio
+            btnReadMore.innerHTML='Read Less'
+            readMore=true
+          }
+        })
+      }
+      else 
+        pBio.innerHTML=wilderToDisplay.bio
+      divLinks.innerHTML=displayCard('mail', wilderToDisplay.mail)
+      divLinks.innerHTML+=displayCard('linkedin', wilderToDisplay.urlLi)
+      divLinks.innerHTML+=displayCard('github', wilderToDisplay.urlGh)
+    }
+
+    // first display of wilder
+    displayWilderInProfile(wilder)
+
+    // click on "save changes"
     const btnSaveChanges = document.getElementById('btnChangeOption')
+
     btnSaveChanges.addEventListener('click',e => {
       e.preventDefault()
 
-      const inputs = document.querySelectorAll(`#fsWilder input`)
-      inputs.forEach(input => {
-        if (input.attributes['value']===' ') 
-          input.setAttribute('value',input.attributes['placeholder'])
-      })
+      // i must have a hidden field with "id" to be sent with datas
+      const champCache = document.getElementsByName('wilderChange_id')
+      champCache[0].setAttribute('value',wilder.id)
 
-      const data = serializeForm(formProfile)
+      const data = serializeForm(document.getElementById('changeProfile'))
+
+      // empty fields of data object must be filled with wilder's datas
 
       const proprietes = Object.keys(data)
       proprietes.forEach(propriete => {
@@ -299,6 +359,7 @@ const controllers = {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
+
       fetch('/wilders', {
         method: 'PUT',
         headers: {
@@ -307,34 +368,20 @@ const controllers = {
         },
         body: JSON.stringify(data)
       })
+      .then(() => {
+        fetch('/wilders') // new reading of wilder AFTER update
+        .then(resNew => resNew.json())
+        .then(wildersNew => {
+          return wildersNew.find(newWilder => newWilder.id == wilder_id)
+        })
+        .then(newWilder => {
+          displayWilderInProfile(newWilder)
+        })
 
-    // afficher le NOUVEAU wilder (lignes 198, 199, 278, 279, 286)
-
-      
-
-  })
- 
-    // je dois avoir un champ caché id afin que le formulaire l'envoie
-    const champCache = document.getElementsByName('wilderChange_id')
-    champCache[0].setAttribute('value',wilder.id)
-
-    const btnReadMore = document.getElementById('displayBio')
-    const pBio = document.getElementById('bioArea')
-
-    if (typeof(btnReadMore) !== 'undefined') {
-      btnReadMore.addEventListener('click', e => {
-        if (btnReadMore.innerHTML==='Read more') {
-          btnReadMore.innerHTML='Read less'
-          pBio.innerHTML=wilder.bio
-        }
-        else {
-          btnReadMore.innerHTML='Read more'
-          pBio.innerHTML=wilder.bio.substr(0,50)+'...'
-        }
       })
-    }
-  })
-  },
+    })
+    }) // closing last 'then' of first reading of wilder
+  },  // closing of route
 
 
   '/flux': () => {
