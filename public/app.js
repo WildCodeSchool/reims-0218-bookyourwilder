@@ -98,6 +98,11 @@ const controllers = {
     form.addEventListener('submit', e => {
       e.preventDefault()
       const data = serializeForm(form)
+      // i'm finishing to fill the wilder
+      data['title']=''
+      data['bio']=''
+      data['urlGh']=''
+      data['urlLi']=''
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/480x480/?text=${fullName}`
