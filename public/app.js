@@ -21,7 +21,7 @@ const makeCard = item => `
           <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
           <h4 class="card-title">${item.firstName}</h4>
           <h4 class="card-title">${item.lastName}</h4>
-          <h5 class="card-text text-muted">Curieuse, passionnée, observatrice</h5>
+          <h5 class="card-text text-muted">${item.title}</h5>
           <p class="card-text taille">${item.bio}</p>
           <div class="d-flex flex-row justify-content-center">
               <div class="p-4">
@@ -276,6 +276,8 @@ const controllers = {
         <hr class="my-4">
         <p class="lead" id="bioArea"></p>
         <div id="divBtnReadMore"></div>
+        <hr>
+        <div id="divLinks" class="row"></div>
       </div>
       <div class="jumbotron">
       <h2>options to display:</h2>
@@ -293,7 +295,18 @@ const controllers = {
     const pTitle = document.getElementById('pTitle')
     const h1NameProfil = document.getElementById('h1NameProfil')
     const divBtnReadMore = document.getElementById('divBtnReadMore')
+    const divLinks = document.getElementById('divLinks')
     let readMore = true
+
+    const displayCard = (titleText, bodyText) => {
+      return `
+      <div class="card col-12 col-sm-4">
+        <div class="card-body">
+          <h5 class="card-title">${titleText}</h5>
+          <p class="card-text">${bodyText}</p>
+        </div>
+      </div>`
+    }
     
     const displayWilderInProfile = (wilderToDisplay) => {
       h1NameProfil.innerHTML=wilderToDisplay.firstName+' '+wilderToDisplay.lastName
@@ -301,6 +314,14 @@ const controllers = {
       if (wilderToDisplay.bio.length>50) {
         divBtnReadMore.innerHTML=`<button type="button" class="btn btn-primary" id="btnReadMore"></button>`
         const btnReadMore = document.getElementById('btnReadMore')
+        if (readMore) {
+          btnReadMore.innerHTML='Read More'
+          pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
+        }
+        else {
+          pBio.innerHTML=wilderToDisplay.bio
+          btnReadMore.innerHTML='Read Less'
+        }
         btnReadMore.addEventListener('click', () => {
           if (readMore) { // 'read more' button
             pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
@@ -316,7 +337,9 @@ const controllers = {
       }
       else 
         pBio.innerHTML=wilderToDisplay.bio
-      
+      divLinks.innerHTML=displayCard('mail', wilderToDisplay.mail)
+      divLinks.innerHTML+=displayCard('linkedin', wilderToDisplay.urlLi)
+      divLinks.innerHTML+=displayCard('github', wilderToDisplay.urlGh)
     }
 
     // first display of wilder
@@ -345,8 +368,6 @@ const controllers = {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
-
-      console.log(data)
 
       fetch('/wilders', {
         method: 'PUT',
