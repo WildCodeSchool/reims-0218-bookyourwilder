@@ -164,10 +164,10 @@ const controllers = {
     </div>`)
   ),
 
-  //redirection vers le profil d'un wilder (pour philippe)
+  // routing of a wilder's profile
   '/profil/:wilder_id': ctx => {
     const { wilder_id } = ctx.params
-    fetch('/wilders') // demande au serveur de récupérer un json de la select avec join
+    fetch('/wilders') // reading of wilder in database
     .then(res => res.json())
     .then(wilders => {
       return wilders.find(wilder => wilder.id == wilder_id)
@@ -195,8 +195,8 @@ const controllers = {
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
           Edit profile
         </button>
-        <h1 class="display-4" id="h1NameProfil">${wilder.firstName} ${wilder.lastName}</h1>
-        <p id="pTitle">${wilder.title}</p><!-- Button trigger modal -->
+        <h1 class="display-4" id="h1NameProfil"></h1>
+        <p id="pTitle"></p>
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -274,11 +274,9 @@ const controllers = {
           </div>
         </div>
         <hr class="my-4">
-        <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
-        <p class="lead" id="bioArea">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
-        ${(wilder.bio.length>50)?'<button type="button" class="btn btn-primary" id="displayBio">Read more</button>':''}
+        <p class="lead" id="bioArea"></p>
+        <div id="divBtnReadMore"></div>
       </div>
-      
       <div class="jumbotron">
       <h2>options to display:</h2>
       <form>
@@ -294,14 +292,27 @@ const controllers = {
     const pBio = document.getElementById('bioArea')
     const pTitle = document.getElementById('pTitle')
     const h1NameProfil = document.getElementById('h1NameProfil')
+    const divBtnReadMore = document.getElementById('divBtnReadMore')
     let readMore = true
     
     const displayWilderInProfile = (wilderToDisplay) => {
       h1NameProfil.innerHTML=wilderToDisplay.firstName+' '+wilderToDisplay.lastName
       pTitle.innerHTML=wilderToDisplay.title
       if (wilderToDisplay.bio.length>50) {
-        if (readMore)  // 'read more' button
-        pBio.innerHTML=wilderToDisplay.bio.substr(0,50)
+        divBtnReadMore.innerHTML=`<button type="button" class="btn btn-primary" id="btnReadMore"></button>`
+        const btnReadMore = document.getElementById('btnReadMore')
+        btnReadMore.addEventListener('click', () => {
+          if (readMore) { // 'read more' button
+            pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
+            btnReadMore.innerHTML='Read More'
+            readMore=false
+          }
+          else {          // 'Read Less' button
+            pBio.innerHTML=wilderToDisplay.bio
+            btnReadMore.innerHTML='Read Less'
+            readMore=true
+          }
+        })
       }
     }
 
@@ -332,6 +343,8 @@ const controllers = {
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
 
+      console.log(data)
+
       fetch('/wilders', {
         method: 'PUT',
         headers: {
@@ -351,26 +364,9 @@ const controllers = {
         })
 
       })
-
-      
-  })
- 
-    
-    // si j'ai un bouton Read more, je peux faire des échanges de contenu entre bio complete et bio limitée
-    if (typeof(btnReadMore) !== 'undefined') {
-      btnReadMore.addEventListener('click', e => {
-        if (btnReadMore.innerHTML==='Read more') {
-          btnReadMore.innerHTML='Read less'
-          pBio.innerHTML=wilder.bio
-        }
-        else {
-          btnReadMore.innerHTML='Read more'
-          pBio.innerHTML=wilder.bio.substr(0,50)+'...'
-        }
-      })
-    }
-  }) // fermeture du dernier then
-  },  // fermeture de la route
+    })
+    }) // closing last 'then' of first reading of wilder
+  },  // closing of route
 
 
   '/flux': () => {
