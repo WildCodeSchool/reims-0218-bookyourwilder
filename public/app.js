@@ -314,6 +314,9 @@ const controllers = {
           }
         })
       }
+      else 
+        pBio.innerHTML=wilderToDisplay.bio
+      
     }
 
     // first display of wilder
