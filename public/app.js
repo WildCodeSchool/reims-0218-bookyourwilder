@@ -194,7 +194,7 @@ const controllers = {
         <p class="lead" id="bioArea"></p>
         <div id="divBtnReadMore"></div>
         <hr>
-        <div id="divLinks" class="row"></div>
+        <div id="divLinks" class="row justify-content-around"></div>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
@@ -290,11 +290,21 @@ const controllers = {
     let readMore = true
 
     const displayCard = (titleText, bodyText) => {
+      let classLien=''
+      switch (titleText) {
+        case 'linkedin': classLien='fab fa-linkedin-in'
+        break
+        case 'mail': classLien='fas fa-envelope'
+        break
+        case 'github': classLien='fab fa-github'
+        break
+      }
       return `
-      <div class="card col-12 col-sm-4">
+      <div class="card col-12 col-sm-3">
         <div class="card-body">
-          <h5 class="card-title">${titleText}</h5>
-          <p class="card-text">${bodyText}</p>
+        <a href="${bodyText}" target="_blank">
+        <i class="${classLien} rounded-circle"></i>
+        </a>
         </div>
       </div>`
     }
