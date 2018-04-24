@@ -178,14 +178,11 @@ const controllers = {
         "texte": "foundation"
       }]
 
-      const displayOptionsWilder = (tableauOptions, useDisplay, displayOrChange, showCheckboxes) => {
+      const displayOptionsWilder = (tableauOptions, displayOrChange) => {
         let htmlLis = ""
         // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
-        tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`:""
+        tableauOptions.forEach(option => htmlLis += `<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`
         )
-        if (!showCheckboxes) {
-          htmlLis += `<input type="checkbox">Afficher sur votre profil ?`
-        }
         return htmlLis
       }
       render(`<div class="container text-center">
@@ -263,7 +260,7 @@ const controllers = {
                       <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
                     </div>
                     <ul>
-                      ${displayOptionsWilder(options_wilder, false, true)}
+                      ${displayOptionsWilder(options_wilder, true)}
                     </ul>
                   </fieldset>
                 </form>
@@ -276,10 +273,10 @@ const controllers = {
         </div>
       </div>
       <div class="jumbotron">
-      <h2>options to display:</h2>
+      <h2>Options:</h2>
       <form>
         <ul>
-          ${displayOptionsWilder(options_wilder, true, false)}
+          ${displayOptionsWilder(options_wilder, false)}
         </ul>
       </form>
     </div>
