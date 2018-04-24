@@ -196,7 +196,7 @@ const controllers = {
           Edit profile
         </button>
         <h1 class="display-4" id="h1NameProfil">${wilder.firstName} ${wilder.lastName}</h1>
-        <p>${wilder.title}</p><!-- Button trigger modal -->
+        <p id="pTitle">${wilder.title}</p><!-- Button trigger modal -->
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -288,15 +288,39 @@ const controllers = {
       </form>
     </div>
     </div>`)
-    const nameWilder = document.getElementById('nameWilder')
-    // click sur "save changes"
+
+    // define display wilder function in profile jumbotron
+
+    const pBio = document.getElementById('bioArea')
+    const pTitle = document.getElementById('pTitle')
+    const h1NameProfil = document.getElementById('h1NameProfil')
+    let readMore = true
+    
+    const displayWilderInProfile = (wilderToDisplay) => {
+      h1NameProfil.innerHTML=wilderToDisplay.firstName+' '+wilderToDisplay.lastName
+      pTitle.innerHTML=wilderToDisplay.title
+      if (wilderToDisplay.bio.length>50) {
+        if (readMore)  // 'read more' button
+        pBio.innerHTML=wilderToDisplay.bio.substr(0,50)
+      }
+    }
+
+    // first display of wilder
+    displayWilderInProfile(wilder)
+
+    // click on "save changes"
     const btnSaveChanges = document.getElementById('btnChangeOption')
+
     btnSaveChanges.addEventListener('click',e => {
       e.preventDefault()
 
+      // i must have a hidden field with "id" to be sent with datas
+      const champCache = document.getElementsByName('wilderChange_id')
+      champCache[0].setAttribute('value',wilder.id)
+
       const data = serializeForm(document.getElementById('changeProfile'))
 
-      // je dois remplir les champs vides dans l'objet data
+      // empty fields of data object must be filled with wilder's datas
 
       const proprietes = Object.keys(data)
       proprietes.forEach(propriete => {
@@ -316,18 +340,22 @@ const controllers = {
         },
         body: JSON.stringify(data)
       })
+      .then(() => {
+        fetch('/wilders') // new reading of wilder AFTER update
+        .then(resNew => resNew.json())
+        .then(wildersNew => {
+          return wildersNew.find(newWilder => newWilder.id == wilder_id)
+        })
+        .then(newWilder => {
+          displayWilderInProfile(newWilder)
+        })
 
-    // afficher le NOUVEAU wilder (lignes 198, 199, 278, 279, 286)
-    const pBio = document.getElementById('bioArea')
+      })
+
       
-
   })
  
-    // je dois avoir un champ caché id afin que le formulaire l'envoie
-    const champCache = document.getElementsByName('wilderChange_id')
-    champCache[0].setAttribute('value',wilder.id)
-
-    const btnReadMore = document.getElementById('displayBio')
+    
     // si j'ai un bouton Read more, je peux faire des échanges de contenu entre bio complete et bio limitée
     if (typeof(btnReadMore) !== 'undefined') {
       btnReadMore.addEventListener('click', e => {
