@@ -12,21 +12,20 @@ const makeCard = item => `
             <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
             <h4 class="card-title">${item.firstName}</h4>
             <h4 class="card-title">${item.lastName}</h4>
-            <h5 class="card-text text-muted">Curieuse, passionnée, observatrice</h5>
             <p class="card-text taille">${item.bio}</p>
             <div class="d-flex flex-row justify-content-center">
                 <div class="p-4">
-                    <a href="#" target="_blank">
+                    <a href="${item.urlLi}" target="_blank">
                         <i class="fab fa-linkedin-in rounded-circle"></i>
                     </a>
                 </div>
                 <div class="p-4">
-                    <a href="#" target="_blank">
+                    <a href="${item.urlGh}" target="_blank">
                       <i class="fab fa-github rounded-circle"></i>
                     </a>
                 </div>
                 <div class="p-4">
-                    <a href="#">
+                    <a href="mailto:${item.mail}">
                         <i class="fas fa-envelope rounded-circle"></i>
                     </a>
                 </div>
