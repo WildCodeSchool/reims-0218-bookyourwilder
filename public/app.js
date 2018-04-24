@@ -288,21 +288,13 @@ const controllers = {
       </form>
     </div>
     </div>`)
-    const formProfile = document.getElementById('changeProfile')
     const nameWilder = document.getElementById('nameWilder')
     // click sur "save changes"
     const btnSaveChanges = document.getElementById('btnChangeOption')
     btnSaveChanges.addEventListener('click',e => {
       e.preventDefault()
 
-      // je doit remplir les champs vide avec les valeur du wilder
-      const inputs = document.querySelectorAll(`#fsWilder input`)
-      inputs.forEach(input => {
-        if (input.attributes['value']===' ') 
-          input.setAttribute('value',input.attributes['placeholder'])
-      })
-
-      const data = serializeForm(formProfile)
+      const data = serializeForm(document.getElementById('changeProfile'))
 
       // je dois remplir les champs vides dans l'objet data
 
@@ -315,6 +307,7 @@ const controllers = {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
+
       fetch('/wilders', {
         method: 'PUT',
         headers: {
@@ -325,7 +318,7 @@ const controllers = {
       })
 
     // afficher le NOUVEAU wilder (lignes 198, 199, 278, 279, 286)
-
+    const pBio = document.getElementById('bioArea')
       
 
   })
@@ -335,7 +328,6 @@ const controllers = {
     champCache[0].setAttribute('value',wilder.id)
 
     const btnReadMore = document.getElementById('displayBio')
-    const pBio = document.getElementById('bioArea')
     // si j'ai un bouton Read more, je peux faire des échanges de contenu entre bio complete et bio limitée
     if (typeof(btnReadMore) !== 'undefined') {
       btnReadMore.addEventListener('click', e => {
