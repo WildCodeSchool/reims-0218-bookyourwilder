@@ -3,36 +3,39 @@
 ## About
 
 This project focuses on [NodeJS](https://nodejs.org/), a JavaScript run-time environment. What's more, we'll be making requests to the server, and store elements in a database.
-**Face Your Wilder** (even if the repository is named Book Your Wilder) will act as a social media for the [Wild Code School](https://wildcodeschool.fr)'s students.
+**Face Your Wilder** (even if the repository is named Book Your Wilder) will act as a social media for the [Wild Code School](https://wildcodeschool.fr)'s students. One can register and fill his/her profile page.
 
 ## What's planned
 
-* Registration
+* Authentification with JVW
 * Access to other's profile page
 * Many ways to contact someone (e-mail, Facebook, LinkedIn, Github, etc.)
 * Easy editing by going to an administration page
 
 ## Github of the conceptors
 
-[LieLust](https://github.com/LieLust)
-[El-Loco-Pinguino](https://github.com/El-Loco-Pinguino)
-[PhiTarte](https://github.com/PhiTarte)
+* [LieLust](https://github.com/LieLust)
+* [El-Loco-Pinguino](https://github.com/El-Loco-Pinguino)
+* [PhiTarte](https://github.com/PhiTarte)
 
 ## Task repartition
 
 We're working with the SCRUM method. Every 2 weeks, we change roles. Everybody will be SCRUM Master, Product Owner and Developer only once.
 
 ### From March 26th to April 6th
-SCRUM Master: LieLust
-Product Owner: El-Loco-Pinguino
+* SCRUM Master: LieLust
+* Product Owner: El-Loco-Pinguino
 
 ### From April 9th to April 20th
-SCRUM Master: El-Loco-Pinguino
-Product Owner: PhiTarte
+* SCRUM Master: El-Loco-Pinguino
+* Product Owner: PhiTarte
 
 ### From April 23rd to May 4th
-SCRUM Master: PhiTarte
-Product Owner: LieLust
+* SCRUM Master: PhiTarte
+* Product Owner: LieLust
+
+## How to install to your machine
+You need [NodeJS](https://nodejs.org), a run-time environment to start a server in your machine (similar to XAMPP with PHP). Open the console and go to the project folder by typing `cd FOLDER`. When you've reached the project folder, type `npm start` to launch the server. After that, open your browser and type `localhost:8080` in the address bar.
 
 ## Licensing
 The project is licensed as [GNU GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). You can use/modify/distribute it in personal or commercial projects provided you give credit to all of the creators (Links are enough).
