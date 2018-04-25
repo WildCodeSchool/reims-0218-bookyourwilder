@@ -15,7 +15,7 @@ p {
 }
 
 .card-body a {
-    color: orange;
+    color: #e59a17;
 }
 
 .btn-warning {
@@ -24,11 +24,11 @@ p {
 
 .card:hover .btn-warning {
     background: white;
-    color: orange;
+    color: #e59a17;
 }
 
 .card:hover {
-    background: orange;
+    background: #e59a17;
     color: white;
 }
 
@@ -57,8 +57,16 @@ a > .rounded-circle {
     box-shadow: 1px 2px 20px rgba(0,0,0,0.5);
 }
 
+.card-body {
+    height: 420px;
+}
+
 .card-body h5 {
     height: 48px;
+}
+
+.card-body img {
+    height: 40%;
 }
 
 .card-body .taille {
@@ -80,7 +88,7 @@ footer .rounded-circle:hover {
 }
 
 .modal-header {
-    background: orange;
+    background: #e59a17;
     border-radius: 0px;
 }
 
@@ -159,5 +167,5 @@ footer .btn-primary:hover a{
 .msg-flux{
     border: 2px solid grey;
     border-radius: 20px;
-    padding: 1em;
+    padding: 0.25em;
 }

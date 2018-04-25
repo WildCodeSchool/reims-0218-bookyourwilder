@@ -149,7 +149,7 @@ const controllers = {
           <div class="col">
               <div class="info-header mb-5 text-center">
                   <h1 class="text-warning pb-3">Nos Wilders</h1>
-                  <p class="lead pb-3">La Wild Code School forme ses élèves au métier de développeur web en 5 mois suivis d’un stage en entreprise. Vous trouverez sur ce site web, réalisé par eux, les profils des élèves “Wilders” de Reims et les liens vers leurs Linkedin etc. respectifs. Cette 1ère promotion "Artémis", avide de connaissance, se forme intensivement au métier du développeur web. Bientôt Javascript et React n'auront plus aucun secret pour eux.</p>
+                  <p class="lead pb-3">La Wild Code School forme ses élèves au métier de développeur web en 5 mois, suivi d’un stage en entreprise. Vous trouverez sur ce site web, réalisé par eux, les profils des élèves “Wilders” de Reims et les liens vers leurs Linkedin, Github, etc. respectifs. Cette 1<sup>ère</sup> promotion "Artémis", avide de connaissances, se forme intensivement au métier de développeur web. Bientôt, JavaScript et React n'auront plus aucun secret pour eux.</p>
               </div>
           </div>
       </div>
@@ -214,21 +214,21 @@ const controllers = {
                         <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                        <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                        <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" value="${wilder.firstName}">
+                        <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" value="${wilder.lastName}">
                       </div>
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputTitle" class="col-11">Title</label>
-                      <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                      <input name="title" type="text" class="form-control col-11" id="inputTitle" value="${wilder.title}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputImageUrl" class="col-11">Image URL</label>
-                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" value="${wilder.image}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputBio" class="col-11">Bio</label>
-                      <textarea name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                      <textarea name="bio" class="form-control col-11" id="txtBio" value="${wilder.bio}"></textarea>
                     </fieldset>
                     <fieldset class="form-group">
                       <div class="row justify-content-around">
@@ -236,8 +236,8 @@ const controllers = {
                         <label for="inputMdp" class="col-12 col-sm-5">Mdp</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
-                        <input name="mdp" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.mdp}">
+                        <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" value="${wilder.mail}">
+                        <input name="mdp" type="text" class="form-control col-12 col-sm-5" id="inputMdp" value="${wilder.mdp}">
                       </div>
                     </fieldset>
                     <fieldset class="form-group" id="links">
@@ -246,8 +246,8 @@ const controllers = {
                         <label for="inputGithub" class="col-12 col-sm-5">Github</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
-                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" value="${wilder.urlLi}">
+                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" value="${wilder.urlGh}">
                       </div>
                     </fieldset>
                   </fieldset>

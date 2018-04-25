@@ -89,28 +89,22 @@ const html = `
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
               <li class="nav-item">
-                  <a class="nav-link" href="/home">Acceuil</a>
+                  <a class="nav-link" href="/home">Accueil</a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" href="/flux">Flux</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="/notification">Notification</a>
-              </li>
-              <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
-                  <div class="dropdown-menu" aria-labelledby="navbarProfil">
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Action 2</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Action 3</a>
-                  </div>
+                  <a class="nav-link" href="/notification">Notifications</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="/admin">Admin</a>
+                  <a class="nav-link" href="#">Mon profil</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/">Add a wilder</a>
+                  <a class="nav-link" href="/admin">Administration</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Ajouter un Wilder</a>
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
