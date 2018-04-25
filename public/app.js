@@ -380,9 +380,11 @@ const controllers = {
         },
         body: JSON.stringify(data)
       })
-      .then(() => {
+      .then(responseAfterUpdate => {
         fetch('/wilders') // new reading of wilder AFTER update
-        .then(resNew => resNew.json())
+        .then(resNew => {
+          return resNew.json()
+        })
         .then(wildersNew => {
           return wildersNew.find(newWilder => newWilder.id == wilder_id)
         })

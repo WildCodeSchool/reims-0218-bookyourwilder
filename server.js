@@ -16,7 +16,7 @@ const insertWilder = w => {
   const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, mdp } = w
   return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get(`SELECT * FROM users where id=${id}`))
+  .then(({ id }) => db.get(`SELECT * FROM users where id=?`, id))
 }
 
 // updateWilder dans la db
@@ -24,7 +24,7 @@ const updateWilder = w => {
     const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
     const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
-    return db.get(requete)
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=? where id=?;`,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, mdp, wilderChange_id)
 }
 
 // insertOption dans la db
@@ -32,7 +32,7 @@ const insertOption = o => {
     const { nom, contenu, wilder_id } = o
     return db.get('INSERT INTO option_profil(nom_option, texte_option, wilder_id) VALUES(?, ?, ?)', nom, contenu, wilder_id)
     .then(() => db.get('SELECT last_insert_rowid() as id'))
-    .then(({ id }) => db.get(`SELECT * FROM option_profil where id=${id}`))
+    .then(({ id }) => db.get(`SELECT * FROM option_profil where id=?`, id))
   }
 
 // insertflux dans la db
