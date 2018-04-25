@@ -21,6 +21,7 @@ const makeCard = item => `
             <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
             <h4 class="card-title">${item.firstName}</h4>
             <h4 class="card-title">${item.lastName}</h4>
+            <h5 class="card-text text-muted">${item.title}</h5>
             <p class="card-text taille">${item.bio}</p>
             <div class="d-flex flex-row justify-content-center">
                 <div class="p-4">
@@ -107,6 +108,11 @@ const controllers = {
     form.addEventListener('submit', e => {
       e.preventDefault()
       const data = serializeForm(form)
+      // i'm finishing to fill the wilder
+      data['title']=''
+      data['bio']=''
+      data['urlGh']=''
+      data['urlLi']=''
       if(! data.image) {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/480x480/?text=${fullName}`
@@ -120,7 +126,6 @@ const controllers = {
         body: JSON.stringify(data)
       })
       .then(res => res.json())
-      
     })
     const navbarDejaInscrit = document.getElementById("navbarMenu")
     navbarDejaInscrit.innerHTML = `
@@ -157,10 +162,10 @@ const controllers = {
     </div>`)
   ),
 
-  //redirection vers le profil d'un wilder (pour philippe)
+  // routing of a wilder's profile
   '/profil/:wilder_id': ctx => {
     const { wilder_id } = ctx.params
-    fetch('/wilders') // demande au serveur de récupérer un json de la select avec join
+    fetch('/wilders') // reading of wilder in database
     .then(res => res.json())
     .then(wilders => {
       return wilders.find(wilder => wilder.id == wilder_id)
@@ -176,14 +181,11 @@ const controllers = {
         "texte": "foundation"
       }]
 
-      const displayOptionsWilder = (tableauOptions, useDisplay, displayOrChange, showCheckboxes) => {
+      const displayOptionsWilder = (tableauOptions, displayOrChange) => {
         let htmlLis = ""
         // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
-        tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`:""
+        tableauOptions.forEach(option => htmlLis += `<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`
         )
-        if (!showCheckboxes) {
-          htmlLis += `<input type="checkbox">Afficher sur votre profil ?`
-        }
         return htmlLis
       }
       render(`<div class="container text-center">
@@ -193,7 +195,6 @@ const controllers = {
         </button>
         <h1 class="display-4">${wilder.firstName} ${wilder.lastName}</h1>
         <p>${wilder.title}</p><!-- Button trigger modal -->
-
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
@@ -284,12 +285,15 @@ const controllers = {
       </form>
     </div>
     </div>`)
+
     const formProfile = document.getElementById('changeProfile')
     const nameWilder = document.getElementById('nameWilder')
     // click sur "save changes"
     const btnSaveChanges = document.getElementById('btnChangeOption')
+
     btnSaveChanges.addEventListener('click',e => {
       e.preventDefault()
+
 
       // je doit remplir les champs vide avec les valeur du wilder
       const inputs = document.querySelectorAll(`#fsWilder input`)
@@ -297,13 +301,13 @@ const controllers = {
         if (input.attributes['value']===' ') 
           input.setAttribute('value',input.attributes['placeholder'])
       })
-
-      const data = serializeForm(formProfile)
+      
+      const data = serializeForm(document.getElementById('changeProfile'))
 
       // je dois remplir les champs vides dans l'objet data
 
       const proprietes = Object.keys(data)
-
+      const proprietes = Object.keys(data)
       proprietes.forEach(propriete => {
         if (data[propriete]==='') data[propriete]=wilder[propriete]
       })
@@ -312,6 +316,7 @@ const controllers = {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
+
       fetch('/wilders', {
         method: 'PUT',
         headers: {
@@ -320,9 +325,10 @@ const controllers = {
         },
         body: JSON.stringify(data)
       })
-      window.setTimeout(() =>
-      { window.location = `/profil/${wilder_id}`; },250);
-    })
+
+//      window.setTimeout(() =>
+//    { window.location = `/profil/${wilder_id}`; },250);
+//    })
 
     // je dois avoir un champ caché id afin que le formulaire l'envoie
     const champCache = document.getElementsByName('wilderChange_id')
@@ -345,7 +351,6 @@ const controllers = {
     }
   }) // fermeture du dernier then
   },  // fermeture de la route
-
 
   '/flux': () => {
   fetch('/fluxs')
