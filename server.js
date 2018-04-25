@@ -4,7 +4,7 @@ const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
-const fluxsSeed = require('./public/fluxs.json')
+const optionsSeed = require('./public/wilders_options.json')
 let db
 
 // permet de servir les ressources statiques du dossier public
@@ -13,20 +13,27 @@ app.use(bodyParser.json())
 
 // insertWilder dans la db
 const insertWilder = w => {
-    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, mdp } = w
-    return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp)
-    .then(() => db.get('SELECT last_insert_rowid() as id'))
-    //.then(({ id }) => db.get("SELECT firstName, lastName, title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, mdp } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp)
+  .then(() => db.get('SELECT last_insert_rowid() as id'))
+  .then(({ id }) => db.get(`SELECT * FROM users where id=?`, id))
 }
 
 // updateWilder dans la db
 const updateWilder = w => {
     const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}"`
-    return db.get(requete)
+    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=? where id=?;`,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, mdp, wilderChange_id)
 }
 
+// insertOption dans la db
+const insertOption = o => {
+    const { nom, contenu, wilder_id } = o
+    return db.get('INSERT INTO option_profil(nom_option, texte_option, wilder_id) VALUES(?, ?, ?)', nom, contenu, wilder_id)
+    .then(() => db.get('SELECT last_insert_rowid() as id'))
+    .then(({ id }) => db.get(`SELECT * FROM option_profil where id=?`, id))
+  }
 
 // insertflux dans la db
 const insertflux = f => {
@@ -40,20 +47,6 @@ const insertflux = f => {
 
 // insertOption_profil dans la db
 
-// Update account
-// TODO: need to add image in query ?
-const updateAccount = ua => {
-    const { firstName, lastName, bio, image, slug, mail, mdp, editedWilder } = ua
-    return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, mdp = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, mdp, editedWilder)
-    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
-}
-
-// Update profile options
-const updateProfile = up => {
-    const { title, nomOption, affichageOption, texteOption, editedWilder } = up
-    return db.get("UPDATE option_profil SET title = ?, nom_option = ?, affichage_option = ?, texte_option = ? WHERE wilder_id = ?;", title, nomOption, affichageOption, texteOption, editedWilder)
-    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
-}
 
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
@@ -62,6 +55,7 @@ const dbPromise = Promise.resolve()
     return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
+.then(() => Promise.map(optionsSeed, o => insertOption(o)))
 
 const html = `
 <!doctype html>
