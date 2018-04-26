@@ -183,6 +183,13 @@ app.get('/wilders', (req, res) => {
   .then(records => res.json(records))
 })
 
+// read of options
+
+app.get('/options/:id_wilder', (req, res) => {
+    db.get('select nom_option, texte_option from option_profil where wilder_id=?', req.params.id_wilder)
+    .then(records => res.json(records))
+})
+
 app.get('/fluxs', (req, res) => {
   db.all('SELECT * FROM fluxs ORDER BY Id DESC LIMIT 20')
   .then(records => res.json(records))

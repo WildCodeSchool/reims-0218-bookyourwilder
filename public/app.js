@@ -179,7 +179,7 @@ const controllers = {
 
       page()        // starting the redirection
 
-      navbarDejaInscrit.innerHTML=navbarStandardHtml
+      navbarDejaInscrit.innerHTML=navbarStandardHtml // standard navbar put in the navbar area
 
       })
     })
@@ -214,6 +214,7 @@ const controllers = {
       return wilders.find(wilder => wilder.id == wilder_id)
     })
     .then(wilder => {
+      // replace the Array with a fetch on /options/wilder
       const options_wilder = [{
         "nom": "hobby",
         "texte": "reading",
@@ -363,23 +364,17 @@ const controllers = {
       if (wilderToDisplay.bio.length>50) {
         divBtnReadMore.innerHTML=`<button type="button" class="btn btn-primary" id="btnReadMore"></button>`
         const btnReadMore = document.getElementById('btnReadMore')
-        if (readMore) {
-          btnReadMore.innerHTML='Read More'
-          pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
-        }
-        else {
-          pBio.innerHTML=wilderToDisplay.bio
-          btnReadMore.innerHTML='Read Less'
-        }
+        btnReadMore.innerHTML='Read More'
+        pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
         btnReadMore.addEventListener('click', () => {
           if (readMore) { // 'read more' button
-            pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
-            btnReadMore.innerHTML='Read More'
+            pBio.innerHTML=wilderToDisplay.bio
+            btnReadMore.innerHTML='Read Less'
             readMore=false
           }
           else {          // 'Read Less' button
-            pBio.innerHTML=wilderToDisplay.bio
-            btnReadMore.innerHTML='Read Less'
+            pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
+            btnReadMore.innerHTML='Read More'
             readMore=true
           }
         })
