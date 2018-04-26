@@ -2,13 +2,13 @@
     {
       "firstName": "Florian",
       "lastName": "Hourlier",
-      "title": "dev web",
+      "title": "Gentil développeur web",
       "slug": "Florian-Hourlier",
-      "bio": "Bonjour madame, bonjour monsieur !",
-      "image": "https://via.placeholder.com/480x480/?text=Florian%20Hourlier",
-      "mail": "florian.hourlier@hotmail",
+      "bio": "Gentil développeur web cherche contrat bien rémunéré pour mettre en pratique ses compétences. Passe son temps à faire des jeux concons en JS.",
+      "image": "http://www.larousse.fr/encyclopedie/data/images/1310106-Iguane_vert.jpg",
+      "mail": "florian.hourlier@hotmail.fr",
       "urlLi": "Linkedin florian",
-      "urlGh": "Github florian",
+      "urlGh": "https://github.com/El-Loco-Pinguino",
       "mdp": "jj@jj.jj"
     },
     {
@@ -17,11 +17,11 @@
       "title": "dev web",
       "slug": "Maxence-Millescamps",
       "bio": "Bonjour kebab, bonjour coca !",
-      "image": "https://via.placeholder.com/480x480/?text=Maxence%20Millescamps",
-      "mail": "?",
+      "image": "https://static.cuisineaz.com/610x610/i108058-kebab-sans-gluten.jpg",
+      "mail": "maxence.millescamps.macarty@gmail.com",
       "urlLi": "Linkedin maxence",
-      "urlGh": "Github maxence",
-      "mdp": "ee@ee.ee"
+      "urlGh": "https://github.com/LieLust",
+      "mdp": "0000"
     },
     {
       "firstName": "philippe",
@@ -29,10 +29,10 @@
       "title": "dev web",
       "slug": "philippe-tarte",
       "bio": "Bonjour youpi, bonjour youpi !",
-      "image": "https://via.placeholder.com/480x480/?text=Philippe%20Tarte",
+      "image": "http://www.sfcollector.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/m/o/monsieur-madame-tapis-souris-monsieur-heureux.jpg",
       "mail": "?",
       "urlLi": "Linkedin philippe",
-      "urlGh": "Github philippe",
+      "urlGh": "https://github.com/PhiTarte",
       "mdp": "ww@ww.ww"
     }
   ]

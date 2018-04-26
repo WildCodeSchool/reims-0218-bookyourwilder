@@ -6,15 +6,15 @@ const JWTStrategy   = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 
 passport.use(new LocalStrategy({
-        usernameField: 'username',
+        usernameField: 'mail',
         passwordField: 'password'
     }, 
-    function (username, password, cb) {
+    function (mail, password, cb) {
         //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
-        if ((username !== 'toto') || (password !== 'wildcode')) {
-            return cb(null, false, {message: 'Incorrect username or password.'})
+        if ((mail !== 'wildcode@gmail.com') || (password !== 'wildcode')) {
+            return cb(null, false, {message: 'Incorrect mail or password.'})
         } else {
-            return cb(null, { id: 1, username, password }, {message: 'Logged In Successfully'})
+            return cb(null, { id: 1, mail, password }, {message: 'Logged In Successfully'})
         }
     }
 ))

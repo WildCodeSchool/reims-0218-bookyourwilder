@@ -21,6 +21,7 @@ router.post('/login', function (req, res, next) {
            return res.json({user, token})
         })
     })(req, res)
+
 })
 
 module.exports = router
