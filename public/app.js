@@ -60,45 +60,97 @@ const controllers = {
 
   //route login a modifier l'exemple (pour florian)
   '/': () => {
-    render(`
-  <div class="container-fluid" id="navbarDejaInscrit"></div>
-  <div class="container-fluid inscription pt-5 pb-5">
-      <div class="jumbotron formblock" style="width: 50%; margin: 0 auto;">
-          <form id="add-wilder" method="POST">
-              <h1 class="display-4">Inscrivez-vous</h1>
-              <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
-              <hr class="my-4">
-              <div class="form-group">
-                  <label for="inputFirstName">Prenom</label>
-                  <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="Entrer votre prenom">
-              </div>
-              <div class="form-group">
-                  <label for="inputLastName">Nom</label>
-                  <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Entrer votre nom">
-              </div>
-              <div class="form-group">
-                  <label for="inputMail">Adresse mail</label>
-                  <input required name="mail" type="mail" class="form-control" id="inputMail" placeholder="Votre adresse mail (ex: john.doe@a.co)">
-              </div>
-              <div class="form-group">
-                  <label for="password">Choisissez un mot de passe</label>
-                  <input required name="password" type="password" class="form-control" id="inputPassword" placeholder="Privilégiez un mot de passe compliqué (au moins 8 caractères)">
-              </div>
-              <div class="form-group">
-                  <label for="confirmPassword">Confirmez ce mot de passe</label>
-                  <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez le mot de passe saisi ci-dessus">
-              </div>
-              <button type="submit" class="btn btn-success btn-lg btn-block mt-5">Valider l'inscription</button>
-              <div id="alert-box"></div>
+    render(`<!-- test
+    <div class="container-fluid" id="navbarDejaInscrit"></div>  -->
+    <div class="container-fluid inscription pt-5 pb-5">
+        <div class="jumbotron formblock" style="width: 50%; margin: 0 auto;">
+            <form id="add-wilder" method="POST">
+                <h1 class="display-4">Inscrivez-vous</h1>
+                <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
+                <hr class="my-4">
+                <div class="form-group">
+                    <label for="inputFirstName">Prenom</label>
+                    <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="Entrer votre prenom">
+                </div>
+                <div class="form-group">
+                    <label for="inputLastName">Nom</label>
+                    <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Entrer votre nom">
+                </div>
+                <div class="form-group">
+                    <label for="inputMail">Adresse mail</label>
+                    <input required name="mail" type="mail" class="form-control" id="inputMail" placeholder="Votre adresse mail (ex: john.doe@a.co)">
+                </div>
+                <div class="form-group">
+                    <label for="password">Choisissez un mot de passe</label>
+                    <input required name="password" type="password" class="form-control" id="inputPassword" placeholder="Privilégiez un mot de passe compliqué (au moins 8 caractères)">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmez ce mot de passe</label>
+                    <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez le mot de passe saisi ci-dessus">
+                </div>
+                <button type="submit" class="btn btn-success btn-lg btn-block mt-5 form-control" name="validation">Valider l'inscription</button>
+                <div id="alert-box"></div>
+            </form>
+        </div>
+    </div>`
+    )
+    const navbarDejaInscrit = document.getElementById("navbarMenu")
+    navbarDejaInscrit.innerHTML = `
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+              <a class="navbar-brand" href="#">Déjà inscrit ?</a>
+              <form method="POST" class="form-inline my-2">
+                  <div class="justify-content-center">
+                      <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
+                      <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
+                      <button class="btn btn-outline-primary my-2 my-sm-0 form-control" name="btnConnection" type="submit">Se Connecter</button>
+                  </div>
+              </form>
+          </div>
+      </nav>`
+    const navbarStandardHtml = `
+      <nav class="navbar navbar-expand-lg navbar-dark ">
+        <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home">Acceuil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/flux">Flux</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/notification">Notification</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                <div class="dropdown-menu" aria-labelledby="navbarProfil">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Action 2</a>
+                <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Action 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Add a wilder</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
           </form>
-      </div>
-  </div>`
-  )
+        </div>
+      </nav>`
     const form = document.getElementById('add-wilder')
-    form.addEventListener('submit', e => {
-      e.preventDefault()
+    form.addEventListener('submit', eventSubmit => {
+      console.log(eventSubmit)
+      eventSubmit.preventDefault()  // disabling default refresh of pages
       const data = serializeForm(form)
-      // i'm finishing to fill the wilder
+      // i'm finishing to fill the wilder (needed for updating later)
       data['title']=''
       data['bio']=''
       data['urlGh']=''
@@ -120,24 +172,18 @@ const controllers = {
         const alertBox = document.getElementById('alert-box')
         alertBox.className = 'alert alert-success'
         alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
+
+      eventSubmit.defaultPrevented=false  // suppress the preventdefault
+
+      page("/home") // setting the path
+
+      page()        // starting the redirection
+
+      navbarDejaInscrit.innerHTML=navbarStandardHtml
+
       })
-      window.setTimeout(() =>
-      { window.location = "/home"; },1000);
     })
-    const navbarDejaInscrit = document.getElementById("navbarMenu")
-    navbarDejaInscrit.innerHTML = `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-            <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-            <form method="POST" class="form-inline my-2">
-                <div class="justify-content-center">
-                    <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
-                    <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
-                </div>
-            </form>
-        </div>
-    </nav>`
+    
   },
   
   //page d'acceuil (et bouton temporaire en attendant la navbar)
@@ -170,12 +216,12 @@ const controllers = {
     .then(wilder => {
       const options_wilder = [{
         "nom": "hobby",
-        "affichage": true,
-        "texte": "reading"
+        "texte": "reading",
+        "id_wilder": 2
       }, {
         "nom": "reading",
-        "affichage": false,
-        "texte": "foundation"
+        "texte": "foundation",
+        "id_wilder": 2
       }]
 
       const displayOptionsWilder = (tableauOptions, displayOrChange) => {
