@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const passport = require('passport')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
-const fluxsSeed = require('./public/fluxs.json')
+const optionsSeed = require('./public/wilders_options.json')
 let db
 
 require('./public/passport-strategy')
@@ -28,10 +28,17 @@ const insertWilder = w => {
 const updateWilder = w => {
     const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",password="${password}" where id="${wilderChange_id}"`
-    return db.get(requete)
+    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",password="${password}" where id="${wilderChange_id}";`
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=? where id=?;`,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, password, wilderChange_id)
 }
 
+// insertOption dans la db
+const insertOption = o => {
+    const { nom, contenu, wilder_id } = o
+    return db.get('INSERT INTO option_profil(nom_option, texte_option, wilder_id) VALUES(?, ?, ?)', nom, contenu, wilder_id)
+    .then(() => db.get('SELECT last_insert_rowid() as id'))
+    .then(({ id }) => db.get(`SELECT * FROM option_profil where id=?`, id))
+  }
 
 // insertflux dans la db
 const insertflux = f => {
@@ -62,6 +69,7 @@ const dbPromise = Promise.resolve()
     return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
+.then(() => Promise.map(optionsSeed, o => insertOption(o)))
 
 const html = `
 <!doctype html>
@@ -183,6 +191,13 @@ app.post('/fluxs', (req, res) => {
 app.get('/wilders', (req, res) => {
   db.all('SELECT * from users')
   .then(records => res.json(records))
+})
+
+// read of options
+
+app.get('/options/:id_wilder', (req, res) => {
+    db.get('select nom_option, texte_option from option_profil where wilder_id=?', req.params.id_wilder)
+    .then(records => res.json(records))
 })
 
 app.get('/fluxs', (req, res) => {
