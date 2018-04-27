@@ -12,7 +12,6 @@ const makeCard = item => `
             <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
             <h4 class="card-title">${item.firstName}</h4>
             <h4 class="card-title">${item.lastName}</h4>
-            <h5 class="card-text text-muted">${item.title}</h5>
             <p class="card-text taille">${item.bio}</p>
             <div class="d-flex flex-row justify-content-center">
                 <div class="p-4">
@@ -96,8 +95,8 @@ const controllers = {
 </div>`
   )
     const form = document.getElementById('add-wilder')
-    form.addEventListener('submit', eventSubmit => {
-      eventSubmit.preventDefault()  // disabling default refresh of pages
+    form.addEventListener('submit', e => {
+      e.preventDefault()
       const data = serializeForm(form)
       console.log(data)
       data['title']='' 
@@ -160,41 +159,6 @@ const controllers = {
                 document.getElementById('disconnect').addEventListener('click', () => {
                     localStorage.removeItem('token')
                 })
-                page("/home") // setting the path
-                page()        // starting the redirection
-                navbarDejaInscrit.innerHTML = `
-                <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/home">Acceuil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/flux">Flux</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarProfil">
-                            <a class="dropdown-item" href="#">Mon profil</a>
-                            <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Déconnection</a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin">Admin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Add a wilder</a>
-                        </li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
-                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
-                    </form>
-                </div>
-            </nav>`
             }
         })
     })
@@ -221,205 +185,147 @@ const controllers = {
     </div>`)
   ),
 
-  // routing of a wilder's profile
+  //redirection vers le profil d'un wilder (pour philippe)
   '/profil/:wilder_id': ctx => {
     const { wilder_id } = ctx.params
-    fetch('/wilders') // reading of wilder in database
+    fetch('/wilders') // demande au serveur de récupérer un json de la select avec join
     .then(res => res.json())
     .then(wilders => {
       return wilders.find(wilder => wilder.id == wilder_id)
     })
     .then(wilder => {
-      // replace the Array with a fetch on /options/wilder
       const options_wilder = [{
         "nom": "hobby",
-        "texte": "reading",
-        "id_wilder": 2
+        "affichage": true,
+        "texte": "reading"
       }, {
         "nom": "reading",
-        "texte": "foundation",
-        "id_wilder": 2
+        "affichage": false,
+        "texte": "foundation"
       }]
 
-      const displayOptionsWilder = (tableauOptions, displayOrChange) => {
+      const displayOptionsWilder = (tableauOptions, useDisplay, displayOrChange, showCheckboxes) => {
         let htmlLis = ""
         // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
-        tableauOptions.forEach(option => htmlLis += `<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`
+        tableauOptions.forEach(option => htmlLis += (option["affichage"] || !useDisplay)?`<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`:""
         )
+        if (!showCheckboxes) {
+          htmlLis += `<input type="checkbox">Afficher sur votre profil ?`
+        }
         return htmlLis
       }
-      render(`<div class="container text-center">
-      <div class="jumbotron">
-        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
-          Edit profile
-        </button>
-        <h1 class="display-4" id="h1NameProfil"></h1>
-        <p id="pTitle"></p>
-        <hr class="my-4">
-        <p class="lead" id="bioArea"></p>
-        <div id="divBtnReadMore"></div>
-        <hr>
-        <div id="divLinks" class="row justify-content-around"></div>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+      render(`
+      <div class="container text-center">
+          <div class="jumbotron">
+              <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
+                  Edit profile
+              </button>
+              <h1 class="display-4">${wilder.firstName} ${wilder.lastName}</h1>
+              <p>${wilder.title}</p>
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <div class="modal-body" id="editeur">
+                              <form id="changeProfile">
+                                  <fieldset id="fsWilder">
+                                      <input type="hidden" name="wilderChange_id" class="form-control">
+                                      <fieldset class="form-group" id="nameWilder">
+                                          <div class="row justify-content-around">
+                                              <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                                              <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+                                          </div>
+                                          <div class="row justify-content-around">
+                                              <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                                              <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                                          </div>
+                                      </fieldset>
+                                      <fieldset class="form-group row justify-content-around">
+                                          <label for="inputTitle" class="col-11">Title</label>
+                                          <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                                      </fieldset>
+                                      <fieldset class="form-group row justify-content-around">
+                                          <label for="inputImageUrl" class="col-11">Image URL</label>
+                                          <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                                      </fieldset>
+                                      <fieldset class="form-group row justify-content-around">
+                                          <label for="inputBio" class="col-11">Bio</label>
+                                          <textarea name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                                      </fieldset>
+                                      <fieldset class="form-group">
+                                          <div class="row justify-content-around">
+                                              <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                                              <label for="inputMdp" class="col-12 col-sm-5">Mdp</label>
+                                          </div>
+                                          <div class="row justify-content-around">
+                                              <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                                              <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
+                                          </div>
+                                      </fieldset>
+                                      <fieldset class="form-group" id="links">
+                                          <div class="row justify-content-around">
+                                              <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                                              <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                                          </div>
+                                          <div class="row justify-content-around">
+                                              <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
+                                              <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                                          </div>
+                                      </fieldset>
+                                  </fieldset>
+                                  <hr>
+                                  <fieldset id="fsOptions">
+                                      <div class="modal-header">
+                                          <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
+                                      </div>
+                                      <ul>
+                                          ${displayOptionsWilder(options_wilder, false, true, false)}
+                                      </ul>
+                                  </fieldset>
+                              </form>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
+                          </div>
+                      </div>
+                  </div>
               </div>
-              <div class="modal-body" id="editeur">
-                <form id="changeProfile">
-                  <fieldset id="fsWilder">
-                    <input type="hidden" name="wilderChange_id" class="form-control">
-                    <fieldset class="form-group" id="nameWilder">
-                      <div class="row justify-content-around">
-                        <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
-                        <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                        <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
-                      </div>
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputTitle" class="col-11">Title</label>
-                      <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputImageUrl" class="col-11">Image URL</label>
-                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputBio" class="col-11">Bio</label>
-                      <textarea name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
-                    </fieldset>
-                    <fieldset class="form-group">
-                      <div class="row justify-content-around">
-                        <label for="inputMail" class="col-12 col-sm-5">Mail</label>
-                        <label for="inputPassword" class="col-12 col-sm-5">Password</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
-                        <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputPassword" placeholder="${wilder.password}">
-                      </div>
-                    </fieldset>
-                    <fieldset class="form-group" id="links">
-                      <div class="row justify-content-around">
-                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
-                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
-                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
-                      </div>
-                    </fieldset>
-                  </fieldset>
-                  <hr>
-                  <fieldset id="fsOptions">
-                    <div class="modal-header">
-                      <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
-                    </div>
-                    <ul>
-                      ${displayOptionsWilder(options_wilder, true)}
-                    </ul>
-                  </fieldset>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" data-dismiss="modal" id="btnChangeOption">Save changes</button>
-              </div>
-            </div>
-        </div>
-      </div>
-      <div class="jumbotron">
-      <h2>Options:</h2>
-      <form>
-        <ul>
-          ${displayOptionsWilder(options_wilder, false)}
-        </ul>
-      </form>
-    </div>
-    </div>`)
-
-    // define display wilder function in profile jumbotron
-
-    const pBio = document.getElementById('bioArea')
-    const pTitle = document.getElementById('pTitle')
-    const h1NameProfil = document.getElementById('h1NameProfil')
-    const divBtnReadMore = document.getElementById('divBtnReadMore')
-    const divLinks = document.getElementById('divLinks')
-    let readMore = true
-
-    const displayCard = (titleText, bodyText) => {
-      let classLien=''
-      switch (titleText) {
-        case 'linkedin': classLien='fab fa-linkedin-in'
-        break
-        case 'mail': classLien='fas fa-envelope'
-        break
-        case 'github': classLien='fab fa-github'
-        break
-      }
-      return `
-      <div class="card col-12 col-sm-3">
-        <div class="card-body">
-        <a href="${bodyText}" target="_blank">
-        <i class="${classLien} rounded-circle"></i>
-        </a>
-        </div>
-      </div>`
-    }
+              <hr class="my-4">
+              <p class="lead" id="bioArea">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
+              ${(wilder.bio.length>50)?'<button type="button" class="btn btn-primary" id="displayBio">Read more</button>':''}
+          </div>
+          <div class="jumbotron">
+              <h2>options to display:</h2>
+              <form>
+                  <ul>
+                      ${displayOptionsWilder(options_wilder, true, false, true)}
+                  </ul>
+              </form>
+          </div>
+      </div>`)
+    const formProfile = document.getElementById('changeProfile')
+    const nameWilder = document.getElementById('nameWilder')
     
-    const displayWilderInProfile = (wilderToDisplay) => {
-      h1NameProfil.innerHTML=wilderToDisplay.firstName+' '+wilderToDisplay.lastName
-      pTitle.innerHTML=wilderToDisplay.title
-      if (wilderToDisplay.bio.length>50) {
-        divBtnReadMore.innerHTML=`<button type="button" class="btn btn-primary" id="btnReadMore"></button>`
-        const btnReadMore = document.getElementById('btnReadMore')
-        btnReadMore.innerHTML='Read More'
-        pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
-        btnReadMore.addEventListener('click', () => {
-          if (readMore) { // 'read more' button
-            pBio.innerHTML=wilderToDisplay.bio
-            btnReadMore.innerHTML='Read Less'
-            readMore=false
-          }
-          else {          // 'Read Less' button
-            pBio.innerHTML=wilderToDisplay.bio.substr(0,50)+"..."
-            btnReadMore.innerHTML='Read More'
-            readMore=true
-          }
-        })
-      }
-      else 
-        pBio.innerHTML=wilderToDisplay.bio
-      divLinks.innerHTML=displayCard('mail', wilderToDisplay.mail)
-      divLinks.innerHTML+=displayCard('linkedin', wilderToDisplay.urlLi)
-      divLinks.innerHTML+=displayCard('github', wilderToDisplay.urlGh)
-    }
-
-    // first display of wilder
-    displayWilderInProfile(wilder)
-
-    // click on "save changes"
     const btnSaveChanges = document.getElementById('btnChangeOption')
-
     btnSaveChanges.addEventListener('click',e => {
       e.preventDefault()
 
-      // i must have a hidden field with "id" to be sent with datas
-      const champCache = document.getElementsByName('wilderChange_id')
-      champCache[0].setAttribute('value',wilder.id)
+      const inputs = document.querySelectorAll(`#fsWilder input`)
+      inputs.forEach(input => {
+        if (input.attributes['value']===' ') 
+          input.setAttribute('value',input.attributes['placeholder'])
+      })
 
-      const data = serializeForm(document.getElementById('changeProfile'))
-
-      // empty fields of data object must be filled with wilder's datas
+      const data = serializeForm(formProfile)
 
       const proprietes = Object.keys(data)
+
       proprietes.forEach(propriete => {
         if (data[propriete]==='') data[propriete]=wilder[propriete]
       })
@@ -428,7 +334,6 @@ const controllers = {
         const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
-
       fetch('/wilders', {
         method: 'PUT',
         headers: {
@@ -437,22 +342,30 @@ const controllers = {
         },
         body: JSON.stringify(data)
       })
-      .then(responseAfterUpdate => {
-        fetch('/wilders') // new reading of wilder AFTER update
-        .then(resNew => {
-          return resNew.json()
-        })
-        .then(wildersNew => {
-          return wildersNew.find(newWilder => newWilder.id == wilder_id)
-        })
-        .then(newWilder => {
-          displayWilderInProfile(newWilder)
-        })
-
-      })
+      window.setTimeout(() =>
+      { window.location = `/profil/${wilder_id}`; },250);
     })
-    }) // closing last 'then' of first reading of wilder
-  },  // closing of route
+
+    const champCache = document.getElementsByName('wilderChange_id')
+    champCache[0].setAttribute('value',wilder.id)
+
+    const btnReadMore = document.getElementById('displayBio')
+    const pBio = document.getElementById('bioArea')
+
+    if (typeof(btnReadMore) !== 'undefined') {
+      btnReadMore.addEventListener('click', e => {
+        if (btnReadMore.innerHTML==='Read more') {
+          btnReadMore.innerHTML='Read less'
+          pBio.innerHTML=wilder.bio
+        }
+        else {
+          btnReadMore.innerHTML='Read more'
+          pBio.innerHTML=wilder.bio.substr(0,50)+'...'
+        }
+      })
+    }
+  })
+  },
 
 
   '/flux': () => {
