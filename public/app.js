@@ -59,9 +59,11 @@ const controllers = {
 
   //route login a modifier l'exemple (pour florian)
   '/': () => {
-    render(`
+    if (localStorage.token === undefined) {
+        render(`
   <div class="container-fluid" id="navbarDejaInscrit"></div>
   <div class="container-fluid inscription pt-5 pb-5">
+    <div id="alert-login" class="hidden" style="margin: 0"></div>
       <div class="jumbotron formblock" style="width: 50%; margin: 0 auto;">
         <form id="add-wilder" method="POST">
           <h1 class="display-4">Inscrivez-vous</h1>
@@ -113,32 +115,57 @@ const controllers = {
         },
         body: JSON.stringify(data)
       })
-      // window.setTimeout(() =>
-      // { window.location = "/home"; },250);
     })
     const navbarDejaInscrit = document.getElementById("navbarMenu")
     navbarDejaInscrit.innerHTML = `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg">
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
             <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-            <form id="loginForm" class="form-inline my-2">
-                <div class="justify-content-center">
-                    <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
-                    <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
-                </div>
+            <form id="loginForm" method="POST" class="form-inline my-2">
+                <input name="loginMail" type="mail" class="form-control mr-2" id="inputLoginMail" placeholder="Adresse mail">
+                <input name="loginPassword" type="password" class="form-control mr-2" id="inputLoginPassword" placeholder="Mot de passe">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
             </form>
         </div>
-    </nav>
-    <div id="alert-login" class="hidden"></div>`
+    </nav>`
 
     const loginForm = document.getElementById('loginForm')
     loginForm.addEventListener('submit', e => {
         e.preventDefault()
-    const data = serializeForm(loginForm)
-    console.log(data)
-    
-  })},
+        const data = serializeForm(loginForm)
+        console.log(data)
+        fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => {
+            const alert = document.getElementById('alert-login')
+            console.log(data)
+            console.log(data.user)
+            if(!data.user) {
+                //alert class danger
+                alert.className = 'alert alert-danger mb-5'
+                alert.innerHTML = `Mail or Password is incorrect.`
+            } else {
+                alert.className = 'alert alert-success mb-5'
+                alert.innerHTML = `<h2>connecté</h2><button id="disconnect" type="button">se deconnecter</button>`
+                //stores the token
+                localStorage.setItem('token', data.token)
+                document.getElementById('disconnect').addEventListener('click', () => {
+                    localStorage.removeItem('token')
+                })
+            }
+        })
+    })
+    } else {
+        render('<h1>Vous êtes déja authentifié</h1>')
+    }
+    },
   
   '/home': () =>
   fetch('/wilders')
@@ -237,7 +264,7 @@ const controllers = {
                                           </div>
                                           <div class="row justify-content-around">
                                               <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
-                                              <input name="mdp" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.mdp}">
+                                              <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
                                           </div>
                                       </fieldset>
                                       <fieldset class="form-group" id="links">
@@ -419,52 +446,6 @@ const controllers = {
           </div>
       </div>`),
 
-    '/test': () => {
-        render(`
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-            <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-            <form id="loginForm" method="POST" class="form-inline my-2">
-                <input name="mail" type="mail" class="form-control" id="inputMail" placeholder="Votre adresse mail (ex: john.doe@a.co)">
-                <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Privilégiez un mot de passe compliqué (au moins 8 caractères)">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
-            </form>
-        </div>
-    </nav>
-    <div id="alert-login" class="hidden"></div>`)
-
-    const loginForm = document.getElementById('loginForm')
-    loginForm.addEventListener('submit', e => {
-        e.preventDefault()
-        const data = serializeForm(loginForm)
-        console.log(data)
-        fetch('/auth/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then(data => {
-            const alert = document.getElementById('alert-login')
-            if(!data.user) {
-                //alert class danger
-                alert.className = 'alert alert-danger'
-                alert.innerHTML = `Mail or Password is incorrect.`
-            } else {
-                alert.className = 'alert alert-success'
-                alert.innerHTML = `<h2>connecté</h2><button id="disconnect" type="button">se deconnecter</button>`
-                //stores the token
-                localStorage.setItem('token', data.token)
-                document.getElementById('disconnect').addEventListener('click', () => {
-                    localStorage.removeItem('token')
-                })
-            }
-        })
-    })},
-
   '*': () => render('<h1>Not Found</h1>')
 }
 
@@ -477,7 +458,6 @@ const routing = () => {
     '/flux',
     '/notification',
     '/admin',
-    '/test',
     '*'
   ]
   routes.forEach(

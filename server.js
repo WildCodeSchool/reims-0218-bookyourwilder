@@ -18,17 +18,17 @@ app.use('/auth', auth)
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, mdp } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp)
+  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
 
 // updateWilder dans la db
 const updateWilder = w => {
-    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp , wilderChange_id} = w
+    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}"`
+    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",password="${password}" where id="${wilderChange_id}"`
     return db.get(requete)
 }
 
@@ -43,8 +43,8 @@ const insertflux = f => {
 
 // TODO: need to add image in query ?
 const updateAccount = ua => {
-    const { firstName, lastName, bio, image, slug, mail, mdp, editedWilder } = ua
-    return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, mdp = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, mdp, editedWilder)
+    const { firstName, lastName, bio, image, slug, mail, password, editedWilder } = ua
+    return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, password = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, password, editedWilder)
     //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
 }
 
@@ -75,8 +75,8 @@ const html = `
             <link rel="stylesheet" href="style.css">
         </head>
         <body>
-            <div class="container-fluid bg-dark" id="navbarMenu">
-                <nav class="navbar navbar-expand-lg navbar-dark ">
+            <div class="container-fluid bg pt-1 pb-1" id="navbarMenu">
+                <nav class="navbar navbar-expand-lg navbar-dark">
                     <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -87,16 +87,12 @@ const html = `
                             <li class="nav-item">
                                 <a class="nav-link" href="/flux">Flux</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/notification">Notification</a>
-                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarProfil">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Action 2</a>
+                                <a class="dropdown-item" href="#">Mon profil</a>
                                 <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Action 3</a>
+                                    <a class="dropdown-item" href="#">Déconnection</a>
                                 </div>
                             </li>
                             <li class="nav-item">
@@ -116,7 +112,7 @@ const html = `
             
             <div id="main"></div>
 
-            <footer class="container-fluid pt-5 bg">
+            <footer class="container-fluid bg">
                 <div class="row justify-content-around text-center">
                     <div class="col-12 col-md-6 col-lg-4 mt-5">
                         <h5>Les autres projets de la <br>Wild Code School Reims</h5>

@@ -19,7 +19,7 @@ CREATE TABLE users (
   mail VARCHAR(255),
   urlLi VARCHAR(100),
   urlGh VARCHAR(100),
-  mdp TEXT
+  password TEXT
 );
 
 CREATE TABLE notifications (
