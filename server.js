@@ -3,6 +3,7 @@ const express = require('express')
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const passport = require('passport')
+const nodemailer = require("nodemailer")
 const app = express()
 const wildersSeed = require('./public/wilders.json')
 const optionsSeed = require('./public/wilders_options.json')
@@ -42,10 +43,10 @@ const insertOption = o => {
 
 // insertflux dans la db
 const insertflux = f => {
-    const { fluxs } = f
-    return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
-    .then(() => db.get('SELECT last_insert_rowid() as id'))
-    .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
+  const { fluxs } = f
+  return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
+  .then(() => db.get('SELECT last_insert_rowid() as id'))
+  .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
 // TODO: need to add image in query ?
@@ -65,8 +66,8 @@ const updateProfile = up => {
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
 .then(_db => {
-    db = _db
-    return db.migrate({ force: 'last' })
+  db = _db
+  return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
 .then(() => Promise.map(optionsSeed, o => insertOption(o)))
@@ -140,33 +141,30 @@ const html = `
                         <h5>Plus d'infos sur l'école</h5>
                         <a href="https://wildcodeschool.fr/" target="_blank"><button type="button" class="btn btn-primary mt-2 mb-2">Plus d'infos</button></a>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mt-5">
-                        <h5>Suivez-nous sur les réseaux sociaux !</h5>
-                        <div class="d-flex flex-row justify-content-center mt-3">
-                            <div class="p-4">
-                                <a href="https://www.facebook.com/wildcodeschool/" target="_blank"><i class="fab fa-facebook-square rounded-circle"></i></a>
-                            </div>
-                            <div class="p-4">
-                                <a href="https://twitter.com/wildcodeschool" target="_blank"><i class="fab fa-twitter rounded-circle"></i></a>
-                            </div>
-                            <div class="p-4">
-                                <a href="https://www.instagram.com/wildcodeschool/" target="_blank"><i class="fab fa-instagram rounded-circle"></i></a>
-                            </div>
-                        </div>
+                    <div class="p-4">
+                        <a href="https://twitter.com/wildcodeschool" target="_blank"><i class="fab fa-twitter rounded-circle"></i></a>
+                    </div>
+                    <div class="p-4">
+                        <a href="https://www.instagram.com/wildcodeschool/" target="_blank"><i class="fab fa-instagram rounded-circle"></i></a>
                     </div>
                 </div>
-                <div class="row justify-content-around text-center">
-                    <div class="col-12 mt-5">
-                        <p class="copyright">Made with Love by Wild Code School Reims - <span>Team Book Your Wilder (Maxence - Florian - Philippe)</span></p>
-                    </div>
-                </div>
-            </footer>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="/page.js"></script>
-        <script src="/app.js"></script>
-    </body>
+            </div>
+        </div>
+        <div class="row justify-content-around text-center">
+            <div class="col-12 mt-5">
+                <p class="copyright">Made with Love by Wild Code School Reims - <span>Team Book Your Wilder (Maxence - Florian - Philippe)</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/page.js"></script>
+    <script src="/app.js"></script>
+  </body>
 </html>`
 
 
@@ -176,10 +174,44 @@ const html = `
 
 //CREATE
 app.post('/wilders', (req, res) => {
-    return insertWilder(req.body)
-    .then(record => {
-        res.json(record)
-  })
+    let transporter = nodemailer.createTransport({
+        host: 'smtp-mail.outlook.com',
+        port: 587,
+        secureConnection: false,
+        tls: {
+          ciphers: "SSLv3"
+        },
+        auth: {
+            user: "florian.hourlier@hotmail.fr",
+            pass: "1AQW2ZSX3EDC"
+        }
+      });
+    
+      let mailOptions = {
+        from: "<florian.hourlier@hotmail.fr>",
+        to: `${req.body.mail}`,
+        subject: "Bienvenue sur BookYourWilder !",
+        text: `Hey ${req.body.firstName} ${req.body.lastName} !
+        Bienvenue dans le comité très restreint des Wilders !
+        Vous pouvez désormais vous authentifier avec votre adresse mail (${req.body.mail}) et le mot de passe que vous avez défini.
+        Sur ce, à bientôt sur BookYourWilder !
+        
+        (En cas de questions, vous pouvez envoyer un mail à florian.hourlier@hotmail.fr. Les spams, je les dévore tous crus !)`,
+        html: `Hey <strong>${req.body.firstName} ${req.body.lastName}</strong> !<br/>
+        Bienvenue dans le comité très restreint des Wilders !<br/>
+        Vous pouvez désormais vous authentifier avec votre <u>adresse mail</u> (${req.body.mail}) et le <u>mot de passe</u> que vous avez défini.<br/>
+        Sur ce, à bientôt sur BookYourWilder !<br/><br/>
+        
+        <em>(En cas de questions, vous pouvez envoyer un mail à florian.hourlier@hotmail.fr. Les spams, je les dévore tous crus !)</em>`
+      };
+    
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+              return console.log(error);
+          }
+    })
+  return insertWilder(req.body)
+  .then(record => res.json(record))
 })
 
 app.post('/fluxs', (req, res) => {
