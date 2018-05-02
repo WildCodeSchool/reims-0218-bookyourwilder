@@ -32,25 +32,9 @@ const insertWilder = w => {
 
 // updateWilder dans la db
 const updateWilder = w => {
-    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id, mobility, adress} = w
-    const slug = w.firstName+'-'+w.lastName
-    // if (w.avatar) {
-    //     w.avatar = w.avatar.replace("C:\\fakepath\\", "")
-    //     console.log(w)
-    //     w.avatar = w.avatar.substr(12, w.avatar.length)
-    //     console.log(w.avatar)
-    //     fs.rename(w.avatar, "TMP/" + w.avatar, (err) => {
-    //         if (err) {
-    //             console.log(err)
-    //             console.log(`Erreur lors de l'envoi du fichier`)
-    //         } else {
-    //             console.log(`Fichier envoyé avec succès`)
-    //         }
-    //     })
-    // }
-    // const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
-    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=?,mobility=?, adress=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, mdp, wilderChange_id, mobility, adress)
-}
+    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id } = w
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=?, adress=?, mobility=? where id=?;`,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id)
+    }
 
 // insertflux dans la db
 const insertflux = f => {
@@ -60,7 +44,7 @@ const insertflux = f => {
     .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
-// TODO: need to add image in query ?
+/* // TODO: need to add image in query ?
 const updateAccount = ua => {
     const { firstName, lastName, bio, image, slug, mail, password, editedWilder } = ua
     return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, password = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, password, editedWilder)
@@ -72,7 +56,7 @@ const updateProfile = up => {
     const { title, nomOption, affichageOption, texteOption, editedWilder } = up
     return db.get("UPDATE option_profil SET title = ?, nom_option = ?, affichage_option = ?, texte_option = ? WHERE wilder_id = ?;", title, nomOption, affichageOption, texteOption, editedWilder)
     //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
-}
+} */
 
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
@@ -91,7 +75,7 @@ const html = `
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
             <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-            <link rel="stylesheet" href="style.css">
+            <link rel="stylesheet" href="/style.css">
         </head>
         <body>
             <header class="container-fluid bg-dark" id="navbarMenu">
