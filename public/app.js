@@ -341,8 +341,8 @@ const controllers = {
                       <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
-                      <label for="inputImageUrl" class="col-11">Image URL</label>
-                      <input name="avatar" type="file" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                      <label for="inputImageUrl" class="col-11">URL de l'avatar</label>
+                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputBio" class="col-11">Bio</label>

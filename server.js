@@ -24,32 +24,19 @@ app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password)
-  .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
+    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password } = w
+    return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password)
+    .then(() => db.get('SELECT last_insert_rowid() as id'))
+    .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
 
 // updateWilder dans la db
 const updateWilder = w => {
     const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    // if (w.avatar) {
-    //     w.avatar = w.avatar.replace("C:\\fakepath\\", "")
-    //     console.log(w)
-    //     w.avatar = w.avatar.substr(12, w.avatar.length)
-    //     console.log(w.avatar)
-    //     fs.rename(w.avatar, "TMP/" + w.avatar, (err) => {
-    //         if (err) {
-    //             console.log(err)
-    //             console.log(`Erreur lors de l'envoi du fichier`)
-    //         } else {
-    //             console.log(`Fichier envoyé avec succès`)
-    //         }
-    //     })
-    // }
-    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
-    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, mdp, wilderChange_id)
+    console.log(w)
+    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",password="${password}" where id="${wilderChange_id}";`
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=? where id=?;`,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, password, wilderChange_id)
 }
 
 
@@ -216,8 +203,7 @@ app.get('/fluxs', (req, res) => {
 //   })
 
 //update
-app.put('/wilders', upload.single("avatar"), (req, res, next) => {
-    // req.body.avatar = chemin de l'avatar
+app.put('/wilders', (req, res) => {
     return updateWilder(req.body)
     .then(record => res.json(record))
   })
