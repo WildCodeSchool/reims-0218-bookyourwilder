@@ -14,18 +14,18 @@ const makeCard = item => `
             <h4 class="card-title">${item.firstName}</h4>
             <h4 class="card-title">${item.lastName}</h4>
             <p class="card-text taille">${item.bio}</p>
-            <div class="d-flex flex-row justify-content-center">
-                <div class="p-4">
+            <div class="justify-content-center">
+                <div>
                     <a href="${item.urlLi}" target="_blank">
                         <i class="fab fa-linkedin-in rounded-circle"></i>
                     </a>
                 </div>
-                <div class="p-4">
+                <div>
                     <a href="${item.urlGh}" target="_blank">
                       <i class="fab fa-github rounded-circle"></i>
                     </a>
                 </div>
-                <div class="p-4">
+                <div>
                     <a href="mailto:${item.mail}">
                         <i class="fas fa-envelope rounded-circle"></i>
                     </a>
@@ -301,7 +301,7 @@ const controllers = {
       return htmlLis
     }
       render(`<div class="container text-center">
-      <div class="jumbotron">
+      <div class="jumbotron" id="profileBlock">
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
           Edit profile
         </button>
