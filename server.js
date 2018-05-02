@@ -69,7 +69,7 @@ const html = `
             <link rel="stylesheet" href="style.css">
         </head>
         <body>
-            <div class="container-fluid bg-dark" id="navbarMenu">
+            <header class="container-fluid bg-dark" id="navbarMenu">
                 <nav class="navbar navbar-expand-lg navbar-dark ">
                     <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -106,11 +106,11 @@ const html = `
                         </form>
                     </div>
                 </nav>
-            </div>
+            </header>
             
             <div id="main"></div>
 
-            <footer class="container-fluid pt-5 bg">
+            <footer class="container-fluid pt-2 bg">
                 <div class="row justify-content-around text-center">
                     <div class="col-12 col-md-6 col-lg-4 mt-5">
                         <h5>Les autres projets de la <br>Wild Code School Reims</h5>

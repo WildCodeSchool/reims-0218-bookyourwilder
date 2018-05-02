@@ -1,4 +1,5 @@
 const mainDiv = document.getElementById('main')
+const bodyDocument = document.querySelector('body')
 
 const render = html => {
     mainDiv.innerHTML = html
@@ -147,7 +148,6 @@ const controllers = {
       </nav>`
     const form = document.getElementById('add-wilder')
     form.addEventListener('submit', eventSubmit => {
-      console.log(eventSubmit)
       eventSubmit.preventDefault()  // disabling default refresh of pages
       const data = serializeForm(form)
       // i'm finishing to fill the wilder (needed for updating later)
@@ -183,7 +183,6 @@ const controllers = {
 
       })
     })
-    
   },
   
   //page d'acceuil (et bouton temporaire en attendant la navbar)
@@ -191,7 +190,8 @@ const controllers = {
   fetch('/wilders')
     .then(res => res.json())
     .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
-    .then(album => render(
+    .then(album => {
+      render(
     `<div class="container">
         <div class="row mt-5 mb-5">
             <div class="col">
@@ -203,6 +203,7 @@ const controllers = {
         </div>
         <div class="row">${album}</div>
     </div>`)
+    }
   ),
 
   // routing of a wilder's profile
@@ -477,7 +478,8 @@ const controllers = {
       listFluxs.innerHTML = `${fluxs}`
     })
   })
-})},
+  })
+  },
 
   '/notification': () => render('<h1>Page notification</h1>'),
 
