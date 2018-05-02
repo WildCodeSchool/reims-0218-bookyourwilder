@@ -9,7 +9,9 @@
       "mail": "florian.hourlier@hotmail.fr",
       "urlLi": "Linkedin florian",
       "urlGh": "https://github.com/El-Loco-Pinguino",
-      "password": "1111"
+      "password": "1111",
+      "mobility": "Hirson, St Quentin",
+      "adress": "24 rue des excuses, 02347 Trifouilly les oies"
     },
     {
       "firstName": "Maxence",
@@ -21,7 +23,9 @@
       "mail": "maxence.millescamps.macarty@gmail.com",
       "urlLi": "Linkedin maxence",
       "urlGh": "https://github.com/LieLust",
-      "password": "0000"
+      "password": "0000",
+      "mobility": "Reims, Paris",
+      "adress": "99 boulevard des kebabs, 51100 Reims"
     },
     {
       "firstName": "philippe",
@@ -33,6 +37,8 @@
       "mail": "?",
       "urlLi": "Linkedin philippe",
       "urlGh": "https://github.com/PhiTarte",
-      "password": "2222"
+      "password": "2222",
+      "mobility": "Laon, Reims",
+      "adress": "7 place de l'église, 02160 Concevreux"
     }
   ]

@@ -24,15 +24,15 @@ app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password)
+  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
 
 // updateWilder dans la db
 const updateWilder = w => {
-    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id} = w
+    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id, mobility, adress} = w
     const slug = w.firstName+'-'+w.lastName
     // if (w.avatar) {
     //     w.avatar = w.avatar.replace("C:\\fakepath\\", "")
@@ -48,10 +48,9 @@ const updateWilder = w => {
     //         }
     //     })
     // }
-    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
-    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, mdp, wilderChange_id)
+    // const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=?,mobility=?, adress=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, mdp, wilderChange_id, mobility, adress)
 }
-
 
 // insertflux dans la db
 const insertflux = f => {

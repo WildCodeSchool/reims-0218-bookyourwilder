@@ -311,6 +311,21 @@ const controllers = {
         <p class="lead" id="bioArea"></p>
         <div id="divBtnReadMore"></div>
         <hr>
+        <div class="row justify-content-around">
+          <div class="card col-12 col-sm-5">
+            <div class="card-body">
+              <label>Adress</label>
+              <input type="text" readonly="true" id="inpAdress">
+              </a>
+            </div>
+          </div>
+          <div class="card col-12 col-sm-5">
+            <div class="card-body">
+              <label>Mobility</label>
+              <input type="text" readonly="true" id="inpMobility">
+            </div>
+          </div>
+        </div>
         <div id="divLinks" class="row justify-content-around"></div>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -368,7 +383,18 @@ const controllers = {
                         <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
                       </div>
                     </fieldset>
+                    <fieldset class="form-group" id="locations">
+                      <div class="row justify-content-around">
+                        <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
+                        <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="${wilder.adress}">
+                        <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="${wilder.mobility}">
+                      </div>
+                    </fieldset>
                   </fieldset>
+                  <!-- options area, to be developed in next release
                   <hr>
                   <fieldset id="fsOptions">
                     <div class="modal-header">
@@ -378,6 +404,7 @@ const controllers = {
                       ${displayOptionsWilder(options_wilder, true)}
                     </ul>
                   </fieldset>
+                  -->
                 </form>
               </div>
               <div class="modal-footer">
@@ -387,14 +414,16 @@ const controllers = {
             </div>
         </div>
       </div>
+      <!-- options area, to be developed in next release
       <div class="jumbotron">
-      <h2>Options:</h2>
-      <form>
-        <ul>
-          ${displayOptionsWilder(options_wilder, false)}
-        </ul>
-      </form>
-    </div>
+        <h2>Options:</h2>
+        <form>
+          <ul>
+            ${displayOptionsWilder(options_wilder, false)}
+          </ul>
+        </form>
+      </div>
+      -->
     </div>`)
 
     // define display wilder function in profile jumbotron
@@ -404,6 +433,8 @@ const controllers = {
     const h1NameProfil = document.getElementById('h1NameProfil')
     const divBtnReadMore = document.getElementById('divBtnReadMore')
     const divLinks = document.getElementById('divLinks')
+    const inpAdress = document.getElementById('inpAdress')
+    const inpMobility = document.getElementById('inpMobility')
     let readMore = true
 
     const displayCard = (titleText, bodyText) => {
@@ -429,6 +460,8 @@ const controllers = {
     const displayWilderInProfile = (wilderToDisplay) => {
       h1NameProfil.innerHTML=wilderToDisplay.firstName+' '+wilderToDisplay.lastName
       pTitle.innerHTML=wilderToDisplay.title
+      inpAdress.setAttribute("value", wilderToDisplay.adress)
+      inpMobility.setAttribute("value", wilderToDisplay.mobility)
       if (wilderToDisplay.bio.length>50) {
         divBtnReadMore.innerHTML=`<button type="button" class="btn btn-primary" id="btnReadMore"></button>`
         const btnReadMore = document.getElementById('btnReadMore')
@@ -490,7 +523,7 @@ const controllers = {
         body: JSON.stringify(data)
       })
       .then(responseAfterUpdate => {
-        fetch('/wilders') // new reading of wilder AFTER update
+        fetch('/wilders') // new reading of wilders AFTER update
         .then(resNew => {
           return resNew.json()
         })
