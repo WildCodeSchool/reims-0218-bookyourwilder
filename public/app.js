@@ -7,13 +7,12 @@ const render = html => {
 
 // renvoit le html d'une card bootstrap pour un wilder
 const makeCard = item => `
-<div class="col-md-4 mt-5">
+<div class="col-sm-4 mt-5">
     <div class="card text-center mb-5 box-shadow">
         <div class="card-body">
             <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
             <h4 class="card-title">${item.firstName}</h4>
             <h4 class="card-title">${item.lastName}</h4>
-            <h5 class="card-text text-muted">${item.title}</h5>
             <p class="card-text taille">${item.bio}</p>
             <div class="d-flex flex-row justify-content-center">
                 <div class="p-4">
@@ -50,7 +49,6 @@ const makeCard = item => `
 const serializeForm = form => {
   const data = {}
   const elements = form.getElementsByClassName('form-control')
-  console.log(elements)
   for(let el of elements) {
     data[el.name] = el.value
   }
@@ -62,10 +60,11 @@ const controllers = {
 
   //route login a modifier l'exemple (pour florian)
   '/': () => {
-    render(`<!-- test
-    <div class="container-fluid" id="navbarDejaInscrit"></div>  -->
+    if (localStorage.token === undefined) {
+        render(`
     <div class="container-fluid inscription pt-5 pb-5">
-        <div class="jumbotron formblock" style="width: 50%; margin: 0 auto;">
+    <div id="alert-login"></div>
+        <div class="jumbotron formblock">
             <form id="add-wilder" method="POST">
                 <h1 class="display-4">Inscrivez-vous</h1>
                 <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
@@ -98,18 +97,16 @@ const controllers = {
     )
     const navbarDejaInscrit = document.getElementById("navbarMenu")
     navbarDejaInscrit.innerHTML = `
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-              <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-              <form method="POST" class="form-inline my-2">
-                  <div class="justify-content-center">
-                      <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
-                      <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
-                      <button class="btn btn-outline-primary my-2 my-sm-0 form-control" name="btnConnection" type="submit">Se Connecter</button>
-                  </div>
-              </form>
-          </div>
-      </nav>`
+    <nav class="navbar navbar-expand-lg navbar-dark bg">
+        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+            <a class="navbar-brand" href="#">Déjà inscrit ?</a>
+            <form id="loginForm" method="POST" class="form-inline my-2">
+                <input name="loginMail" type="mail" class="form-control mr-2" id="inputLoginMail" placeholder="Adresse mail">
+                <input name="loginPassword" type="password" class="form-control mr-2" id="inputLoginPassword" placeholder="Mot de passe">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
+            </form>
+        </div>
+    </nav>`
     const navbarStandardHtml = `
       <nav class="navbar navbar-expand-lg navbar-dark ">
         <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
@@ -149,7 +146,6 @@ const controllers = {
       </nav>`
     const form = document.getElementById('add-wilder')
     form.addEventListener('submit', eventSubmit => {
-        console.log(eventSubmit)
         eventSubmit.preventDefault()  // disabling default refresh of pages
         const data = serializeForm(form)
         console.log(data)
@@ -174,27 +170,90 @@ const controllers = {
             })
             .then(res => res.json())
             .then(wilder => {
-                const alertBox = document.getElementById('alert-box')
-                alertBox.className = 'alert alert-success'
-                alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
-      
                 eventSubmit.defaultPrevented=false  // suppress the preventdefault
-      
-                page("/home") // setting the path
-      
-                page()        // starting the redirection
-      
+                // page("/home") // setting the path
+                // page()        // starting the redirection
                 navbarDejaInscrit.innerHTML=navbarStandardHtml // standard navbar put in the navbar area
             })
         } else {
             const alertBox = document.getElementById('alert-box')
-            alertBox.className = 'alert alert-danger'
+            alertBox.className = 'alert alert-danger mt-3'
             alertBox.innerHTML = "Hey ! Les mots de passe ne correspondent pas ! Veuillez les vérifier."
         }
     })
-  },
+    const loginForm = document.getElementById('loginForm')
+    loginForm.addEventListener('submit', e => {
+        e.preventDefault()
+        const data = serializeForm(loginForm)
+        console.log(data)
+        fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => {
+            const alert = document.getElementById('alert-login')
+            console.log(data)
+            console.log(data.user)
+            if(!data.user) {
+                //alert class danger
+                alert.className = 'alert alert-danger mb-5'
+                alert.innerHTML = `Mail or Password is incorrect.`
+            } else {
+                alert.className = 'alert alert-success mb-5'
+                alert.innerHTML = `<h2>connecté</h2><button id="disconnect" type="button">se deconnecter</button>`
+                //stores the token
+                localStorage.setItem('token', data.token)
+                document.getElementById('disconnect').addEventListener('click', () => {
+                    localStorage.removeItem('token')
+                })
+                // page("/home") // setting the path
+                // page()        // starting the redirection
+                navbarDejaInscrit.innerHTML = `
+                <nav class="navbar navbar-expand-lg navbar-dark">
+                <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Acceuil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/flux">Flux</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarProfil">
+                            <a class="dropdown-item" href="#">Mon profil</a>
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Déconnection</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Add a wilder</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
+                    </form>
+                </div>
+            </nav>`
+            }
+        })
+    })
+    } else {
+        render('<h1>Vous êtes déja authentifié</h1>')
+    }
+    },
   
-  //page d'acceuil (et bouton temporaire en attendant la navbar)
   '/home': () =>
   fetch('/wilders')
     .then(res => res.json())
@@ -215,7 +274,6 @@ const controllers = {
     }
   ),
 
-  // routing of a wilder's profile
   '/profil/:wilder_id': ctx => {
     const { wilder_id } = ctx.params
     fetch('/wilders') // reading of wilder in database

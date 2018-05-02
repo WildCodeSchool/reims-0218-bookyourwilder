@@ -9,7 +9,7 @@
       "mail": "florian.hourlier@hotmail.fr",
       "urlLi": "Linkedin florian",
       "urlGh": "https://github.com/El-Loco-Pinguino",
-      "mdp": "jj@jj.jj"
+      "password": "1111"
     },
     {
       "firstName": "Maxence",
@@ -18,21 +18,21 @@
       "slug": "Maxence-Millescamps",
       "bio": "Bonjour kebab, bonjour coca !",
       "image": "https://static.cuisineaz.com/610x610/i108058-kebab-sans-gluten.jpg",
-      "mail": "?",
+      "mail": "maxence.millescamps.macarty@gmail.com",
       "urlLi": "Linkedin maxence",
       "urlGh": "https://github.com/LieLust",
-      "mdp": "ee@ee.ee"
+      "password": "0000"
     },
     {
       "firstName": "philippe",
       "lastName": "tarte",
       "title": "dev web",
       "slug": "philippe-tarte",
-      "bio": "super grosse bio pour avoir une mega bio super longue, mais on en aurait beaucoup à dire",
+      "bio": "Bonjour youpi, bonjour youpi !",
       "image": "http://www.sfcollector.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/m/o/monsieur-madame-tapis-souris-monsieur-heureux.jpg",
       "mail": "?",
       "urlLi": "Linkedin philippe",
       "urlGh": "https://github.com/PhiTarte",
-      "mdp": "ww@ww.ww"
+      "password": "2222"
     }
   ]

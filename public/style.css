@@ -149,7 +149,7 @@ footer .btn-primary:hover a{
 }
 
 #main > .inscription{
-    background-image: linear-gradient(0deg, rgba(15, 29, 94, 0), rgba(15, 29, 94, 0)), url("/images/wild-code-school-lyon-open-space.jpg");
+    background-image: linear-gradient(0deg, rgba(15, 29, 94, 0.7), rgba(15, 29, 94, 0.7)), url("/images/wild-code-school-lyon-open-space.jpg");
 	background-size: cover;
 	background-position: center;
 	height: 100%;
@@ -160,4 +160,10 @@ footer .btn-primary:hover a{
     border: 2px solid grey;
     border-radius: 20px;
     padding: 1em;
+}
+
+.formblock{
+    width: 50%; 
+    margin: 0 auto;
+    padding-bottom: 2em;
 }

@@ -3,57 +3,55 @@ const express = require('express')
 const methodOverride = require("method-override")
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
+const passport = require('passport')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
-const optionsSeed = require('./public/wilders_options.json')
+const fluxsSeed = require('./public/fluxs.json')
 const multer = require("multer")
 const upload = multer({ dest: "TMP/"})
 const fs = require("fs")
 
 let db
 
+require('./public/passport-strategy')
+const auth = require('./public/auth')
+
 // permet de servir les ressources statiques du dossier public
 app.use(express.static('public'))
 app.use(bodyParser.json())
+app.use('/auth', auth)
 app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, mdp } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp)
+  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get(`SELECT * FROM users where id=?`, id))
+  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
 
 // updateWilder dans la db
 const updateWilder = w => {
-    const { firstName, lastName, title, bio, avatar, mail, urlLi, urlGh, mdp , wilderChange_id} = w
+    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    if (w.avatar) {
-        w.avatar = w.avatar.replace("C:\\fakepath\\", "")
-        console.log(w)
-        w.avatar = w.avatar.substr(12, w.avatar.length)
-        console.log(w.avatar)
-        fs.rename(w.avatar, "TMP/" + w.avatar, (err) => {
-            if (err) {
-                console.log(err)
-                console.log(`Erreur lors de l'envoi du fichier`)
-            } else {
-                console.log(`Fichier envoyé avec succès`)
-            }
-        })
-    }
+    // if (w.avatar) {
+    //     w.avatar = w.avatar.replace("C:\\fakepath\\", "")
+    //     console.log(w)
+    //     w.avatar = w.avatar.substr(12, w.avatar.length)
+    //     console.log(w.avatar)
+    //     fs.rename(w.avatar, "TMP/" + w.avatar, (err) => {
+    //         if (err) {
+    //             console.log(err)
+    //             console.log(`Erreur lors de l'envoi du fichier`)
+    //         } else {
+    //             console.log(`Fichier envoyé avec succès`)
+    //         }
+    //     })
+    // }
     const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
     return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, mdp, wilderChange_id)
 }
 
-// insertOption dans la db
-const insertOption = o => {
-    const { nom, contenu, wilder_id } = o
-    return db.get('INSERT INTO option_profil(nom_option, texte_option, wilder_id) VALUES(?, ?, ?)', nom, contenu, wilder_id)
-    .then(() => db.get('SELECT last_insert_rowid() as id'))
-    .then(({ id }) => db.get(`SELECT * FROM option_profil where id=?`, id))
-  }
 
 // insertflux dans la db
 const insertflux = f => {
@@ -63,10 +61,19 @@ const insertflux = f => {
     .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
-// insertFlux dans la db
+// TODO: need to add image in query ?
+const updateAccount = ua => {
+    const { firstName, lastName, bio, image, slug, mail, password, editedWilder } = ua
+    return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, password = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, password, editedWilder)
+    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+}
 
-// insertOption_profil dans la db
-
+// Update profile options
+const updateProfile = up => {
+    const { title, nomOption, affichageOption, texteOption, editedWilder } = up
+    return db.get("UPDATE option_profil SET title = ?, nom_option = ?, affichage_option = ?, texte_option = ? WHERE wilder_id = ?;", title, nomOption, affichageOption, texteOption, editedWilder)
+    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+}
 
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
@@ -75,7 +82,6 @@ const dbPromise = Promise.resolve()
     return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
-.then(() => Promise.map(optionsSeed, o => insertOption(o)))
 
 const html = `
 <!doctype html>
@@ -101,16 +107,12 @@ const html = `
                             <li class="nav-item">
                                 <a class="nav-link" href="/flux">Flux</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/notification">Notification</a>
-                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarProfil">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Action 2</a>
+                                <a class="dropdown-item" href="#">Mon profil</a>
                                 <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Action 3</a>
+                                    <a class="dropdown-item" href="#">Déconnection</a>
                                 </div>
                             </li>
                             <li class="nav-item">
@@ -203,17 +205,15 @@ app.get('/wilders', (req, res) => {
   .then(records => res.json(records))
 })
 
-// read of options
-
-app.get('/options/:id_wilder', (req, res) => {
-    db.get('select nom_option, texte_option from option_profil where wilder_id=?', req.params.id_wilder)
-    .then(records => res.json(records))
-})
-
 app.get('/fluxs', (req, res) => {
   db.all('SELECT * FROM fluxs ORDER BY Id DESC LIMIT 20')
   .then(records => res.json(records))
 })
+
+// app.get('/test', passport.authenticate('jwt', {session: false}), (req, res) => {
+//     res.send(`authorized for user ${req.user.username} with id ${req.user.id}`)
+//     console.log(req.user)
+//   })
 
 //update
 app.put('/wilders', upload.single("avatar"), (req, res, next) => {

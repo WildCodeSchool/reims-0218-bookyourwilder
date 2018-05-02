@@ -2,6 +2,7 @@
 CREATE TABLE option_profil (
   id INTEGER PRIMARY KEY,
   nom_option VARCHAR(45),
+  affichage_option TINYINT,
   texte_option TINYTEXT,
   wilder_id INTEGER,
   FOREIGN KEY(wilder_id) REFERENCES users(id)
@@ -18,7 +19,7 @@ CREATE TABLE users (
   mail VARCHAR(255),
   urlLi VARCHAR(100),
   urlGh VARCHAR(100),
-  mdp TEXT
+  password TEXT
 );
 
 CREATE TABLE notifications (

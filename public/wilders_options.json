@@ -2,12 +2,14 @@
     {
         "id": 0,
         "nom": "hobby",
+        "affichage": true,
         "contenu": "jeux en ligne (World of Tanks)",
         "wilder_id": 2
     },
     {
         "id": 1,
         "nom": "liste lecture",
+        "affichage": true,
         "contenu": "Fondation",
         "wilder_id": 2
     }
