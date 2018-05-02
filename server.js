@@ -1,15 +1,21 @@
 const sqlite = require('sqlite')
 const express = require('express')
+const methodOverride = require("method-override")
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const app = express()
 const wildersSeed = require('./public/wilders.json')
 const optionsSeed = require('./public/wilders_options.json')
+const multer = require("multer")
+const upload = multer({ dest: "TMP/"})
+const fs = require("fs")
+
 let db
 
 // permet de servir les ressources statiques du dossier public
 app.use(express.static('public'))
 app.use(bodyParser.json())
+app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
@@ -21,10 +27,24 @@ const insertWilder = w => {
 
 // updateWilder dans la db
 const updateWilder = w => {
-    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, mdp , wilderChange_id} = w
+    const { firstName, lastName, title, bio, avatar, mail, urlLi, urlGh, mdp , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${image}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
-    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=? where id=?;`,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, mdp, wilderChange_id)
+    if (w.avatar) {
+        w.avatar = w.avatar.replace("C:\\fakepath\\", "")
+        console.log(w)
+        w.avatar = w.avatar.substr(12, w.avatar.length)
+        console.log(w.avatar)
+        fs.rename(w.avatar, "TMP/" + w.avatar, (err) => {
+            if (err) {
+                console.log(err)
+                console.log(`Erreur lors de l'envoi du fichier`)
+            } else {
+                console.log(`Fichier envoyé avec succès`)
+            }
+        })
+    }
+    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, mdp, wilderChange_id)
 }
 
 // insertOption dans la db
@@ -196,7 +216,8 @@ app.get('/fluxs', (req, res) => {
 })
 
 //update
-app.put('/wilders', (req, res) => {
+app.put('/wilders', upload.single("avatar"), (req, res, next) => {
+    // req.body.avatar = chemin de l'avatar
     return updateWilder(req.body)
     .then(record => res.json(record))
   })
