@@ -315,14 +315,14 @@ const controllers = {
           <div class="card col-12 col-sm-5">
             <div class="card-body">
               <label>Adress</label>
-              <textarea readonly="true" id="inpAdress"></textarea>
+              <textarea readonly="true" id="inpAdress" placeholder="Adresse"></textarea>
               </a>
             </div>
           </div>
           <div class="card col-12 col-sm-5">
             <div class="card-body">
               <label>Mobility</label>
-              <textarea readonly="true" id="inpMobility"></textarea>
+              <textarea readonly="true" id="inpMobility" placeholder="Mobilité géographique"></textarea>
             </div>
           </div>
         </div>
