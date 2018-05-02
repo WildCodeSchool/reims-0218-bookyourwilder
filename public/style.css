@@ -161,3 +161,9 @@ footer .btn-primary:hover a{
     border-radius: 20px;
     padding: 1em;
 }
+
+.formblock{
+    width: 50%; 
+    margin: 0 auto;
+    padding-bottom: 2em;
+}
