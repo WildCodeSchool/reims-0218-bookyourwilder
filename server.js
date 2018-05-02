@@ -22,34 +22,24 @@ app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password)
+  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress } = w
+  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress)
   .then(() => db.get('SELECT last_insert_rowid() as id'))
   .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
 }
 
 // updateWilder dans la db
 const updateWilder = w => {
-    const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id} = w
-    const slug = w.firstName+'-'+w.lastName
-    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",password="${password}" where id="${wilderChange_id}";`
-    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, password, wilderChange_id)
-}
-
+    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id } = w
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=?, adress=?, mobility=? where id=?;`,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id)
+    }
 
 // insertflux dans la db
 const insertflux = f => {
-  const { fluxs } = f
-  return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
-  .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
-}
-
-// Update profile options
-const updateProfile = up => {
-    const { title, nomOption, affichageOption, texteOption, editedWilder } = up
-    return db.get("UPDATE option_profil SET title = ?, nom_option = ?, affichage_option = ?, texte_option = ? WHERE wilder_id = ?;", title, nomOption, affichageOption, texteOption, editedWilder)
-    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+    const { fluxs } = f
+    return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
+    .then(() => db.get('SELECT last_insert_rowid() as id'))
+    .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
 const dbPromise = Promise.resolve()
@@ -72,8 +62,8 @@ const html = `
             <link rel="stylesheet" href="/style.css">
         </head>
         <body>
-            <div class="container-fluid bg pt-1 pb-1" id="navbarMenu">
-                <nav class="navbar navbar-expand-lg navbar-dark">
+            <header class="container-fluid bg-dark" id="navbarMenu">
+                <nav class="navbar navbar-expand-lg navbar-dark ">
                     <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -105,11 +95,11 @@ const html = `
                         </form>
                     </div>
                 </nav>
-            </div>
+            </header>
             
             <div id="main"></div>
 
-            <footer class="container-fluid bg">
+            <footer class="container-fluid pt-2 bg">
                 <div class="row justify-content-around text-center">
                     <div class="col-12 col-sm-6 col-md-4 mt-5">
                         <h5>Les autres projets de la <br>Wild Code School Reims</h5>
@@ -226,6 +216,12 @@ app.get('/fluxs', (req, res) => {
 //     res.send(`authorized for user ${req.user.username} with id ${req.user.id}`)
 //     console.log(req.user)
 //   })
+
+//update
+app.put('/wilders', (req, res) => {
+    return updateWilder(req.body)
+    .then(record => res.json(record))
+  })
 
 // route par défaut qui renvoit le code html/css/js complet de l'application
 app.get('*', (req, res) => {

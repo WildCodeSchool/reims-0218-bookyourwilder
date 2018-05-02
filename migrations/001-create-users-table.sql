@@ -19,7 +19,9 @@ CREATE TABLE users (
   mail VARCHAR(255),
   urlLi VARCHAR(100),
   urlGh VARCHAR(100),
-  password TEXT
+  password TEXT,
+  mobility VARCHAR(150),
+  adress VARCHAR(250)
 );
 
 CREATE TABLE notifications (

@@ -1,4 +1,5 @@
 const mainDiv = document.getElementById('main')
+const bodyDocument = document.querySelector('body')
 
 const render = html => {
   mainDiv.innerHTML = html
@@ -170,8 +171,8 @@ const controllers = {
             .then(res => res.json())
             .then(wilder => {
                 eventSubmit.defaultPrevented=false  // suppress the preventdefault
-                page("/home") // setting the path
-                page()        // starting the redirection
+                // page("/home") // setting the path
+                // page()        // starting the redirection
                 navbarDejaInscrit.innerHTML=navbarStandardHtml // standard navbar put in the navbar area
             })
         } else {
@@ -257,7 +258,8 @@ const controllers = {
   fetch('/wilders')
     .then(res => res.json())
     .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
-    .then(album => render(
+    .then(album => {
+      render(
     `<div class="container">
       <div class="row mt-5 mb-5">
           <div class="col">
@@ -269,6 +271,7 @@ const controllers = {
       </div>
       <div class="row">${album}</div>
     </div>`)
+    }
   ),
 
   '/profil/:wilder_id': ctx => {
@@ -294,9 +297,9 @@ const controllers = {
         let htmlLis = ""
         // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
         tableauOptions.forEach(option => htmlLis += `<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`
-        )
-        return htmlLis
-      }
+      )
+      return htmlLis
+    }
       render(`<div class="container text-center">
       <div class="jumbotron">
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
@@ -308,6 +311,21 @@ const controllers = {
         <p class="lead" id="bioArea"></p>
         <div id="divBtnReadMore"></div>
         <hr>
+        <div class="row justify-content-around" id="locations">
+          <div class="card col-12 col-sm-5">
+            <div class="card-body">
+              <label>Adress</label>
+              <textarea readonly="true" id="inpAdress"></textarea>
+              </a>
+            </div>
+          </div>
+          <div class="card col-12 col-sm-5">
+            <div class="card-body">
+              <label>Mobility</label>
+              <textarea readonly="true" id="inpMobility"></textarea>
+            </div>
+          </div>
+        </div>
         <div id="divLinks" class="row justify-content-around"></div>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -320,7 +338,7 @@ const controllers = {
                 </button>
               </div>
               <div class="modal-body" id="editeur">
-                <form id="changeProfile" action="/wilders?_method=PUT" enctype="multipart/form-data">
+                <form id="changeProfile">
                   <fieldset id="fsWilder">
                     <input type="hidden" name="wilderChange_id" class="form-control">
                     <fieldset class="form-group" id="nameWilder">
@@ -329,29 +347,29 @@ const controllers = {
                         <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                        <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                      <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                        <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
                       </div>
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputTitle" class="col-11">Title</label>
-                      <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                      <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputImageUrl" class="col-11">Image URL</label>
-                      <input name="avatar" type="file" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputBio" class="col-11">Bio</label>
-                      <textarea name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                      <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
                     </fieldset>
                     <fieldset class="form-group">
                       <div class="row justify-content-around">
                         <label for="inputMail" class="col-12 col-sm-5">Mail</label>
-                        <label for="inputMdp" class="col-12 col-sm-5">Mdp</label>
+                        <label for="inputMdp" class="col-12 col-sm-5">password</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                        <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
                         <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
                       </div>
                     </fieldset>
@@ -365,7 +383,24 @@ const controllers = {
                         <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
                       </div>
                     </fieldset>
+                    <fieldset class="form-group" id="locations">
+                      <div class="row justify-content-around">
+                        <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
+                        <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="${wilder.adress}">
+                        <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="${wilder.mobility}">
+                      </div>
+                    </fieldset>
                   </fieldset>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnChangeOption">Save changes</button>
+                  </div>
+                </form>
+
+                  <!-- options area, to be developed in next release
                   <hr>
                   <fieldset id="fsOptions">
                     <div class="modal-header">
@@ -375,23 +410,24 @@ const controllers = {
                       ${displayOptionsWilder(options_wilder, true)}
                     </ul>
                   </fieldset>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" data-dismiss="modal" id="btnChangeOption">Save changes</button>
+                  -->
+                
               </div>
             </div>
         </div>
       </div>
-      <!--<div class="jumbotron">
-      <h2>Options:</h2>
-      <form>
-        <ul>
-          ${displayOptionsWilder(options_wilder, false)}
-        </ul>
-      </form>
-    </div>-->
+
+      <!-- options area, to be developed in next release
+      <div class="jumbotron">
+        <h2>Options:</h2>
+        <form>
+          <ul>
+            ${displayOptionsWilder(options_wilder, false)}
+          </ul>
+        </form>
+      </div>
+      -->
+
     </div>`)
 
     // define display wilder function in profile jumbotron
@@ -401,6 +437,9 @@ const controllers = {
     const h1NameProfil = document.getElementById('h1NameProfil')
     const divBtnReadMore = document.getElementById('divBtnReadMore')
     const divLinks = document.getElementById('divLinks')
+    const inpAdress = document.getElementById('inpAdress')
+    const inpMobility = document.getElementById('inpMobility')
+    const myModal = document.getElementById('exampleModal')
     let readMore = true
 
     const displayCard = (titleText, bodyText) => {
@@ -426,6 +465,8 @@ const controllers = {
     const displayWilderInProfile = (wilderToDisplay) => {
       h1NameProfil.innerHTML=wilderToDisplay.firstName+' '+wilderToDisplay.lastName
       pTitle.innerHTML=wilderToDisplay.title
+      inpAdress.innerHTML = wilderToDisplay.adress
+      inpMobility.innerHTML = wilderToDisplay.mobility
       if (wilderToDisplay.bio.length>50) {
         divBtnReadMore.innerHTML=`<button type="button" class="btn btn-primary" id="btnReadMore"></button>`
         const btnReadMore = document.getElementById('btnReadMore')
@@ -454,7 +495,9 @@ const controllers = {
     // first display of wilder
     displayWilderInProfile(wilder)
 
+
     // click on "save changes"
+    const form = document.getElementById('changeProfile')
     const btnSaveChanges = document.getElementById('btnChangeOption')
 
     btnSaveChanges.addEventListener('click',e => {
@@ -464,10 +507,10 @@ const controllers = {
       const champCache = document.getElementsByName('wilderChange_id')
       champCache[0].setAttribute('value',wilder.id)
 
-      const data = serializeForm(document.getElementById('changeProfile'))
+      // inserting name/value of form-control's classes in profile's form to data
+      const data = serializeForm(form)
 
       // empty fields of data object must be filled with wilder's datas
-
       const proprietes = Object.keys(data)
       proprietes.forEach(propriete => {
         if (data[propriete]==='') data[propriete]=wilder[propriete]
@@ -478,6 +521,9 @@ const controllers = {
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
 
+      console.log(data)
+
+      // modifying wilder in database
       fetch('/wilders', {
         method: 'PUT',
         headers: {
@@ -487,7 +533,7 @@ const controllers = {
         body: JSON.stringify(data)
       })
       .then(responseAfterUpdate => {
-        fetch('/wilders') // new reading of wilder AFTER update
+        fetch('/wilders') // new reading of wilders AFTER update
         .then(resNew => {
           return resNew.json()
         })
@@ -495,9 +541,11 @@ const controllers = {
           return wildersNew.find(newWilder => newWilder.id == wilder_id)
         })
         .then(newWilder => {
-          displayWilderInProfile(newWilder)
+          //displayWilderInProfile(newWilder)
+          
+          page(`/profil/${newWilder.id}`)
+          page()
         })
-
       })
     })
     }) // closing last 'then' of first reading of wilder
@@ -541,7 +589,8 @@ const controllers = {
       listFluxs.innerHTML = `${fluxs}`
     })
   })
-})},
+  })
+  },
 
   '/notification': () => render('<h1>Page notification</h1>'),
 
