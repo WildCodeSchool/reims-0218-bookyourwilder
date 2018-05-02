@@ -297,9 +297,9 @@ const controllers = {
         let htmlLis = ""
         // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
         tableauOptions.forEach(option => htmlLis += `<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`
-        )
-        return htmlLis
-      }
+      )
+      return htmlLis
+    }
       render(`<div class="container text-center">
       <div class="jumbotron">
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
@@ -347,13 +347,13 @@ const controllers = {
                         <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                        <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                      <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                        <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
                       </div>
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputTitle" class="col-11">Title</label>
-                      <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                      <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputImageUrl" class="col-11">Image URL</label>
@@ -361,7 +361,7 @@ const controllers = {
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputBio" class="col-11">Bio</label>
-                      <textarea name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                      <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
                     </fieldset>
                     <fieldset class="form-group">
                       <div class="row justify-content-around">
@@ -369,7 +369,7 @@ const controllers = {
                         <label for="inputMdp" class="col-12 col-sm-5">password</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                        <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
                         <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
                       </div>
                     </fieldset>
@@ -494,6 +494,7 @@ const controllers = {
 
     // first display of wilder
     displayWilderInProfile(wilder)
+
 
     // click on "save changes"
     const form = document.getElementById('changeProfile')

@@ -4,6 +4,7 @@ const methodOverride = require("method-override")
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const passport = require('passport')
+const nodemailer = require("nodemailer")
 const app = express()
 const wildersSeed = require('./public/wilders.json')
 const fluxsSeed = require('./public/fluxs.json')
@@ -199,8 +200,7 @@ app.get('/fluxs', (req, res) => {
 //   })
 
 //update
-app.put('/wilders', upload.single("avatar"), (req, res, next) => {
-    // req.body.avatar = chemin de l'avatar
+app.put('/wilders', (req, res) => {
     return updateWilder(req.body)
     .then(record => res.json(record))
   })
