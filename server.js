@@ -4,12 +4,10 @@ const methodOverride = require("method-override")
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const passport = require('passport')
+const nodemailer = require("nodemailer")
 const app = express()
 const wildersSeed = require('./public/wilders.json')
 const fluxsSeed = require('./public/fluxs.json')
-const multer = require("multer")
-const upload = multer({ dest: "TMP/"})
-const fs = require("fs")
 
 let db
 
@@ -34,38 +32,17 @@ const insertWilder = w => {
 const updateWilder = w => {
     const { firstName, lastName, title, bio, image, mail, urlLi, urlGh, password , wilderChange_id} = w
     const slug = w.firstName+'-'+w.lastName
-    // if (w.avatar) {
-    //     w.avatar = w.avatar.replace("C:\\fakepath\\", "")
-    //     console.log(w)
-    //     w.avatar = w.avatar.substr(12, w.avatar.length)
-    //     console.log(w.avatar)
-    //     fs.rename(w.avatar, "TMP/" + w.avatar, (err) => {
-    //         if (err) {
-    //             console.log(err)
-    //             console.log(`Erreur lors de l'envoi du fichier`)
-    //         } else {
-    //             console.log(`Fichier envoyé avec succès`)
-    //         }
-    //     })
-    // }
-    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",mdp="${mdp}" where id="${wilderChange_id}";`
-    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,mdp=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, mdp, wilderChange_id)
+    const requete = `UPDATE users SET slug="${slug}", firstName="${firstName}", lastName="${lastName}", title="${title}", bio="${bio}", image="${avatar}", mail="${mail}", urlLi="${urlLi}", urlGh="${urlGh}",password="${password}" where id="${wilderChange_id}";`
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=? where id=?;`,slug, firstName,lastName,title,bio,avatar, mail, urlLi, urlGh, password, wilderChange_id)
 }
 
 
 // insertflux dans la db
 const insertflux = f => {
-    const { fluxs } = f
-    return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
-    .then(() => db.get('SELECT last_insert_rowid() as id'))
-    .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
-}
-
-// TODO: need to add image in query ?
-const updateAccount = ua => {
-    const { firstName, lastName, bio, image, slug, mail, password, editedWilder } = ua
-    return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, password = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, password, editedWilder)
-    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
+  const { fluxs } = f
+  return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
+  .then(() => db.get('SELECT last_insert_rowid() as id'))
+  .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
 // Update profile options
@@ -78,8 +55,8 @@ const updateProfile = up => {
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
 .then(_db => {
-    db = _db
-    return db.migrate({ force: 'last' })
+  db = _db
+  return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
 
@@ -92,7 +69,7 @@ const html = `
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
             <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-            <link rel="stylesheet" href="style.css">
+            <link rel="stylesheet" href="/style.css">
         </head>
         <body>
             <div class="container-fluid bg pt-1 pb-1" id="navbarMenu">
@@ -134,7 +111,7 @@ const html = `
 
             <footer class="container-fluid bg">
                 <div class="row justify-content-around text-center">
-                    <div class="col-12 col-md-6 col-lg-4 mt-5">
+                    <div class="col-12 col-sm-6 col-md-4 mt-5">
                         <h5>Les autres projets de la <br>Wild Code School Reims</h5>
                         <div class="list-group mt-4">
                             <a href="#" class="mt-1 mb-1">
@@ -148,11 +125,11 @@ const html = `
                             </a>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mt-5">
+                    <div class="col-12 col-sm-6 col-md-4 mt-5">
                         <h5>Plus d'infos sur l'école</h5>
                         <a href="https://wildcodeschool.fr/" target="_blank"><button type="button" class="btn btn-primary mt-2 mb-2">Plus d'infos</button></a>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mt-5">
+                    <div class="col-12 col-sm-6 col-md-4 mt-5">
                         <h5>Suivez-nous sur les réseaux sociaux !</h5>
                         <div class="d-flex flex-row justify-content-center mt-3">
                             <div class="p-4">
@@ -182,16 +159,51 @@ const html = `
 </html>`
 
 
+
 //routing coté Serveur
 
 //routes de l'api REST qui répondent par du
 
 //CREATE
 app.post('/wilders', (req, res) => {
-    return insertWilder(req.body)
-    .then(record => {
-        res.json(record)
-  })
+    let transporter = nodemailer.createTransport({
+        host: 'smtp-mail.outlook.com',
+        port: 587,
+        secureConnection: false,
+        tls: {
+          ciphers: "SSLv3"
+        },
+        auth: {
+            user: "florian.hourlier@hotmail.fr",
+            pass: "1AQW2ZSX3EDC"
+        }
+      });
+    
+      let mailOptions = {
+        from: "<florian.hourlier@hotmail.fr>",
+        to: `${req.body.mail}`,
+        subject: "Bienvenue sur BookYourWilder !",
+        text: `Hey ${req.body.firstName} ${req.body.lastName} !
+        Bienvenue dans le comité très restreint des Wilders !
+        Vous pouvez désormais vous authentifier avec votre adresse mail (${req.body.mail}) et le mot de passe que vous avez défini.
+        Sur ce, à bientôt sur BookYourWilder !
+        
+        (En cas de questions, vous pouvez envoyer un mail à florian.hourlier@hotmail.fr. Les spams, je les dévore tous crus !)`,
+        html: `Hey <strong>${req.body.firstName} ${req.body.lastName}</strong> !<br/>
+        Bienvenue dans le comité très restreint des Wilders !<br/>
+        Vous pouvez désormais vous authentifier avec votre <u>adresse mail</u> (${req.body.mail}) et le <u>mot de passe</u> que vous avez défini.<br/>
+        Sur ce, à bientôt sur BookYourWilder !<br/><br/>
+        
+        <em>(En cas de questions, vous pouvez envoyer un mail à florian.hourlier@hotmail.fr. Les spams, je les dévore tous crus !)</em>`
+      };
+    
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+              return console.log(error);
+          }
+    })
+  return insertWilder(req.body)
+  .then(record => res.json(record))
 })
 
 app.post('/fluxs', (req, res) => {
@@ -214,13 +226,6 @@ app.get('/fluxs', (req, res) => {
 //     res.send(`authorized for user ${req.user.username} with id ${req.user.id}`)
 //     console.log(req.user)
 //   })
-
-//update
-app.put('/wilders', upload.single("avatar"), (req, res, next) => {
-    // req.body.avatar = chemin de l'avatar
-    return updateWilder(req.body)
-    .then(record => res.json(record))
-  })
 
 // route par défaut qui renvoit le code html/css/js complet de l'application
 app.get('*', (req, res) => {

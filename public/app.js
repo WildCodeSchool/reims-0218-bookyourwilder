@@ -1,7 +1,7 @@
 const mainDiv = document.getElementById('main')
 
 const render = html => {
-    mainDiv.innerHTML = html
+  mainDiv.innerHTML = html
 }
 
 // renvoit le html d'une card bootstrap pour un wilder
@@ -35,13 +35,13 @@ const makeCard = item => `
             <a class="btn btn-warning" href="/profil/${item.id}">${item.firstName}'s profile &raquo;</a>
         </div>
     </div>
-</div>`
+  </div>`
 
   const makeflux = item => `
   <div class="col-12">
-      <div class="jumbotron msg-flux">
-          <p>${item.texte}</p>
-      </div>
+    <div class="jumbotron msg-flux">
+      <p>${item.texte}</p>
+    </div>
   </div>
   `
 
@@ -170,8 +170,8 @@ const controllers = {
             .then(res => res.json())
             .then(wilder => {
                 eventSubmit.defaultPrevented=false  // suppress the preventdefault
-                // page("/home") // setting the path
-                // page()        // starting the redirection
+                page("/home") // setting the path
+                page()        // starting the redirection
                 navbarDejaInscrit.innerHTML=navbarStandardHtml // standard navbar put in the navbar area
             })
         } else {
@@ -210,8 +210,8 @@ const controllers = {
                 document.getElementById('disconnect').addEventListener('click', () => {
                     localStorage.removeItem('token')
                 })
-                // page("/home") // setting the path
-                // page()        // starting the redirection
+                page("/home") // setting the path
+                page()        // starting the redirection
                 navbarDejaInscrit.innerHTML = `
                 <nav class="navbar navbar-expand-lg navbar-dark">
                 <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
@@ -259,15 +259,15 @@ const controllers = {
     .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
     .then(album => render(
     `<div class="container">
-        <div class="row mt-5 mb-5">
-            <div class="col">
-                <div class="info-header mb-5 text-center">
-                    <h1 class="text-warning pb-3">Nos Wilders</h1>
-                    <p class="lead pb-3">La Wild Code School forme ses élèves au métier de développeur web en 5 mois suivis d’un stage en entreprise. Vous trouverez sur ce site web, réalisé par eux, les profils des élèves “Wilders” de Reims et les liens vers leurs Linkedin etc. respectifs. Cette 1ère promotion "Artémis", avide de connaissance, se forme intensivement au métier du développeur web. Bientôt Javascript et React n'auront plus aucun secret pour eux.</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">${album}</div>
+      <div class="row mt-5 mb-5">
+          <div class="col">
+              <div class="info-header mb-5 text-center">
+                  <h1 class="text-warning pb-3">Nos Wilders</h1>
+                  <p class="lead pb-3">La Wild Code School forme ses élèves au métier de développeur web en 5 mois suivis d’un stage en entreprise. Vous trouverez sur ce site web, réalisé par eux, les profils des élèves “Wilders” de Reims et les liens vers leurs Linkedin etc. respectifs. Cette 1ère promotion "Artémis", avide de connaissance, se forme intensivement au métier du développeur web. Bientôt Javascript et React n'auront plus aucun secret pour eux.</p>
+              </div>
+          </div>
+      </div>
+      <div class="row">${album}</div>
     </div>`)
   ),
 
@@ -352,7 +352,7 @@ const controllers = {
                       </div>
                       <div class="row justify-content-around">
                         <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
-                        <input name="mdp" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.mdp}">
+                        <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
                       </div>
                     </fieldset>
                     <fieldset class="form-group" id="links">
@@ -384,14 +384,14 @@ const controllers = {
             </div>
         </div>
       </div>
-      <div class="jumbotron">
+      <!--<div class="jumbotron">
       <h2>Options:</h2>
       <form>
         <ul>
           ${displayOptionsWilder(options_wilder, false)}
         </ul>
       </form>
-    </div>
+    </div>-->
     </div>`)
 
     // define display wilder function in profile jumbotron
@@ -503,7 +503,6 @@ const controllers = {
     }) // closing last 'then' of first reading of wilder
   },  // closing of route
 
-
   '/flux': () => {
   fetch('/fluxs')
   .then(res => res.json())
@@ -511,13 +510,13 @@ const controllers = {
   .then(listFluxs => {
     render(
   `<div class="container">
-      <div id="alert-box" class="hidden"></div>
-      <form method="POST" id="add-fluxs" class="form-inline mt-4 mb-4">
-          <input required name="fluxs" type="text" class="form-control " id="inputFluxs" placeholder="Message" style="width:90%">
-          <button class="btn btn-success ml-2" type="submit">Envoyer</button>
-      </form>
-      <div class="row" id="listFluxs">${listFluxs}</div>
-    </div>`)
+    <div id="alert-box" class="hidden"></div>
+    <form method="POST" id="add-fluxs" class="form-inline mt-4 mb-4">
+      <input required name="fluxs" type="text" class="form-control " id="inputFluxs" placeholder="Message" style="width:90%">
+      <button class="btn btn-success ml-2" type="submit">Envoyer</button>
+    </form>
+    <div class="row" id="listFluxs">${listFluxs}</div>
+  </div>`)
 
   const form = document.getElementById("add-fluxs")
   form.addEventListener('submit', e => {
@@ -546,41 +545,40 @@ const controllers = {
 
   '/notification': () => render('<h1>Page notification</h1>'),
 
-  '/admin': () => render(`
-      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
-          <a class="navbar-brand p-3" href="#">Administration</a>
-          <p class="p-6">Bienvenue sur votre panneau d'administration.</p>
-          <button class="btn btn-outline-danger my-2 my-sm-0 p-3" type="submit">Se déconnecter</button>
-      </nav>
+  '/admin': () => render(`<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
+      <a class="navbar-brand p-3" href="#">Administration</a>
+      <p class="p-6">Bienvenue sur votre panneau d'administration.</p>
+      <button class="btn btn-outline-danger my-2 my-sm-0 p-3" type="submit">Se déconnecter</button>
+    </nav>
 
-      <div class="container-fluid">
-          <div class="row justify-content-center">
-              <div class="col-xs-12 col-md-5 mt-2 mb-2">
-                  <div class="adminPanel bg-info jumbotron">
-                      <h1 class="display-4">Bloc 1</h1>
-                      <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
-                  </div>
-              </div>
-              <div class="col-xs-12 col-md-5 md-offset-2  mt-2 mb-2">
-                  <div class="adminPanel bg-info jumbotron">
-                      <h1 class="display-4">Bloc 2</h1>
-                      <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
-                  </div>
-              </div>
-              <div class="col-xs-12 col-md-5 mt-2 mb-2">
-                  <div class="adminPanel bg-info jumbotron">
-                      <h1 class="display-4">Bloc 3</h1>
-                      <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
-                  </div>
-              </div>
-              <div class="col-xs-12 col-md-5 md-offset-2 mt-2 mb-2">
-                  <div class="adminPanel bg-info jumbotron">
-                      <h1 class="display-4">Bloc 4</h1>
-                      <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
-                  </div>
-              </div>
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-xs-12 col-md-5 mt-2 mb-2">
+          <div class="adminPanel bg-info jumbotron">
+            <h1 class="display-4">Bloc 1</h1>
+            <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
           </div>
-      </div>`),
+        </div>
+        <div class="col-xs-12 col-md-5 md-offset-2  mt-2 mb-2">
+          <div class="adminPanel bg-info jumbotron">
+            <h1 class="display-4">Bloc 2</h1>
+            <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-5 mt-2 mb-2">
+          <div class="adminPanel bg-info jumbotron">
+            <h1 class="display-4">Bloc 3</h1>
+            <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-5 md-offset-2 mt-2 mb-2">
+          <div class="adminPanel bg-info jumbotron">
+            <h1 class="display-4">Bloc 4</h1>
+            <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
+          </div>
+        </div>
+      </div>
+    </div>`),
 
   '*': () => render('<h1>Not Found</h1>')
 }
