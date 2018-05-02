@@ -49,7 +49,8 @@ const makeCard = item => `
 const serializeForm = form => {
   const data = {}
   const elements = form.getElementsByClassName('form-control')
-  for(el of elements) {
+  console.log(elements)
+  for(let el of elements) {
     data[el.name] = el.value
   }
   return data
@@ -147,43 +148,49 @@ const controllers = {
       </nav>`
     const form = document.getElementById('add-wilder')
     form.addEventListener('submit', eventSubmit => {
-      console.log(eventSubmit)
-      eventSubmit.preventDefault()  // disabling default refresh of pages
-      const data = serializeForm(form)
-      // i'm finishing to fill the wilder (needed for updating later)
-      data['title']=''
-      data['bio']=''
-      data['urlGh']=''
-      data['urlLi']=''
-      if(! data.image) {
-        const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
-        data.image = `https://via.placeholder.com/480x480/?text=${fullName}`
-      }
-      fetch('/wilders', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then(wilder => {
-        const alertBox = document.getElementById('alert-box')
-        alertBox.className = 'alert alert-success'
-        alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
-
-      eventSubmit.defaultPrevented=false  // suppress the preventdefault
-
-      page("/home") // setting the path
-
-      page()        // starting the redirection
-
-      navbarDejaInscrit.innerHTML=navbarStandardHtml // standard navbar put in the navbar area
-
-      })
+        console.log(eventSubmit)
+        eventSubmit.preventDefault()  // disabling default refresh of pages
+        const data = serializeForm(form)
+        console.log(data)
+        // Check if password fields are equal
+        if (data.password === data.confirmPassword) {       
+            // i'm finishing to fill the wilder (needed for updating later)
+            data['title']=''
+            data['bio']=''
+            data['urlGh']=''
+            data['urlLi']=''
+            if(! data.image) {
+              const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
+              data.image = `https://via.placeholder.com/480x480/?text=${fullName}`
+            }
+            fetch('/wilders', {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(wilder => {
+                const alertBox = document.getElementById('alert-box')
+                alertBox.className = 'alert alert-success'
+                alertBox.innerHTML = `Successfully created wilder ${wilder.firstName} (${wilder.id})`
+      
+                eventSubmit.defaultPrevented=false  // suppress the preventdefault
+      
+                page("/home") // setting the path
+      
+                page()        // starting the redirection
+      
+                navbarDejaInscrit.innerHTML=navbarStandardHtml // standard navbar put in the navbar area
+            })
+        } else {
+            const alertBox = document.getElementById('alert-box')
+            alertBox.className = 'alert alert-danger'
+            alertBox.innerHTML = "Hey ! Les mots de passe ne correspondent pas ! Veuillez les vérifier."
+        }
     })
-    
   },
   
   //page d'acceuil (et bouton temporaire en attendant la navbar)
@@ -255,7 +262,7 @@ const controllers = {
                 </button>
               </div>
               <div class="modal-body" id="editeur">
-                <form id="changeProfile">
+                <form id="changeProfile" action="/wilders?_method=PUT" enctype="multipart/form-data">
                   <fieldset id="fsWilder">
                     <input type="hidden" name="wilderChange_id" class="form-control">
                     <fieldset class="form-group" id="nameWilder">
@@ -274,7 +281,7 @@ const controllers = {
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputImageUrl" class="col-11">Image URL</label>
-                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                      <input name="avatar" type="file" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputBio" class="col-11">Bio</label>
