@@ -71,23 +71,23 @@ const controllers = {
                 <hr class="my-4">
                 <div class="form-group">
                     <label for="inputFirstName">Prenom</label>
-                    <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="Entrer votre prenom">
+                    <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="John">
                 </div>
                 <div class="form-group">
                     <label for="inputLastName">Nom</label>
-                    <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Entrer votre nom">
+                    <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Doe">
                 </div>
                 <div class="form-group">
                     <label for="inputMail">Adresse mail</label>
-                    <input required name="mail" type="mail" class="form-control" id="inputMail" placeholder="Votre adresse mail (ex: john.doe@a.co)">
+                    <input required name="mail" type="mail" class="form-control" id="inputMail" placeholder="john.doe@a.co">
                 </div>
                 <div class="form-group">
                     <label for="password">Choisissez un mot de passe</label>
-                    <input required name="password" type="password" class="form-control" id="inputPassword" placeholder="Privilégiez un mot de passe compliqué (au moins 8 caractères)">
+                    <input required name="password" type="password" class="form-control" id="inputPassword" placeholder="Privilégiez un compliqué (au moins 8 caractères)">
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirmez ce mot de passe</label>
-                    <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez le mot de passe saisi ci-dessus">
+                    <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez">
                 </div>
                 <button type="submit" class="btn btn-success btn-lg btn-block mt-5 form-control" name="validation">Valider l'inscription</button>
                 <div id="alert-box"></div>
@@ -347,21 +347,21 @@ const controllers = {
                         <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
                       </div>
                       <div class="row justify-content-around">
-                      <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                        <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                      <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="Nom">
+                        <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="Prénom">
                       </div>
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputTitle" class="col-11">Title</label>
-                      <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                      <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="Titre de votre profil">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputImageUrl" class="col-11">Image URL</label>
-                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="URL de votre avatar">
                     </fieldset>
                     <fieldset class="form-group row justify-content-around">
                       <label for="inputBio" class="col-11">Bio</label>
-                      <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                      <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="Une description de vous. Pensez à l'actualiser régulièrement"></textarea>
                     </fieldset>
                     <fieldset class="form-group">
                       <div class="row justify-content-around">
@@ -369,8 +369,8 @@ const controllers = {
                         <label for="inputMdp" class="col-12 col-sm-5">password</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
-                        <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
+                        <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="Nouveau mail">
+                        <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="Nouveau mot de passe">
                       </div>
                     </fieldset>
                     <fieldset class="form-group" id="links">
@@ -379,8 +379,8 @@ const controllers = {
                         <label for="inputGithub" class="col-12 col-sm-5">Github</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
-                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="Lien LinkedIn">
+                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="Lien Github">
                       </div>
                     </fieldset>
                     <fieldset class="form-group" id="locations">
@@ -389,8 +389,8 @@ const controllers = {
                         <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
                       </div>
                       <div class="row justify-content-around">
-                        <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="${wilder.adress}">
-                        <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="${wilder.mobility}">
+                        <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="Votre adresse">
+                        <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="Mobilité géographique">
                       </div>
                     </fieldset>
                   </fieldset>
@@ -561,7 +561,7 @@ const controllers = {
   `<div class="container">
       <div id="alert-box" class="hidden"></div>
       <form method="POST" id="add-fluxs" class="form-inline mt-4 mb-4">
-          <input required name="fluxs" type="text" class="form-control " id="inputFluxs" placeholder="Message" style="width:90%">
+          <input required name="fluxs" type="text" class="form-control " id="inputFluxs" placeholder="Votre message..." style="width:90%">
           <button class="btn btn-success ml-2" type="submit">Envoyer</button>
       </form>
       <div class="row" id="listFluxs">${listFluxs}</div>
