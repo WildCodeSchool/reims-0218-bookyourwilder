@@ -290,8 +290,8 @@ const controllers = {
       <div class="card mb-3" style="background-color: rgb(243, 166, 31);box-shadow: 1px 2px 10px rgba(0,0,0,0.5);">
         <img src="../Téléchargements/Bg/bg.jpg" alt="#" class="card-img-top" style="height: 300px; border-bottom: 2px solid white;">
       <div class="card-body text-center" style="padding-top: 0px; border-top: 2px solid white;">
-      <div class="row" id="divBtnEditProfile">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="btnEditProfile">Edit profile</button>
+      <div class="row">
+        <button style="opacity:0;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="btnEditProfile">Edit profile</button>
       </div>
       <img src="" id="imgProfile" alt="#" class="rounded-circle">
       <h2 class="card-title pt-3" id="h2NameProfil"></h2>
@@ -413,6 +413,7 @@ const controllers = {
                 const myModal = document.getElementById('exampleModal')
                 const pCoteWild = document.getElementById('pCoteWild')
                 const imgProfile = document.getElementById('imgProfile')
+                const btnEditProfile = document.getElementById('btnEditProfile')
                 let readMore = true
 
                 const displayCard = (titleText, bodyText) => {
@@ -443,6 +444,9 @@ const controllers = {
             inpMobility.innerHTML = wilderToDisplay.mobility
             pCoteWild.innerHTML = wilderToDisplay.coteWild
             imgProfile.setAttribute("src","."+wilderToDisplay.image)
+            if (localStorage.tokenId==wilderToDisplay.id) {
+              btnEditProfile.setAttribute('style','opacity:1;')
+            }
             if (wilderToDisplay.bio.length > 50) {
                 divBtnReadMore.innerHTML = `<button type="button" class="btn btn-primary float-left" id="btnReadMore"></button>`
                 const btnReadMore = document.getElementById('btnReadMore')
