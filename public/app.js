@@ -302,106 +302,106 @@ const controllers = {
                     return htmlLis
                 }
                 render(`<div class="container text-center">
-        <div class="jumbotron">
-            <div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Edit profile</button>
-            </div>
-            <h1 class="display-4" id="h1NameProfil"></h1>
-            <p id="pTitle"></p>
-            <hr class="my-4">
-            <p class="lead" id="bioArea"></p>
-            <div id="divBtnReadMore"></div>
-            <hr>
-            <div class="row justify-content-around" id="locations">
-                <div class="card col-12 col-sm-5">
-                    <div class="card-body">
-                        <label>Adress</label>
-                        <textarea readonly="true" id="inpAdress" placeholder="Adresse"></textarea>
-                    </div>
+                <div class="jumbotron">
+                <div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Edit profile</button>
                 </div>
-                <div class="card col-12 col-sm-5">
-                    <div class="card-body">
-                        <label>Mobility</label>
-                        <textarea readonly="true" id="inpMobility" placeholder="Mobility"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div id="divLinks" class="row justify-content-around"></div>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h1 class="display-4" id="h1NameProfil"></h1>
+                <p id="pTitle"></p>
+                <hr class="my-4">
+                <p class="lead" id="bioArea"></p>
+                <div id="divBtnReadMore"></div>
+                <hr>
+                <div class="row justify-content-around" id="locations">
+                    <div class="card col-12 col-sm-5">
+                        <div class="card-body">
+                            <label>Adress</label>
+                            <textarea readonly="true" id="inpAdress" placeholder="Adresse"></textarea>
                         </div>
                     </div>
-                    <div class="modal-body" id="editeur">
-                        <form id="changeProfile">
-                            <fieldset id="fsWilder">
-                                <input type="hidden" name="wilderChange_id" class="form-control">
-                                <fieldset class="form-group" id="nameWilder">
-                                    <div class="row justify-content-around">
-                                        <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
-                                        <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
-                                    </div>
-                                    <div class="row justify-content-around">
-                                        <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                                        <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
-                                    </div>
-                                </fieldset>
-                                <fieldset class="form-group row justify-content-around">
-                                    <label for="inputTitle" class="col-11">Title</label>
-                                    <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="Titre de votre profil">
-                                </fieldset>
-                                <fieldset class="form-group row justify-content-around">
-                                    <label for="inputImageUrl" class="col-11">Image URL</label>
-                                    <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="URL de votre avatar">
-                                </fieldset>
-                                <fieldset class="form-group row justify-content-around">
-                                    <label for="inputBio" class="col-11">Bio</label>
-                                    <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="Une description de vous. Pensez à l'actualiser régulièrement"></textarea>
-                                </fieldset>
-                                <fieldset class="form-group">
-                                    <div class="row justify-content-around">
-                                        <label for="inputMail" class="col-12 col-sm-5">Mail</label>
-                                        <label for="inputMdp" class="col-12 col-sm-5">password</label>
-                                    </div>
-                                    <div class="row justify-content-around">
-                                        <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="Nouveau mail">
-                                        <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="Nouveau mot de passe">
-                                    </div>
-                                </fieldset>
-                                <fieldset class="form-group" id="links">
-                                    <div class="row justify-content-around">
-                                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
-                                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
-                                    </div>
-                                    <div class="row justify-content-around">
-                                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="Lien LinkedIn">
-                                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="Lien Github">
-                                    </div>
-                                </fieldset>
-                                <fieldset class="form-group" id="locations">
-                                    <div class="row justify-content-around">
-                                        <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
-                                        <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
-                                    </div>
-                                    <div class="row justify-content-around">
-                                        <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="Votre adresse">
-                                        <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="Mobilité géographique">
-                                    </div>
-                                </fieldset>
-                            </fieldset>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                    <div class="card col-12 col-sm-5">
+                        <div class="card-body">
+                            <label>Mobility</label>
+                            <textarea readonly="true" id="inpMobility" placeholder="Mobility"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div id="divLinks" class="row justify-content-around"></div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
-                        </form>
+                        </div>
+                        <div class="modal-body" id="editeur">
+                            <form id="changeProfile">
+                                <fieldset id="fsWilder">
+                                    <input type="hidden" name="wilderChange_id" class="form-control">
+                                    <fieldset class="form-group" id="nameWilder">
+                                        <div class="row justify-content-around">
+                                            <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                                            <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+                                        </div>
+                                        <div class="row justify-content-around">
+                                            <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                                            <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="form-group row justify-content-around">
+                                        <label for="inputTitle" class="col-11">Title</label>
+                                        <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="Titre de votre profil">
+                                    </fieldset>
+                                    <fieldset class="form-group row justify-content-around">
+                                        <label for="inputImageUrl" class="col-11">Image URL</label>
+                                        <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="URL de votre avatar">
+                                    </fieldset>
+                                    <fieldset class="form-group row justify-content-around">
+                                        <label for="inputBio" class="col-11">Bio</label>
+                                        <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="Une description de vous. Pensez à l'actualiser régulièrement"></textarea>
+                                    </fieldset>
+                                    <fieldset class="form-group">
+                                        <div class="row justify-content-around">
+                                            <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                                            <label for="inputMdp" class="col-12 col-sm-5">password</label>
+                                        </div>
+                                        <div class="row justify-content-around">
+                                            <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="Nouveau mail">
+                                            <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="Nouveau mot de passe">
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="form-group" id="links">
+                                        <div class="row justify-content-around">
+                                            <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                                            <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                                        </div>
+                                        <div class="row justify-content-around">
+                                            <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="Lien LinkedIn">
+                                            <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="Lien Github">
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="form-group" id="locations">
+                                        <div class="row justify-content-around">
+                                            <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
+                                            <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
+                                        </div>
+                                        <div class="row justify-content-around">
+                                            <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="Votre adresse">
+                                            <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="Mobilité géographique">
+                                        </div>
+                                    </fieldset>
+                                </fieldset>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>`)
 
                 // define display wilder function in profile jumbotron
