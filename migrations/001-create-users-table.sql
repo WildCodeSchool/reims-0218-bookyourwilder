@@ -10,11 +10,13 @@ CREATE TABLE option_profil (
 
 CREATE TABLE users (
   id INTEGER PRIMARY KEY,
-  title VARCHAR(40),
-  slug VARCHAR(255),
   firstName VARCHAR(60),
   lastName VARCHAR(60),
+  title VARCHAR(40),
+  projet VARCHAR(40),
+  slug VARCHAR(255),
   bio TEXT,
+  coteWild VARCHAR(40),
   image VARCHAR(255),
   mail VARCHAR(255),
   urlLi VARCHAR(100),

@@ -8,9 +8,6 @@ const nodemailer = require("nodemailer")
 const app = express()
 const wildersSeed = require('./public/wilders.json')
 const fluxsSeed = require('./public/fluxs.json')
-const multer = require("multer")
-const upload = multer({ dest: "TMP/"})
-const fs = require("fs")
 
 let db
 
@@ -25,11 +22,11 @@ app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress)
-  .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
-}
+    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress } = w
+    return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress)
+    .then(() => db.get('SELECT last_insert_rowid() as id'))
+    .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
+  }
 
 // updateWilder dans la db
 const updateWilder = w => {
@@ -45,25 +42,11 @@ const insertflux = f => {
     .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }
 
-/* // TODO: need to add image in query ?
-const updateAccount = ua => {
-    const { firstName, lastName, bio, image, slug, mail, password, editedWilder } = ua
-    return db.get('UPDATE users SET firstName = ?, lastName = ?, bio = ?, mail = ?, password = ? WHERE id = ?;', firstName, lastName, bio, slug, mail, password, editedWilder)
-    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
-}
-
-// Update profile options
-const updateProfile = up => {
-    const { title, nomOption, affichageOption, texteOption, editedWilder } = up
-    return db.get("UPDATE option_profil SET title = ?, nom_option = ?, affichage_option = ?, texte_option = ? WHERE wilder_id = ?;", title, nomOption, affichageOption, texteOption, editedWilder)
-    //.then(() => db.get("SELECT firstName, lastName, option_profil.title, option_profil.texte_option FROM users JOIN option_profil ON users.id = option_profil.wilder_id"))
-} */
-
 const dbPromise = Promise.resolve()
 .then(() => sqlite.open('./database.sqlite', { Promise }))
 .then(_db => {
-    db = _db
-    return db.migrate({ force: 'last' })
+  db = _db
+  return db.migrate({ force: 'last' })
 })
 .then(() => Promise.map(wildersSeed, w => insertWilder(w)))
 
@@ -83,10 +66,13 @@ const html = `
                 <nav class="navbar navbar-expand-lg navbar-dark ">
                     <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
                                 <a class="nav-link" href="/home">Acceuil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Inscription</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/flux">Flux</a>
@@ -96,14 +82,11 @@ const html = `
                                 <div class="dropdown-menu" aria-labelledby="navbarProfil">
                                 <a class="dropdown-item" href="#">Mon profil</a>
                                 <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Déconnection</a>
+                                    <a class="dropdown-item" id="disconnect" href="/">Déconnection</a>
                                 </div>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin">Admin</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Add a wilder</a>
                             </li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
@@ -118,7 +101,7 @@ const html = `
 
             <footer class="container-fluid pt-2 bg">
                 <div class="row justify-content-around text-center">
-                    <div class="col-12 col-md-6 col-lg-4 mt-5">
+                    <div class="col-12 col-sm-6 col-md-4 mt-5">
                         <h5>Les autres projets de la <br>Wild Code School Reims</h5>
                         <div class="list-group mt-4">
                             <a href="#" class="mt-1 mb-1">
@@ -132,11 +115,11 @@ const html = `
                             </a>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mt-5">
+                    <div class="col-12 col-sm-6 col-md-4 mt-5">
                         <h5>Plus d'infos sur l'école</h5>
                         <a href="https://wildcodeschool.fr/" target="_blank"><button type="button" class="btn btn-primary mt-2 mb-2">Plus d'infos</button></a>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mt-5">
+                    <div class="col-12 col-sm-6 col-md-4 mt-5">
                         <h5>Suivez-nous sur les réseaux sociaux !</h5>
                         <div class="d-flex flex-row justify-content-center mt-3">
                             <div class="p-4">
@@ -157,13 +140,25 @@ const html = `
                     </div>
                 </div>
             </footer>
+
+            <script>
+            //stores the token
+            document.getElementById('disconnect').addEventListener('click', () => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('tokenId')
+            })
+
+            </script>
+
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="/page.js"></script>
         <script src="/app.js"></script>
     </body>
 </html>`
+
 
 
 //routing coté Serveur
@@ -172,10 +167,44 @@ const html = `
 
 //CREATE
 app.post('/wilders', (req, res) => {
-    return insertWilder(req.body)
-    .then(record => {
-        res.json(record)
-  })
+    let transporter = nodemailer.createTransport({
+        host: 'smtp-mail.outlook.com',
+        port: 587,
+        secureConnection: false,
+        tls: {
+          ciphers: "SSLv3"
+        },
+        auth: {
+            user: "WildCodeSchool@hotmail.com",
+            pass: "Wi1dC0d35h001"
+        }
+      });
+    
+      let mailOptions = {
+        from: "<WildCodeSchool@hotmail.com>",
+        to: `${req.body.mail}`,
+        subject: "Bienvenue sur BookYourWilder !",
+        text: `Hey ${req.body.firstName} ${req.body.lastName} !
+        Bienvenue dans le comité très restreint des Wilders !
+        Vous pouvez désormais vous authentifier avec votre adresse mail (${req.body.mail}) et le mot de passe que vous avez défini.
+        Sur ce, à bientôt sur BookYourWilder !
+        
+        (En cas de questions, vous pouvez envoyer un mail à WildCodeSchool@hotmail.com. Les spams, je les dévore tous crus !)`,
+        html: `Hey <strong>${req.body.firstName} ${req.body.lastName}</strong> !<br/>
+        Bienvenue dans le comité très restreint des Wilders !<br/>
+        Vous pouvez désormais vous authentifier avec votre <u>adresse mail</u> (${req.body.mail}) et le <u>mot de passe</u> que vous avez défini.<br/>
+        Sur ce, à bientôt sur BookYourWilder !<br/><br/>
+        
+        <em>(En cas de questions, vous pouvez envoyer un mail à WildCodeSchool@hotmail.com. Les spams, je les dévore tous crus !)</em>`
+      };
+    
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+              return console.log(error);
+          }
+    })
+  return insertWilder(req.body)
+  .then(record => res.json(record))
 })
 
 app.post('/fluxs', (req, res) => {
@@ -185,7 +214,7 @@ app.post('/fluxs', (req, res) => {
 
 //READ
 app.get('/wilders', (req, res) => {
-  db.all('SELECT * from users')
+  db.all('SELECT * from users ORDER BY lastName')
   .then(records => res.json(records))
 })
 
