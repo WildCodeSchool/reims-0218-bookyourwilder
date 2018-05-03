@@ -22,16 +22,16 @@ app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
-    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress } = w
-    return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress)
+    const { firstName, lastName, title, projet, bio, coteWild, image, slug, mail, urlLi, urlGh, password, mobility, adress } = w
+    return db.get('INSERT INTO users(slug, firstName, lastName, title, projet, bio, coteWild, image, mail, urlLi, urlGh, password, mobility, adress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, projet, bio, coteWild, image, mail, urlLi, urlGh, password, mobility, adress)
     .then(() => db.get('SELECT last_insert_rowid() as id'))
     .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
   }
 
 // updateWilder dans la db
 const updateWilder = w => {
-    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id } = w
-    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=?, adress=?, mobility=? where id=?;`,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id)
+    const { firstName, lastName, title, projet, bio, coteWild, image, slug, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id } = w
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, projet=?, bio=?, coteWild=?, image=?, mail=?, urlLi=?, urlGh=?,password=?, adress=?, mobility=? where id=?;`,slug, firstName,lastName,title, projet, bio, coteWild, image, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id)
     }
 
 // insertflux dans la db
