@@ -262,8 +262,8 @@ const controllers = {
         .then(res => res.json())
         .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
         .then(album => {
-            render(
-                `<div class="container">
+            render(`
+    <div class="container">
       <div class="row mt-5 mb-5">
           <div class="col">
               <div class="info-header mb-5 text-center">
@@ -277,135 +277,129 @@ const controllers = {
         }),
 
     '/profil/:wilder_id': ctx => {
-        const { wilder_id } = ctx.params
-        fetch('/wilders') // reading of wilder in database
-            .then(res => res.json())
-            .then(wilders => {
-                return wilders.find(wilder => wilder.id == wilder_id)
-            })
-            .then(wilder => {
-                // replace the Array with a fetch on /options/wilder
-                const options_wilder = [{
-                    "nom": "hobby",
-                    "texte": "reading",
-                    "id_wilder": 2
-                }, {
-                    "nom": "reading",
-                    "texte": "foundation",
-                    "id_wilder": 2
-                }]
-
-                const displayOptionsWilder = (tableauOptions, displayOrChange) => {
-                    let htmlLis = ""
-                        // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
-                    tableauOptions.forEach(option => htmlLis += `<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`)
-                    return htmlLis
-                }
-                render(`
+    const { wilder_id } = ctx.params
+    fetch('/wilders') // reading of wilder in database
+    .then(res => res.json())
+    .then(wilders => {
+        return wilders.find(wilder => wilder.id == wilder_id)
+    })
+    .then(wilder => { 
+      render(`
   <div class="container text-center">
     <div class="jumbotron">
       <div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Edit profile</button>
+        
       </div>
       <div class="card mb-3" style="background-color: rgb(243, 166, 31);box-shadow: 1px 2px 10px rgba(0,0,0,0.5);">
         <img src="../Téléchargements/Bg/bg.jpg" alt="#" class="card-img-top" style="height: 300px; border-bottom: 2px solid white;">
       <div class="card-body text-center" style="padding-top: 0px; border-top: 2px solid white;">
-      <div class="row">
-        <button type="button" class="btn btn-primary float-left">Read More</button>
+      <div class="row" id="divBtnEditProfile">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="btnEditProfile">Edit profile</button>
       </div>
-      <img src="../Téléchargements/Aurélie BAYRE Reims-fev2018_R.jpg" alt="#" class="rounded-circle" style="height: 150px; width: 150px; margin-top: -113px; border: 4px solid white">
-      <h2 class="card-title pt-3">Aurélie BAYRE</h2>
-      <h5 class="card-text text-mute">Curieuse, passionnée, observatrice</h5>
+      <img src="" id="imgProfile" alt="#" class="rounded-circle">
+      <h2 class="card-title pt-3" id="h2NameProfil"></h2>
+      <h5 class="card-text text-mute" id="pTitle"></h5>
       <hr>
-      <p class="card-text">Enseignante-chercheuse en littérature américaine puis professeur de relaxation, Aurélie n'a de cesse d'apprendre et d'explorer de nouveaux domaines. C'est ainsi qu'elle a commencé à coder en autodidacte.</p>
-      <button type="button" class="btn btn-primary">Read More</button>
+      <p class="card-text" id="bioArea"></p>
+      <div  id="divBtnReadMore" class="row justify-content-around">
+        <button type="button" class="btn btn-primary">Read More</button>
+      /div>
     </div>
   </div>
   <div class="card mb-3" style="box-shadow: 1px 2px 10px rgba(0,0,0,0.5);background-color: rgb(255, 127, 43);">
     <div class="card-body text-center">
       <h2 class="card-title">Côté Wild</h2>
-      <p class="card-text">Elle sinspire du Tai-chi-chuan pour coder zen</p>
+      <p class="card-text" id="pCoteWild"></p>
     </div>
   </div>
   <div class="card" style="box-shadow: 1px 2px 10px rgba(0,0,0,0.5);background-color: rgb(255, 95, 1);">
     <div class="card-body">
-      <p class="card-text"><b>Adresse :</b><span>10 chemin des bois</span></p>
-      <p class="card-text"><b>Mobilité :</b><span>Paris, Reims</span></p>
+      <div class="row justify-content-around pb-5">
+        <p class="card-text"><b>Adress :</b><span id="inpAdress"></span></p>
+        <p class="card-text"><b>Mobility :</b><span id="inpMobility"></span></p>
+      </div>
+      <div class="row justify-content-around" id="divLinks">
+      </div>
     </div>
   </div>
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
               <div class="modal-header">
-                  <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
-          </div>
-          <div class="modal-body" id="editeur">
-              <form id="changeProfile">
+              <div class="modal-body" id="editeur">
+                <form id="changeProfile">
                   <fieldset id="fsWilder">
-                      <input type="hidden" name="wilderChange_id" class="form-control">
-                      <fieldset class="form-group" id="nameWilder">
-                          <div class="row justify-content-around">
-                              <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
-                              <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
-                          </div>
-                          <div class="row justify-content-around">
-                              <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                              <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
-                          </div>
-                      </fieldset>
-                      <fieldset class="form-group row justify-content-around">
-                          <label for="inputTitle" class="col-11">Title</label>
-                          <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="Titre de votre profil">
-                      </fieldset>
-                      <fieldset class="form-group row justify-content-around">
-                          <label for="inputImageUrl" class="col-11">Image URL</label>
-                          <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="URL de votre avatar">
-                      </fieldset>
-                      <fieldset class="form-group row justify-content-around">
-                          <label for="inputBio" class="col-11">Bio</label>
-                          <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="Une description de vous. Pensez à l'actualiser régulièrement"></textarea>
-                      </fieldset>
-                      <fieldset class="form-group">
-                          <div class="row justify-content-around">
-                              <label for="inputMail" class="col-12 col-sm-5">Mail</label>
-                              <label for="inputMdp" class="col-12 col-sm-5">password</label>
-                          </div>
-                          <div class="row justify-content-around">
-                              <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="Nouveau mail">
-                              <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="Nouveau mot de passe">
-                          </div>
-                      </fieldset>
-                      <fieldset class="form-group" id="links">
-                          <div class="row justify-content-around">
-                              <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
-                              <label for="inputGithub" class="col-12 col-sm-5">Github</label>
-                          </div>
-                          <div class="row justify-content-around">
-                              <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="Lien LinkedIn">
-                              <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="Lien Github">
-                          </div>
-                      </fieldset>
-                      <fieldset class="form-group" id="locations">
-                          <div class="row justify-content-around">
-                              <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
-                              <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
-                          </div>
-                          <div class="row justify-content-around">
-                              <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="Votre adresse">
-                              <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="Mobilité géographique">
-                          </div>
-                      </fieldset>
+                    <input type="hidden" name="wilderChange_id" class="form-control">
+                    <fieldset class="form-group" id="nameWilder">
+                      <div class="row justify-content-around">
+                        <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                        <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+                      </div>
+                      <div class="row justify-content-around">
+                      <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                        <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                      </div>
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputTitle" class="col-11">Title</label>
+                      <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputImageUrl" class="col-11">Image URL</label>
+                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                    </fieldset>
+                    <fieldset class="form-group row justify-content-around">
+                      <label for="inputBio" class="col-11">Bio</label>
+                      <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                    </fieldset>
+                    <fieldset class="form-group">
+                      <div class="row justify-content-around">
+                        <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                        <label for="inputMdp" class="col-12 col-sm-5">password</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                        <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
+                      </div>
+                    </fieldset>
+                    <fieldset class="form-group" id="links">
+                      <div class="row justify-content-around">
+                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
+                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                      </div>
+                    </fieldset>
+                    <fieldset class="form-group" id="locations">
+                      <div class="row justify-content-around">
+                        <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
+                        <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
+                      </div>
+                      <div class="row justify-content-around">
+                        <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="${wilder.adress}">
+                        <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="${wilder.mobility}">
+                      </div>
+                    </fieldset>
                   </fieldset>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
                   </div>
-              </form>
-          </div>
+                </form>
+       
+              </div>
+            </div>
+        </div>
       </div>
+  <!-- end modale -->
   </div>
   </div>
   </div>
@@ -415,12 +409,14 @@ const controllers = {
 
                 const pBio = document.getElementById('bioArea')
                 const pTitle = document.getElementById('pTitle')
-                const h1NameProfil = document.getElementById('h1NameProfil')
+                const h2NameProfil = document.getElementById('h2NameProfil')
                 const divBtnReadMore = document.getElementById('divBtnReadMore')
                 const divLinks = document.getElementById('divLinks')
                 const inpAdress = document.getElementById('inpAdress')
                 const inpMobility = document.getElementById('inpMobility')
                 const myModal = document.getElementById('exampleModal')
+                const pCoteWild = document.getElementById('pCoteWild')
+                const imgProfile = document.getElementById('imgProfile')
                 let readMore = true
 
                 const displayCard = (titleText, bodyText) => {
@@ -437,42 +433,42 @@ const controllers = {
                             break
                     }
                     return `
-      <div class="card col-12 col-sm-3">
-        <div class="card-body">
+      <div class="col-12 col-sm-3">
         <a href="${bodyText}" target="_blank">
         <i class="${classLien} rounded-circle"></i>
         </a>
-        </div>
       </div>`
-                }
+      }
 
-                const displayWilderInProfile = (wilderToDisplay) => {
-                    h1NameProfil.innerHTML = wilderToDisplay.firstName + ' ' + wilderToDisplay.lastName
-                    pTitle.innerHTML = wilderToDisplay.title
-                    inpAdress.innerHTML = wilderToDisplay.adress
-                    inpMobility.innerHTML = wilderToDisplay.mobility
-                    if (wilderToDisplay.bio.length > 50) {
-                        divBtnReadMore.innerHTML = `<button type="button" class="btn btn-primary" id="btnReadMore"></button>`
-                        const btnReadMore = document.getElementById('btnReadMore')
-                        btnReadMore.innerHTML = 'Read More'
-                        pBio.innerHTML = wilderToDisplay.bio.substr(0, 50) + "..."
-                        btnReadMore.addEventListener('click', () => {
-                            if (readMore) { // 'read more' button
-                                pBio.innerHTML = wilderToDisplay.bio
-                                btnReadMore.innerHTML = 'Read Less'
-                                readMore = false
-                            } else { // 'Read Less' button
-                                pBio.innerHTML = wilderToDisplay.bio.substr(0, 50) + "..."
-                                btnReadMore.innerHTML = 'Read More'
-                                readMore = true
-                            }
-                        })
-                    } else
+        const displayWilderInProfile = (wilderToDisplay) => {
+            h2NameProfil.innerHTML = wilderToDisplay.firstName + ' ' + wilderToDisplay.lastName
+            pTitle.innerHTML = wilderToDisplay.title
+            inpAdress.innerHTML = wilderToDisplay.adress
+            inpMobility.innerHTML = wilderToDisplay.mobility
+            pCoteWild.innerHTML = wilderToDisplay.coteWild
+            imgProfile.setAttribute("src","."+wilderToDisplay.image)
+            if (wilderToDisplay.bio.length > 50) {
+                divBtnReadMore.innerHTML = `<button type="button" class="btn btn-primary float-left" id="btnReadMore"></button>`
+                const btnReadMore = document.getElementById('btnReadMore')
+                btnReadMore.innerHTML = 'Read More'
+                pBio.innerHTML = wilderToDisplay.bio.substr(0, 50) + "..."
+                btnReadMore.addEventListener('click', () => {
+                    if (readMore) { // 'read more' button
                         pBio.innerHTML = wilderToDisplay.bio
-                    divLinks.innerHTML = displayCard('mail', wilderToDisplay.mail)
-                    divLinks.innerHTML += displayCard('linkedin', wilderToDisplay.urlLi)
-                    divLinks.innerHTML += displayCard('github', wilderToDisplay.urlGh)
-                }
+                        btnReadMore.innerHTML = 'Read Less'
+                        readMore = false
+                    } else { // 'Read Less' button
+                        pBio.innerHTML = wilderToDisplay.bio.substr(0, 50) + "..."
+                        btnReadMore.innerHTML = 'Read More'
+                        readMore = true
+                    }
+                })
+            } else
+                pBio.innerHTML = wilderToDisplay.bio
+            divLinks.innerHTML = displayCard('mail', wilderToDisplay.mail)
+            divLinks.innerHTML += displayCard('linkedin', wilderToDisplay.urlLi)
+            divLinks.innerHTML += displayCard('github', wilderToDisplay.urlGh)
+        }
 
                 // first display of wilder
                 displayWilderInProfile(wilder)
