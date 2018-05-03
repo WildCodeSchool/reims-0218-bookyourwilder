@@ -209,9 +209,8 @@ const controllers = {
                         } else {
                             //stores the token
                             localStorage.setItem('token', data.token)
-                            console.log(data.token)
                             localStorage.setItem('tokenId', data.user.id)
-                            console.log(data.user.id)
+                            
                             page("/home") // setting the path
                             page() // starting the redirection
                             navbarDejaInscrit.innerHTML = `
@@ -229,7 +228,7 @@ const controllers = {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
                             <div class="dropdown-menu" aria-labelledby="navbarProfil">
-                            <a class="dropdown-item" href="#">Mon profil</a>
+                            <a class="dropdown-item" href="/profil/${localStorage.tokenId}">Mon profil</a>
                             <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Déconnection</a>
                             </div>
