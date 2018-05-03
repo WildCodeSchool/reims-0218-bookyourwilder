@@ -167,7 +167,7 @@ footer .btn-primary:hover a{
 }
 
 .formblock{
-    width: 40%; 
+    max-width: 800px; 
     margin: 0 auto;
     border-radius: 2em;
 }
