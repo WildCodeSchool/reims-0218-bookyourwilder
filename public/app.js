@@ -21,12 +21,12 @@ const makeCard = item => `
                         <i class="fab fa-linkedin-in rounded-circle"></i>
                     </a>
                 </div>
-                <div>
+                <div class="p-4">
                     <a href="${item.urlGh}" target="_blank">
                       <i class="fab fa-github rounded-circle"></i>
                     </a>
                 </div>
-                <div>
+                <div class="p-4">
                     <a href="mailto:${item.mail}">
                         <i class="fas fa-envelope rounded-circle"></i>
                     </a>

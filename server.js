@@ -22,16 +22,16 @@ app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
-    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress, coteWild } = w
-    return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress, coteWild) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress, coteWild)
+    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress, coteWild, projet } = w
+    return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress, coteWild, projet) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress, coteWild, projet)
     .then(() => db.get('SELECT last_insert_rowid() as id'))
     .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
   }
 
 // updateWilder dans la db
 const updateWilder = w => {
-    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress, coteWild, wilderChange_id } = w
-    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=?, mobility=?, adress=?, coteWild=? where id=?;` ,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, password, mobility, adress, coteWild, wilderChange_id)
+    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress, coteWild, projet, wilderChange_id } = w
+    return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, bio=?, image=?, mail=?, urlLi=?, urlGh=?,password=?, mobility=?, adress=?, coteWild=?, projet=? where id=?;` ,slug, firstName,lastName,title,bio,image, mail, urlLi, urlGh, password, mobility, adress, coteWild, projet, wilderChange_id)
     }
 
 // insertflux dans la db
