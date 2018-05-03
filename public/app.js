@@ -92,7 +92,6 @@ const controllers = {
                     <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez">
                 </div>
                 <button type="submit" class="btn btn-success btn-lg btn-block mt-5 form-control" name="validation">Valider l'inscription</button>
-                <div id="alert-box"></div>
             </form>
         </div>
     </div>`)
@@ -199,7 +198,6 @@ const controllers = {
                     })
                     .then(res => res.json())
                     .then(data => {
-                        const alert = document.getElementById('alert-login')
                         if (!data.user) {
                             swal(
                             'Oups...',
@@ -251,7 +249,7 @@ const controllers = {
                     })
             })
         } else {
-            render('<h1>Vous êtes déja authentifié</h1>')
+            render('<h1 class="text-center pt-5"><u>Vous êtes déja authentifié...</u></h1>')
         }
     },
 
