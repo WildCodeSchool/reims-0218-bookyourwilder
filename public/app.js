@@ -21,12 +21,12 @@ const makeCard = item => `
                         <i class="fab fa-linkedin-in rounded-circle"></i>
                     </a>
                 </div>
-                <div>
+                <div class="p-4">
                     <a href="${item.urlGh}" target="_blank">
                       <i class="fab fa-github rounded-circle"></i>
                     </a>
                 </div>
-                <div>
+                <div class="p-4">
                     <a href="mailto:${item.mail}">
                         <i class="fas fa-envelope rounded-circle"></i>
                     </a>
@@ -287,9 +287,6 @@ const controllers = {
       render(`
   <div class="container text-center">
     <div class="jumbotron">
-      <div>
-        
-      </div>
       <div class="card mb-3" style="background-color: rgb(243, 166, 31);box-shadow: 1px 2px 10px rgba(0,0,0,0.5);">
         <img src="../Téléchargements/Bg/bg.jpg" alt="#" class="card-img-top" style="height: 300px; border-bottom: 2px solid white;">
       <div class="card-body text-center" style="padding-top: 0px; border-top: 2px solid white;">
@@ -470,62 +467,60 @@ const controllers = {
             divLinks.innerHTML += displayCard('github', wilderToDisplay.urlGh)
         }
 
-                // first display of wilder
-                displayWilderInProfile(wilder)
+            // first display of wilder
+            displayWilderInProfile(wilder)
 
 
-                // click on "save changes"
-                const form = document.getElementById('changeProfile')
+            // click on "save changes"
+            const form = document.getElementById('changeProfile')
 
-                form.addEventListener('submit', e => {
-                    e.preventDefault()
+            form.addEventListener('submit', e => {
+                e.preventDefault()
 
-                    // i must have a hidden field with "id" to be sent with datas
-                    const champCache = document.getElementsByName('wilderChange_id')
-                    champCache[0].setAttribute('value', wilder.id)
+                // i must have a hidden field with "id" to be sent with datas
+                const champCache = document.getElementsByName('wilderChange_id')
+                champCache[0].setAttribute('value', wilder.id)
 
-                    // inserting name/value of form-control's classes in profile's form to data
-                    const data = serializeForm(form)
+                // inserting name/value of form-control's classes in profile's form to data
+                const data = serializeForm(form)
 
-                    // empty fields of data object must be filled with wilder's datas
-                    const proprietes = Object.keys(data)
-                    proprietes.forEach(propriete => {
-                        if (data[propriete] === '') data[propriete] = wilder[propriete]
-                    })
-
-                    if (!data.image) {
-                        const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
-                        data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
-                    }
-
-                    console.log(data)
-
-                    // modifying wilder in database
-                    fetch('/wilders', {
-                            method: 'PUT',
-                            headers: {
-                                'Accept': 'application/json, text/plain, */*',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        })
-                        .then(responseAfterUpdate => {
-                            fetch('/wilders') // new reading of wilders AFTER update
-                                .then(resNew => {
-                                    return resNew.json()
-                                })
-                                .then(wildersNew => {
-                                    return wildersNew.find(newWilder => newWilder.id == wilder_id)
-                                })
-                                .then(newWilder => {
-                                    //displayWilderInProfile(newWilder)
-                                    $(myModal).modal('hide')
-                                    page(`/profil/${newWilder.id}`)
-                                    page()
-                                })
-                        })
+                // empty fields of data object must be filled with wilder's datas
+                const proprietes = Object.keys(data)
+                proprietes.forEach(propriete => {
+                    if (data[propriete] === '') data[propriete] = wilder[propriete]
                 })
-            }) // closing last 'then' of first reading of wilder
+
+                if (!data.image) {
+                    const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
+                    data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
+                }
+
+                // modifying wilder in database
+                fetch('/wilders', {
+                        method: 'PUT',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(responseAfterUpdate => {
+                        fetch('/wilders') // new reading of wilders AFTER update
+                            .then(resNew => {
+                                return resNew.json()
+                            })
+                            .then(wildersNew => {
+                                return wildersNew.find(newWilder => newWilder.id == wilder_id)
+                            })
+                            .then(newWilder => {
+                                //displayWilderInProfile(newWilder)
+                                $(myModal).modal('hide')
+                                page(`/profil/${newWilder.id}`)
+                                page()
+                            })
+                    })
+            })
+        }) // closing last 'then' of first reading of wilder
     }, // closing of route
 
     '/flux': () => {
