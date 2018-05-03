@@ -291,7 +291,7 @@ const controllers = {
         <img src="../Téléchargements/Bg/bg.jpg" alt="#" class="card-img-top" style="height: 300px; border-bottom: 2px solid white;">
       <div class="card-body text-center" style="padding-top: 0px; border-top: 2px solid white;">
       <div class="row">
-        <button style="opacity:0;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="btnEditProfile">Edit profile</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="btnEditProfile">Edit profile</button>
       </div>
       <img src="" id="imgProfile" alt="#" class="rounded-circle">
       <h2 class="card-title pt-3" id="h2NameProfil"></h2>
@@ -444,8 +444,9 @@ const controllers = {
             inpMobility.innerHTML = wilderToDisplay.mobility
             pCoteWild.innerHTML = wilderToDisplay.coteWild
             imgProfile.setAttribute("src","."+wilderToDisplay.image)
+            btnEditProfile.style.visibility='hidden'
             if (localStorage.tokenId==wilderToDisplay.id) {
-              btnEditProfile.setAttribute('style','opacity:1;')
+              btnEditProfile.style.visibility='visible'
             }
             if (wilderToDisplay.bio.length > 50) {
                 divBtnReadMore.innerHTML = `<button type="button" class="btn btn-primary float-left" id="btnReadMore"></button>`
