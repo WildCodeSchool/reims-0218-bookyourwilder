@@ -148,7 +148,6 @@ const controllers = {
     form.addEventListener('submit', eventSubmit => {
         eventSubmit.preventDefault()  // disabling default refresh of pages
         const data = serializeForm(form)
-        console.log(data)
         // Check if password fields are equal
         if (data.password === data.confirmPassword) {       
             // i'm finishing to fill the wilder (needed for updating later)
@@ -171,8 +170,6 @@ const controllers = {
             .then(res => res.json())
             .then(wilder => {
                 eventSubmit.defaultPrevented=false  // suppress the preventdefault
-                // page("/home") // setting the path
-                // page()        // starting the redirection
                 navbarDejaInscrit.innerHTML=navbarStandardHtml // standard navbar put in the navbar area
             })
         } else {
@@ -185,7 +182,6 @@ const controllers = {
     loginForm.addEventListener('submit', e => {
         e.preventDefault()
         const data = serializeForm(loginForm)
-        console.log(data)
         fetch('/auth/login', {
             method: 'POST',
             headers: {
@@ -197,8 +193,6 @@ const controllers = {
         .then(res => res.json())
         .then(data => {
             const alert = document.getElementById('alert-login')
-            console.log(data)
-            console.log(data.user)
             if(!data.user) {
                 //alert class danger
                 alert.className = 'alert alert-danger mb-5'
@@ -396,7 +390,7 @@ const controllers = {
                   </fieldset>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnChangeOption">Save changes</button>
+                    <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
                   </div>
                 </form>
 
@@ -500,7 +494,7 @@ const controllers = {
     const form = document.getElementById('changeProfile')
     const btnSaveChanges = document.getElementById('btnChangeOption')
 
-    btnSaveChanges.addEventListener('click',e => {
+    form.addEventListener('submit',e => {
       e.preventDefault()
 
       // i must have a hidden field with "id" to be sent with datas
@@ -521,8 +515,6 @@ const controllers = {
         data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
       }
 
-      console.log(data)
-
       // modifying wilder in database
       fetch('/wilders', {
         method: 'PUT',
@@ -541,8 +533,7 @@ const controllers = {
           return wildersNew.find(newWilder => newWilder.id == wilder_id)
         })
         .then(newWilder => {
-          //displayWilderInProfile(newWilder)
-          
+          $(myModal).modal('hide')  // I must translate an html element to a Jquery selection
           page(`/profil/${newWilder.id}`)
           page()
         })
