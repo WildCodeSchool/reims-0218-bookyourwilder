@@ -37,7 +37,7 @@ const updateWilder = w => {
 // insertflux dans la db
 const insertflux = f => {
     const { fluxs } = f
-    return db.get('INSERT INTO fluxs( texte ) VALUES(?)', fluxs)
+    return db.get('INSERT INTO fluxs( texte, wilder_id, date_message ) VALUES(?, ?, date("now"))', fluxs)
     .then(() => db.get('SELECT last_insert_rowid() as id'))
     .then(({ id }) => db.get('SELECT * from fluxs WHERE id = ?', id))
 }

@@ -42,9 +42,9 @@ const makeCard = item => `
 const makeflux = item => `
   <div class="col-12">
     <div class="jumbotron msg-flux">
-        <h5>${item.firstName} ${item.lastName}</h5>
+        <h5>${localStorage.tokenFirstName} ${localStorage.tokenLastName}</h5>
         <p>${item.texte}</p>
-        <span class="text-muted">11:01</span>
+        <span class="text-muted">${item.date_message}</span>
     </div>
   </div>
   `
@@ -92,7 +92,6 @@ const controllers = {
                     <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez">
                 </div>
                 <button type="submit" class="btn btn-success btn-lg btn-block mt-5 form-control" name="validation">Valider l'inscription</button>
-                <div id="alert-box"></div>
             </form>
         </div>
     </div>`)
@@ -203,7 +202,6 @@ const controllers = {
                     })
                     .then(res => res.json())
                     .then(data => {
-                        const alert = document.getElementById('alert-login')
                         if (!data.user) {
                             swal(
                             'Oups...',
@@ -214,6 +212,8 @@ const controllers = {
                             //stores the token
                             localStorage.setItem('token', data.token)
                             localStorage.setItem('tokenId', data.user.id)
+                            localStorage.setItem("tokenFirstName", data.user.firstName)
+                            localStorage.setItem("tokenLastName", data.user.lastName)
                             page("/home") // setting the path
                             page() // starting the redirection
                             navbarDejaInscrit.innerHTML = `
@@ -253,7 +253,7 @@ const controllers = {
                     })
             })
         } else {
-            render('<h1>Vous êtes déja authentifié</h1>')
+            render('<h1 class="text-center pt-5"><u>Vous êtes déja authentifié...</u></h1>')
         }
     },
 
@@ -360,9 +360,76 @@ const controllers = {
                       <label for="inputMail" class="col-12 col-sm-5">Mail</label>
                       <label for="inputMdp" class="col-12 col-sm-5">password</label>
                     </div>
+<<<<<<< HEAD
                     <div class="row justify-content-around">
                       <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
                       <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
+=======
+                    <div class="modal-body" id="editeur">
+                        <form id="changeProfile">
+                            <fieldset id="fsWilder">
+                                <input type="hidden" name="wilderChange_id" class="form-control">
+                                <fieldset class="form-group" id="nameWilder">
+                                    <div class="row justify-content-around">
+                                        <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                                        <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                                        <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                                    </div>
+                                </fieldset>
+                                <fieldset class="form-group row justify-content-around">
+                                    <label for="inputTitle" class="col-11">Title</label>
+                                    <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="Titre de votre profil">
+                                </fieldset>
+                                <fieldset class="form-group row justify-content-around">
+                                    <label for="inputImageUrl" class="col-11">Image URL</label>
+                                    <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="URL de votre avatar">
+                                </fieldset>
+                                <fieldset class="form-group row justify-content-around">
+                                    <label for="inputBio" class="col-11">Bio</label>
+                                    <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="Une description de vous. Pensez à l'actualiser régulièrement"></textarea>
+                                    <textarea maxlength="500" name="projet" class="form-control col-11" id="txtProjet" placeholder="Quels sont vos projets à venir ?"></textarea>
+                                    <textarea maxlength="500" name="coteWild" class="form-control col-11" id="txtWild" placeholder="Quel est le petit détail qui vous rend original ?"></textarea>
+                                </fieldset>
+                                <fieldset class="form-group">
+                                    <div class="row justify-content-around">
+                                        <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                                        <label for="inputMdp" class="col-12 col-sm-5">password</label>
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="Nouveau mail">
+                                        <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="Nouveau mot de passe">
+                                    </div>
+                                </fieldset>
+                                <fieldset class="form-group" id="links">
+                                    <div class="row justify-content-around">
+                                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="Lien LinkedIn">
+                                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="Lien Github">
+                                    </div>
+                                </fieldset>
+                                <fieldset class="form-group" id="locations">
+                                    <div class="row justify-content-around">
+                                        <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
+                                        <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="Votre adresse">
+                                        <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="Mobilité géographique">
+                                    </div>
+                                </fieldset>
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+>>>>>>> e510f7c37d19e45be6d40a359607761b76919437
                     </div>
                   </fieldset>
                   <fieldset class="form-group" id="links">
@@ -559,6 +626,7 @@ const controllers = {
                         .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
                         .then(fluxs => {
                             const alertBox = document.getElementById('alert-box')
+                            console.log(fluxs)
                             const listFluxs = document.getElementById('listFluxs')
                             alertBox.className = 'alert alert-success'
                             alertBox.innerHTML = `Successfully`
