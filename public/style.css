@@ -48,7 +48,7 @@ p {
 }
 
 a > .rounded-circle {
-    font-size: 2em;
+    font-size: 2rem;
     background: white;
     padding: 0.3em;
 }
@@ -97,6 +97,13 @@ footer .rounded-circle:hover {
     box-shadow: 1px 2px 20px rgba(0,0,0,0.5);
 }
 
+#imgProfile {
+    height: 150px;
+    width: 150px;
+    margin-top: -113px;
+    border: 4px solid white;
+}
+
 .list-group-item {
     border : none;
 }
@@ -116,6 +123,10 @@ span {
 
 .bg {
     background: #35383a;
+}
+
+#locations input {
+    size:30;
 }
 
 footer h5{
@@ -148,8 +159,12 @@ footer .btn-primary:hover a{
     text-decoration: none;
 }
 
+#main {
+    min-height: 400px;
+}
+
 #main > .inscription{
-    background-image: linear-gradient(0deg, rgba(15, 29, 94, 0.7), rgba(15, 29, 94, 0.7)), url("/images/wild-code-school-lyon-open-space.jpg");
+    background-image: linear-gradient(0deg, rgba(14, 35, 91, 0.8), rgba(14, 35, 91, 0.8)), url("/images/wild-code-school-lyon-open-space.jpg");
 	background-size: cover;
 	background-position: center;
 	height: 100%;
@@ -160,4 +175,20 @@ footer .btn-primary:hover a{
     border: 2px solid grey;
     border-radius: 20px;
     padding: 1em;
+}
+
+.formblock{
+    width: 40%; 
+    margin: 0 auto;
+    padding-bottom: 2em;
+}
+
+#fsWilder label {
+    color: black;
+}
+
+.jumbotron {
+    background-color: orange;
+    color: white;
+    border-radius: 2em;
 }

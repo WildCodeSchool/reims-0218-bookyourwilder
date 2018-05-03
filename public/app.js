@@ -1,28 +1,20 @@
 const mainDiv = document.getElementById('main')
+const bodyDocument = document.querySelector('body')
 
 const render = html => {
-  mainDiv.innerHTML = html
+    mainDiv.innerHTML = html
 }
 
 // renvoit le html d'une card bootstrap pour un wilder
 const makeCard = item => `
-  <div class="col-md-4 mt-5">
-    <!--<div class="card mb-4 box-shadow">
-      <img class="card-img-top" src="${item.image}" alt="Thumbnail [100%x225]" />
-      <div class="card-body">
-        <p class="card-text" style="height: 80px">${item.bio}</p>
-        <a class="btn btn-primary" href="/profil/${item.id}">${item.firstName}'s profile &raquo;</a>
-      </div>
-    </div>-->
-
-    
+<div class="col-12 col-md-6 col-lg-4 mt-5">
     <div class="card text-center mb-5 box-shadow">
         <div class="card-body">
             <img src="${item.image}" alt="#" class="img-fluid rounded-circle w-50 mb-3 image">
             <h4 class="card-title">${item.firstName}</h4>
             <h4 class="card-title">${item.lastName}</h4>
             <h5 class="card-text text-muted">${item.title}</h5>
-            <p class="card-text taille">${item.bio}</p>
+            <p class="card-text taille">${item.projet}</p>
             <div class="d-flex flex-row justify-content-center">
                 <div class="p-4">
                     <a href="${item.urlLi}" target="_blank">
@@ -47,109 +39,231 @@ const makeCard = item => `
     </div>
   </div>`
 
-  const makeflux = item => `
+const makeflux = item => `
   <div class="col-12">
     <div class="jumbotron msg-flux">
-      <p>${item.texte}</p>
+        <h5>${localStorage.tokenFirstName} ${localStorage.tokenLastName}</h5>
+        <p>${item.texte}</p>
+        <span class="text-muted">${item.date_message}</span>
     </div>
   </div>
   `
 
 const serializeForm = form => {
-  const data = {}
-  const elements = form.getElementsByClassName('form-control')
-  for(el of elements) {
-    data[el.name] = el.value
-  }
-  return data
+    const data = {}
+    const elements = form.getElementsByClassName('form-control')
+    for (let el of elements) {
+        data[el.name] = el.value
+    }
+    return data
 }
 
 //routing coté client
 const controllers = {
 
-  //route login a modifier l'exemple (pour florian)
-  '/': () => {
-    render(`
-  <div class="container-fluid" id="navbarDejaInscrit"></div>
-  <div class="container-fluid inscription pt-5 pb-5">
-    <div id="alert-box" class="hidden"></div>
-      <div class="jumbotron formblock" style="width: 50%; margin: 0 auto;">
-        <form id="add-wilder" method="POST">
-          <h1 class="display-4">Inscrivez-vous</h1>
-          <p class="lead">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
-          <hr class="my-4">
-          <div class="form-group">
-            <label for="inputFirstName">Prenom</label>
-            <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="Entrer votre prenom">
-          </div>
-          <div class="form-group">
-            <label for="inputLastName">Nom</label>
-            <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Entrer votre nom">
-          </div>
-          <div class="form-group">
-              <label for="inputMail">Adresse mail</label>
-              <input required name="mail" type="mail" class="form-control" id="inputMail" placeholder="Votre adresse mail (ex: john.doe@a.co)">
-          </div>
-          <div class="form-group">
-              <label for="password">Choisissez un mot de passe</label>
-              <input required name="password" type="password" class="form-control" id="inputPassword" placeholder="Privilégiez un mot de passe compliqué (au moins 8 caractères)">
-          </div>
-          <div class="form-group">
-              <label for="confirmPassword">Confirmez ce mot de passe</label>
-              <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez le mot de passe saisi ci-dessus">
-          </div>
-          <button type="submit" class="btn btn-success btn-lg btn-block mt-5">Valider l'inscription</button>
-          <div id="alert-box"></div>
-      </form>
-    </div>
-</div>`
-  )
-    const form = document.getElementById('add-wilder')
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      const data = serializeForm(form)
-      // i'm finishing to fill the wilder
-      data['title']=''
-      data['bio']=''
-      data['urlGh']=''
-      data['urlLi']=''
-      if(! data.image) {
-        const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
-        data.image = `https://via.placeholder.com/480x480/?text=${fullName}`
-      }
-      fetch('/wilders', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-    })
-    const navbarDejaInscrit = document.getElementById("navbarMenu")
-    navbarDejaInscrit.innerHTML = `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-    <a class="navbar-brand" href="#">Déjà inscrit ?</a>
-    <form method="POST" class="form-inline my-2">
-            <div class="justify-content-center">
-                <input type="text" class="form-control" id="inputLoginMail" aria-describedby="mailHelp" placeholder="Mail">
-                <input type="password" class="form-control" id="inputLoginPass" aria-describedby="passHelp" placeholder="Mot de passe">
+    //route login a modifier l'exemple (pour florian)
+    '/': () => {
+        if (localStorage.token === undefined) {
+            render(`
+    <div class="container-fluid inscription pt-5 pb-5">
+        <div class="jumbotron formblock">
+            <form id="add-wilder" method="POST">
+                <h1 class="display-4 text-center">Inscrivez-vous</h1>
+                <p class="lead text-center">Il est nécessaire de s'inscrire pour accéder aux contenus.</p>
+                <hr class="my-4">
+                <div class="form-group">
+                    <label for="inputFirstName">Prenom</label>
+                    <input required name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label for="inputLastName">Nom</label>
+                    <input required name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Doe">
+                </div>
+                <div class="form-group">
+                    <label for="inputMail">Adresse mail</label>
+                    <input required name="mail" type="mail" class="form-control" id="inputMail" placeholder="john.doe@a.co">
+                </div>
+                <div class="form-group">
+                    <label for="password">Choisissez un mot de passe</label>
+                    <input required name="password" type="password" class="form-control" id="inputPassword" placeholder="Privilégiez un compliqué (au moins 8 caractères)">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmez ce mot de passe</label>
+                    <input required name="confirmPassword" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirmez">
+                </div>
+                <button type="submit" class="btn btn-success btn-lg btn-block mt-5 form-control" name="validation">Valider l'inscription</button>
+            </form>
+        </div>
+    </div>`)
+            const navbarDejaInscrit = document.getElementById("navbarMenu")
+            navbarDejaInscrit.innerHTML = `
+    <nav class="navbar navbar-expand-lg navbar-dark bg">
+        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+            <a class="navbar-brand" href="#">Déjà inscrit ?</a>
+            <form id="loginForm" method="POST" class="form-inline my-2">
+                <input name="loginMail" type="mail" class="form-control mr-2" id="inputLoginMail" placeholder="Adresse mail">
+                <input name="loginPassword" type="password" class="form-control mr-2" id="inputLoginPassword" placeholder="Mot de passe">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Se Connecter</button>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
     </nav>`
-  },
-  
-  //page d'acceuil (et bouton temporaire en attendant la navbar)
-  '/home': () =>
-  fetch('/wilders')
-    .then(res => res.json())
-    .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
-    .then(album => render(
-    `<div class="container">
+            const navbarStandardHtml = `
+      <nav class="navbar navbar-expand-lg navbar-dark ">
+        <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home">Acceuil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/flux">Flux</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/notification">Notification</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                <div class="dropdown-menu" aria-labelledby="navbarProfil">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Action 2</a>
+                <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Action 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Add a wilder</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
+          </form>
+        </div>
+      </nav>`
+            const form = document.getElementById('add-wilder')
+            form.addEventListener('submit', eventSubmit => {
+                eventSubmit.preventDefault() // disabling default refresh of pages
+                const data = serializeForm(form)
+                console.log(data)
+                    // Check if password fields are equal
+                if (data.password === data.confirmPassword) {
+                    swal(
+                        'Welcome wilder !',
+                        'A confirmation email has been sent to you',
+                        'success'
+                      )//"Hey ! Les mots de passe ne correspondent pas ! Veuillez les vérifier."
+
+                    // i'm finishing to fill the wilder (needed for updating later)
+                    data['title'] = ''
+                    data['bio'] = ''
+                    data['urlGh'] = ''
+                    data['urlLi'] = ''
+                    data['mobility'] = ''
+                    data['adress'] = ''
+                    if (!data.image) {
+                        const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
+                        data.image = `https://via.placeholder.com/480x480/?text=${fullName}`
+                    }
+                    fetch('/wilders', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json, text/plain, */*',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(res => res.json())
+                        .then(wilder => {
+                            eventSubmit.defaultPrevented = false // suppress the preventdefault
+                        })
+                } else {
+                    swal(
+                        'Oups...',
+                        'Error password',
+                        'error'
+                    )//"Hey ! Les mots de passe ne correspondent pas ! Veuillez les vérifier."
+                }
+            })
+            const loginForm = document.getElementById('loginForm')
+            loginForm.addEventListener('submit', e => {
+                e.preventDefault()
+                const data = serializeForm(loginForm)
+                fetch('/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.user) {
+                            swal(
+                            'Oups...',
+                            'Mail or password is incorrect',
+                            'error'
+                        )
+                        } else {
+                            //stores the token
+                            localStorage.setItem('token', data.token)
+                            localStorage.setItem('tokenId', data.user.id)
+                            localStorage.setItem("tokenFirstName", data.user.firstName)
+                            localStorage.setItem("tokenLastName", data.user.lastName)
+                            page("/home") // setting the path
+                            page() // starting the redirection
+                            navbarDejaInscrit.innerHTML = `
+                <nav class="navbar navbar-expand-lg navbar-dark">
+                <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Acceuil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/flux">Flux</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarProfil">
+                            <a class="dropdown-item" href="#">Mon profil</a>
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Déconnection</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Add a wilder</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
+                    </form>
+                </div>
+            </nav>`
+                        }
+                    })
+            })
+        } else {
+            render('<h1 class="text-center pt-5"><u>Vous êtes déja authentifié...</u></h1>')
+        }
+    },
+
+    '/home': () =>
+        fetch('/wilders')
+        .then(res => res.json())
+        .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
+        .then(album => {
+            render(`
+    <div class="container">
       <div class="row mt-5 mb-5">
           <div class="col">
               <div class="info-header mb-5 text-center">
@@ -160,205 +274,266 @@ const controllers = {
       </div>
       <div class="row">${album}</div>
     </div>`)
-  ),
+        }),
 
-  // routing of a wilder's profile
-  '/profil/:wilder_id': ctx => {
+    '/profil/:wilder_id': ctx => {
     const { wilder_id } = ctx.params
     fetch('/wilders') // reading of wilder in database
     .then(res => res.json())
     .then(wilders => {
-      return wilders.find(wilder => wilder.id == wilder_id)
+        return wilders.find(wilder => wilder.id == wilder_id)
     })
-    .then(wilder => {
-      const options_wilder = [{
-        "nom": "hobby",
-        "affichage": true,
-        "texte": "reading"
-      }, {
-        "nom": "reading",
-        "affichage": false,
-        "texte": "foundation"
-      }]
-
-      const displayOptionsWilder = (tableauOptions, displayOrChange) => {
-        let htmlLis = ""
-        // si mon option["affichage"] OU mon useDisplay est faux, alors j'ajoute la li contenant eventuellement la checkbox
-        tableauOptions.forEach(option => htmlLis += `<li><input type="text" value="${option["nom"]}" ${(displayOrChange)?"":"readonly"}>: <input type="text" value="${option["texte"]}" ${(displayOrChange)?"":"readonly"}></li>`
-        )
-        return htmlLis
-      }
-      render(`<div class="container text-center">
-      <div class="jumbotron">
-        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
-          Edit profile
-        </button>
-        <h1 class="display-4">${wilder.firstName} ${wilder.lastName}</h1>
-        <p>${wilder.title}</p><!-- Button trigger modal -->
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body" id="editeur">
-                <form id="changeProfile">
-                  <fieldset id="fsWilder">
-                    <input type="hidden" name="wilderChange_id" class="form-control">
-                    <fieldset class="form-group" id="nameWilder">
-                      <div class="row justify-content-around">
-                        <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
-                        <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                        <input name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
-                      </div>
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputTitle" class="col-11">Title</label>
-                      <input name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputImageUrl" class="col-11">Image URL</label>
-                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputBio" class="col-11">Bio</label>
-                      <textarea name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
-                    </fieldset>
-                    <fieldset class="form-group">
-                      <div class="row justify-content-around">
-                        <label for="inputMail" class="col-12 col-sm-5">Mail</label>
-                        <label for="inputMdp" class="col-12 col-sm-5">Mdp</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
-                        <input name="mdp" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.mdp}">
-                      </div>
-                    </fieldset>
-                    <fieldset class="form-group" id="links">
-                      <div class="row justify-content-around">
-                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
-                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
-                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
-                      </div>
-                    </fieldset>
-                  </fieldset>
-                  <hr>
-                  <fieldset id="fsOptions">
-                    <div class="modal-header">
-                      <h3 class="modal-title" id="exampleModalLabel">Edit options of profile</h3>
+    .then(wilder => { 
+      render(`
+  <div class="container text-center">
+    <div class="jumbotron">
+      <div class="card mb-3" style="background-color: rgb(243, 166, 31);box-shadow: 1px 2px 10px rgba(0,0,0,0.5);">
+        <img src="../Téléchargements/Bg/bg.jpg" alt="#" class="card-img-top" style="height: 300px; border-bottom: 2px solid white;">
+      <div class="card-body text-center" style="padding-top: 0px; border-top: 2px solid white;">
+      <div class="row">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="btnEditProfile">Edit profile</button>
+      </div>
+      <img src="" id="imgProfile" alt="#" class="rounded-circle">
+      <h2 class="card-title pt-3" id="h2NameProfil"></h2>
+      <h5 class="card-text text-mute" id="pTitle"></h5>
+      <hr>
+      <p class="card-text" id="bioArea"></p>
+      <div  id="divBtnReadMore" class="row justify-content-around">
+        <button type="button" class="btn btn-primary">Read More</button>
+      </div>
+    </div>
+  </div>
+  <div class="card mb-3" style="box-shadow: 1px 2px 10px rgba(0,0,0,0.5);background-color: rgb(255, 127, 43);">
+    <div class="card-body text-center">
+      <h2 class="card-title">Côté Wild</h2>
+      <p class="card-text" id="pCoteWild"></p>
+    </div>
+  </div>
+  <div class="card" style="box-shadow: 1px 2px 10px rgba(0,0,0,0.5);background-color: rgb(255, 95, 1);">
+    <div class="card-body">
+      <div class="row justify-content-around pb-5">
+        <p class="card-text"><b>Adress :</b><span id="inpAdress"></span></p>
+        <p class="card-text"><b>Mobility :</b><span id="inpMobility"></span></p>
+      </div>
+      <div class="row justify-content-around" id="divLinks">
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="editeur">
+              <form id="changeProfile">
+                <fieldset id="fsWilder">
+                  <input type="hidden" name="wilderChange_id" class="form-control">
+                  <fieldset class="form-group" id="nameWilder">
+                    <div class="row justify-content-around">
+                      <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                      <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
                     </div>
-                    <ul>
-                      ${displayOptionsWilder(options_wilder, false, true, false)}
-                    </ul>
+                    <div class="row justify-content-around">
+                    <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                      <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                    </div>
                   </fieldset>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
-              </div>
+                  <fieldset class="form-group row justify-content-around">
+                    <label for="inputTitle" class="col-11">Title</label>
+                    <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                  </fieldset>
+                  <fieldset class="form-group row justify-content-around">
+                    <label for="inputImageUrl" class="col-11">Image URL</label>
+                    <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                  </fieldset>
+                  <fieldset class="form-group row justify-content-around">
+                    <label for="inputBio" class="col-11">Bio</label>
+                    <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                  </fieldset>
+                  <fieldset class="form-group">
+                    <div class="row justify-content-around">
+                      <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                      <label for="inputMdp" class="col-12 col-sm-5">password</label>
+                    </div>
+                    <div class="row justify-content-around">
+                      <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                      <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
+                    </div>
+                  </fieldset>
+                  <fieldset class="form-group" id="links">
+                    <div class="row justify-content-around">
+                      <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                      <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                    </div>
+                    <div class="row justify-content-around">
+                      <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
+                      <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                    </div>
+                  </fieldset>
+                  <fieldset class="form-group" id="locations">
+                    <div class="row justify-content-around">
+                      <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
+                      <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
+                    </div>
+                    <div class="row justify-content-around">
+                      <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="${wilder.adress}">
+                      <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="${wilder.mobility}">
+                    </div>
+                  </fieldset>
+                </fieldset>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
+                </div>
+              </form>
             </div>
           </div>
-        </div>
-        <hr class="my-4">
-        <!-- si la bio est plus longue que 50, alors afficher ... sinon rien -->
-        <p class="lead" id="bioArea">${wilder.bio.substr(0,50)}${(wilder.bio.length>50)?'...':''}</p>
-        ${(wilder.bio.length>50)?'<button type="button" class="btn btn-primary" id="displayBio">Read more</button>':''}
       </div>
-      
-      <div class="jumbotron">
-      <h2>options to display:</h2>
-      <form>
-        <ul>
-          ${displayOptionsWilder(options_wilder, true, false, true)}
-        </ul>
-      </form>
     </div>
-    </div>`)
+  <!-- end modale -->
+  </div>
+  </div>
+  </div>
+  `)
 
-    const formProfile = document.getElementById('changeProfile')
-    const nameWilder = document.getElementById('nameWilder')
-    // click sur "save changes"
-    const btnSaveChanges = document.getElementById('btnChangeOption')
+                // define display wilder function in profile jumbotron
 
-    btnSaveChanges.addEventListener('click',e => {
-      e.preventDefault()
+                const pBio = document.getElementById('bioArea')
+                const pTitle = document.getElementById('pTitle')
+                const h2NameProfil = document.getElementById('h2NameProfil')
+                const divBtnReadMore = document.getElementById('divBtnReadMore')
+                const divLinks = document.getElementById('divLinks')
+                const inpAdress = document.getElementById('inpAdress')
+                const inpMobility = document.getElementById('inpMobility')
+                const myModal = document.getElementById('exampleModal')
+                const pCoteWild = document.getElementById('pCoteWild')
+                const imgProfile = document.getElementById('imgProfile')
+                const btnEditProfile = document.getElementById('btnEditProfile')
+                let readMore = true
 
-
-      // je doit remplir les champs vide avec les valeur du wilder
-      const inputs = document.querySelectorAll(`#fsWilder input`)
-      inputs.forEach(input => {
-        if (input.attributes['value']===' ') 
-          input.setAttribute('value',input.attributes['placeholder'])
-      })
-      
-      const data = serializeForm(document.getElementById('changeProfile'))
-
-      // je dois remplir les champs vides dans l'objet data
-
-      const proprietes = Object.keys(data)
-      const proprietes = Object.keys(data)
-      proprietes.forEach(propriete => {
-        if (data[propriete]==='') data[propriete]=wilder[propriete]
-      })
-
-      if(! data.image) {
-        const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
-        data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
+                const displayCard = (titleText, bodyText) => {
+                    let classLien = ''
+                    switch (titleText) {
+                        case 'linkedin':
+                            classLien = 'fab fa-linkedin-in'
+                            break
+                        case 'mail':
+                            classLien = 'fas fa-envelope'
+                            break
+                        case 'github':
+                            classLien = 'fab fa-github'
+                            break
+                    }
+                    return `
+      <div class="col-12 col-sm-3">
+        <a href="${bodyText}" target="_blank">
+        <i class="${classLien} rounded-circle"></i>
+        </a>
+      </div>`
       }
 
-      fetch('/wilders', {
-        method: 'PUT',
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-
-//      window.setTimeout(() =>
-//    { window.location = `/profil/${wilder_id}`; },250);
-//    })
-
-    // je dois avoir un champ caché id afin que le formulaire l'envoie
-    const champCache = document.getElementsByName('wilderChange_id')
-    champCache[0].setAttribute('value',wilder.id)
-
-    const btnReadMore = document.getElementById('displayBio')
-    const pBio = document.getElementById('bioArea')
-    // si j'ai un bouton Read more, je peux faire des échanges de contenu entre bio complete et bio limitée
-    if (typeof(btnReadMore) !== 'undefined') {
-      btnReadMore.addEventListener('click', e => {
-        if (btnReadMore.innerHTML==='Read more') {
-          btnReadMore.innerHTML='Read less'
-          pBio.innerHTML=wilder.bio
+        const displayWilderInProfile = (wilderToDisplay) => {
+            h2NameProfil.innerHTML = wilderToDisplay.firstName + ' ' + wilderToDisplay.lastName
+            pTitle.innerHTML = wilderToDisplay.title
+            inpAdress.innerHTML = wilderToDisplay.adress
+            inpMobility.innerHTML = wilderToDisplay.mobility
+            pCoteWild.innerHTML = wilderToDisplay.coteWild
+            imgProfile.setAttribute("src","."+wilderToDisplay.image)
+            btnEditProfile.style.visibility='hidden'
+            if (localStorage.tokenId==wilderToDisplay.id) {
+              btnEditProfile.style.visibility='visible'
+            }
+            if (wilderToDisplay.bio.length > 50) {
+                divBtnReadMore.innerHTML = `<button type="button" class="btn btn-primary float-left" id="btnReadMore"></button>`
+                const btnReadMore = document.getElementById('btnReadMore')
+                btnReadMore.innerHTML = 'Read More'
+                pBio.innerHTML = wilderToDisplay.bio.substr(0, 50) + "..."
+                btnReadMore.addEventListener('click', () => {
+                    if (readMore) { // 'read more' button
+                        pBio.innerHTML = wilderToDisplay.bio
+                        btnReadMore.innerHTML = 'Read Less'
+                        readMore = false
+                    } else { // 'Read Less' button
+                        pBio.innerHTML = wilderToDisplay.bio.substr(0, 50) + "..."
+                        btnReadMore.innerHTML = 'Read More'
+                        readMore = true
+                    }
+                })
+            } else
+                pBio.innerHTML = wilderToDisplay.bio
+            divLinks.innerHTML = displayCard('mail', wilderToDisplay.mail)
+            divLinks.innerHTML += displayCard('linkedin', wilderToDisplay.urlLi)
+            divLinks.innerHTML += displayCard('github', wilderToDisplay.urlGh)
         }
-        else {
-          btnReadMore.innerHTML='Read more'
-          pBio.innerHTML=wilder.bio.substr(0,50)+'...'
-        }
-      })
-    }
-  }) // fermeture du dernier then
-  },  // fermeture de la route
 
-  '/flux': () => {
-  fetch('/fluxs')
-  .then(res => res.json())
-  .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
-  .then(listFluxs => {
-    render(
-  `<div class="container">
+            // first display of wilder
+            displayWilderInProfile(wilder)
+
+
+            // click on "save changes"
+            const form = document.getElementById('changeProfile')
+
+            form.addEventListener('submit', e => {
+                e.preventDefault()
+
+                // i must have a hidden field with "id" to be sent with datas
+                const champCache = document.getElementsByName('wilderChange_id')
+                champCache[0].setAttribute('value', wilder.id)
+
+                // inserting name/value of form-control's classes in profile's form to data
+                const data = serializeForm(form)
+
+                // empty fields of data object must be filled with wilder's datas
+                const proprietes = Object.keys(data)
+                proprietes.forEach(propriete => {
+                    if (data[propriete] === '') data[propriete] = wilder[propriete]
+                })
+
+                if (!data.image) {
+                    const fullName = encodeURIComponent(`${data.firstName} ${data.lastName}`)
+                    data.image = `https://via.placeholder.com/640x480/?text=${fullName}`
+                }
+
+                // modifying wilder in database
+                fetch('/wilders', {
+                        method: 'PUT',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(responseAfterUpdate => {
+                        fetch('/wilders') // new reading of wilders AFTER update
+                            .then(resNew => {
+                                return resNew.json()
+                            })
+                            .then(wildersNew => {
+                                return wildersNew.find(newWilder => newWilder.id == wilder_id)
+                            })
+                            .then(newWilder => {
+                                //displayWilderInProfile(newWilder)
+                                $(myModal).modal('hide')
+                                page(`/profil/${newWilder.id}`)
+                                page()
+                            })
+                    })
+            })
+        }) // closing last 'then' of first reading of wilder
+    }, // closing of route
+
+    '/flux': () => {
+        fetch('/fluxs')
+            .then(res => res.json())
+            .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
+            .then(listFluxs => {
+                render(
+                    `<div class="container">
     <div id="alert-box" class="hidden"></div>
     <form method="POST" id="add-fluxs" class="form-inline mt-4 mb-4">
       <input required name="fluxs" type="text" class="form-control " id="inputFluxs" placeholder="Message" style="width:90%">
@@ -367,34 +542,36 @@ const controllers = {
     <div class="row" id="listFluxs">${listFluxs}</div>
   </div>`)
 
-  const form = document.getElementById("add-fluxs")
-  form.addEventListener('submit', e => {
-    e.preventDefault()
-    const data = serializeForm(form)
-    fetch('/fluxs', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    fetch('/fluxs')
-    .then(res => res.json())
-    .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
-    .then(fluxs => {
-      const alertBox = document.getElementById('alert-box')
-      const listFluxs = document.getElementById('listFluxs')
-      alertBox.className = 'alert alert-success'
-      alertBox.innerHTML = `Successfully`
-      listFluxs.innerHTML = `${fluxs}`
-    })
-  })
-})},
+                const form = document.getElementById("add-fluxs")
+                form.addEventListener('submit', e => {
+                    e.preventDefault()
+                    const data = serializeForm(form)
+                    fetch('/fluxs', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    fetch('/fluxs')
+                        .then(res => res.json())
+                        .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
+                        .then(fluxs => {
+                            const alertBox = document.getElementById('alert-box')
+                            console.log(fluxs)
+                            const listFluxs = document.getElementById('listFluxs')
+                            alertBox.className = 'alert alert-success'
+                            alertBox.innerHTML = `Successfully`
+                            listFluxs.innerHTML = `${fluxs}`
+                        })
+                })
+            })
+    },
 
-  '/notification': () => render('<h1>Page notification</h1>'),
+    '/notification': () => render('<h1>Page notification</h1>'),
 
-  '/admin': () => render(`<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
+    '/admin': () => render(`<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
       <a class="navbar-brand p-3" href="#">Administration</a>
       <p class="p-6">Bienvenue sur votre panneau d'administration.</p>
       <button class="btn btn-outline-danger my-2 my-sm-0 p-3" type="submit">Se déconnecter</button>
@@ -429,24 +606,24 @@ const controllers = {
       </div>
     </div>`),
 
-  '*': () => render('<h1>Not Found</h1>')
+    '*': () => render('<h1>Not Found</h1>')
 }
 
 // gére l'execution du routing coté client
 const routing = () => {
-  const routes = [
-    '/',
-    '/home',
-    '/profil/:wilder_id',
-    '/flux',
-    '/notification',
-    '/admin',
-    '*'
-  ]
-  routes.forEach(
-    path => page(path, controllers[path])
-  )
-  page()
+    const routes = [
+        '/',
+        '/home',
+        '/profil/:wilder_id',
+        '/flux',
+        '/notification',
+        '/admin',
+        '*'
+    ]
+    routes.forEach(
+        path => page(path, controllers[path])
+    )
+    page()
 }
 
 //appel cette fonction pour gérer les routes
