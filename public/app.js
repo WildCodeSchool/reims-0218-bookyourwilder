@@ -361,6 +361,8 @@ const controllers = {
                                 <fieldset class="form-group row justify-content-around">
                                     <label for="inputBio" class="col-11">Bio</label>
                                     <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="Une description de vous. Pensez à l'actualiser régulièrement"></textarea>
+                                    <textarea maxlength="500" name="projet" class="form-control col-11" id="txtProjet" placeholder="Quels sont vos projets à venir ?"></textarea>
+                                    <textarea maxlength="500" name="coteWild" class="form-control col-11" id="txtWild" placeholder="Quel est le petit détail qui vous rend original ?"></textarea>
                                 </fieldset>
                                 <fieldset class="form-group">
                                     <div class="row justify-content-around">
@@ -483,6 +485,7 @@ const controllers = {
 
                     // inserting name/value of form-control's classes in profile's form to data
                     const data = serializeForm(form)
+                    console.log(data)
 
                     // empty fields of data object must be filled with wilder's datas
                     const proprietes = Object.keys(data)

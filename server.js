@@ -31,6 +31,7 @@ const insertWilder = w => {
 // updateWilder dans la db
 const updateWilder = w => {
     const { firstName, lastName, title, projet, bio, coteWild, image, slug, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id } = w
+    console.log(w)
     return db.get(`UPDATE users SET slug=?, firstName=?, lastName=?, title=?, projet=?, bio=?, coteWild=?, image=?, mail=?, urlLi=?, urlGh=?,password=?, adress=?, mobility=? where id=?;`,slug, firstName,lastName,title, projet, bio, coteWild, image, mail, urlLi, urlGh, password, adress, mobility, wilderChange_id)
     }
 
