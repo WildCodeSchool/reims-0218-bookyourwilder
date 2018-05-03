@@ -37,6 +37,7 @@ CREATE TABLE fluxs (
   id INTEGER PRIMARY KEY,
   texte TEXT,
   wilder_id INTEGER,
+  date_message TEXT,
   FOREIGN KEY(wilder_id) REFERENCES users(id)
 );
 
