@@ -171,3 +171,8 @@ footer .btn-primary:hover a{
     margin: 0 auto;
     padding-bottom: 2em;
 }
+
+.jumbotron {
+    background-color: orange;
+    color: white;
+}
