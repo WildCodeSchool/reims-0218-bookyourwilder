@@ -42,9 +42,9 @@ const makeCard = item => `
 const makeflux = item => `
   <div class="col-12">
     <div class="jumbotron msg-flux">
-        <h5>${item.firstName} ${item.lastName}</h5>
+        <h5>${localStorage.tokenFirstName} ${localStorage.tokenLastName}</h5>
         <p>${item.texte}</p>
-        <span class="text-muted">11:01</span>
+        <span class="text-muted">${item.date_message}</span>
     </div>
   </div>
   `
@@ -214,6 +214,8 @@ const controllers = {
                             //stores the token
                             localStorage.setItem('token', data.token)
                             localStorage.setItem('tokenId', data.user.id)
+                            localStorage.setItem("tokenFirstName", data.user.firstName)
+                            localStorage.setItem("tokenLastName", data.user.lastName)
                             page("/home") // setting the path
                             page() // starting the redirection
                             navbarDejaInscrit.innerHTML = `
@@ -560,6 +562,7 @@ const controllers = {
                         .then(fluxs => fluxs.reduce((carry, fluxs) => carry + makeflux(fluxs), ''))
                         .then(fluxs => {
                             const alertBox = document.getElementById('alert-box')
+                            console.log(fluxs)
                             const listFluxs = document.getElementById('listFluxs')
                             alertBox.className = 'alert alert-success'
                             alertBox.innerHTML = `Successfully`
