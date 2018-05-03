@@ -22,11 +22,11 @@ app.use(methodOverride("_method"))
 
 // insertWilder dans la db
 const insertWilder = w => {
-  const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress } = w
-  return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress)
-  .then(() => db.get('SELECT last_insert_rowid() as id'))
-  .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
-}
+    const { firstName, lastName, title, bio, image, slug, mail, urlLi, urlGh, password, mobility, adress } = w
+    return db.get('INSERT INTO users(slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', slug, firstName, lastName, title, bio, image, mail, urlLi, urlGh, password, mobility, adress)
+    .then(() => db.get('SELECT last_insert_rowid() as id'))
+    .then(({ id }) => db.get('SELECT * from users WHERE id = ?', id))
+  }
 
 // updateWilder dans la db
 const updateWilder = w => {
@@ -66,10 +66,13 @@ const html = `
                 <nav class="navbar navbar-expand-lg navbar-dark ">
                     <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
                                 <a class="nav-link" href="/home">Acceuil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Inscription</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/flux">Flux</a>
@@ -79,14 +82,11 @@ const html = `
                                 <div class="dropdown-menu" aria-labelledby="navbarProfil">
                                 <a class="dropdown-item" href="#">Mon profil</a>
                                 <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Déconnection</a>
+                                    <a class="dropdown-item" id="disconnect" href="/">Déconnection</a>
                                 </div>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin">Admin</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Add a wilder</a>
                             </li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
@@ -140,9 +140,20 @@ const html = `
                     </div>
                 </div>
             </footer>
+
+            <script>
+            //stores the token
+            document.getElementById('disconnect').addEventListener('click', () => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('tokenId')
+            })
+
+            </script>
+
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="/page.js"></script>
         <script src="/app.js"></script>
     </body>
@@ -164,13 +175,13 @@ app.post('/wilders', (req, res) => {
           ciphers: "SSLv3"
         },
         auth: {
-            user: "florian.hourlier@hotmail.fr",
-            pass: "1AQW2ZSX3EDC"
+            user: "WildCodeSchool@hotmail.com",
+            pass: "Wi1dC0d35h001"
         }
       });
     
       let mailOptions = {
-        from: "<florian.hourlier@hotmail.fr>",
+        from: "<WildCodeSchool@hotmail.com>",
         to: `${req.body.mail}`,
         subject: "Bienvenue sur BookYourWilder !",
         text: `Hey ${req.body.firstName} ${req.body.lastName} !
@@ -178,13 +189,13 @@ app.post('/wilders', (req, res) => {
         Vous pouvez désormais vous authentifier avec votre adresse mail (${req.body.mail}) et le mot de passe que vous avez défini.
         Sur ce, à bientôt sur BookYourWilder !
         
-        (En cas de questions, vous pouvez envoyer un mail à florian.hourlier@hotmail.fr. Les spams, je les dévore tous crus !)`,
+        (En cas de questions, vous pouvez envoyer un mail à WildCodeSchool@hotmail.com. Les spams, je les dévore tous crus !)`,
         html: `Hey <strong>${req.body.firstName} ${req.body.lastName}</strong> !<br/>
         Bienvenue dans le comité très restreint des Wilders !<br/>
         Vous pouvez désormais vous authentifier avec votre <u>adresse mail</u> (${req.body.mail}) et le <u>mot de passe</u> que vous avez défini.<br/>
         Sur ce, à bientôt sur BookYourWilder !<br/><br/>
         
-        <em>(En cas de questions, vous pouvez envoyer un mail à florian.hourlier@hotmail.fr. Les spams, je les dévore tous crus !)</em>`
+        <em>(En cas de questions, vous pouvez envoyer un mail à WildCodeSchool@hotmail.com. Les spams, je les dévore tous crus !)</em>`
       };
     
       transporter.sendMail(mailOptions, (error, info) => {
@@ -203,7 +214,7 @@ app.post('/fluxs', (req, res) => {
 
 //READ
 app.get('/wilders', (req, res) => {
-  db.all('SELECT * from users')
+  db.all('SELECT * from users ORDER BY lastName')
   .then(records => res.json(records))
 })
 
