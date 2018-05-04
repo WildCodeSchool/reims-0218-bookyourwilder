@@ -160,7 +160,7 @@ footer .btn-primary:hover a{
 }
 
 #main {
-    min-height: 400px;
+    min-height: 555px;
 }
 
 #main > .inscription{
@@ -178,17 +178,8 @@ footer .btn-primary:hover a{
 }
 
 .formblock{
-    max-width: 800px; 
+    max-width: 600px; 
     margin: 0 auto;
     padding-bottom: 2em;
-}
-
-#fsWilder label {
-    color: black;
-}
-
-.jumbotron {
-    background-color: orange;
-    color: white;
     border-radius: 2em;
 }

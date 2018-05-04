@@ -107,39 +107,7 @@ const controllers = {
             </form>
         </div>
     </nav>`
-            const navbarStandardHtml = `
-            <nav class="navbar navbar-expand-lg navbar-dark ">
-            <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/home">Acceuil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Inscription</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/flux">Flux</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarProfil">
-                        <a class="dropdown-item" href="#">Mon profil</a>
-                        <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" id="disconnect" href="/">Déconnection</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">Admin</a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
-                </form>
-            </div>
-        </nav>`
+            
             const form = document.getElementById('add-wilder')
             form.addEventListener('submit', eventSubmit => {
                 eventSubmit.preventDefault() // disabling default refresh of pages
@@ -213,43 +181,50 @@ const controllers = {
                             page("/home") // setting the path
                             page() // starting the redirection
                             navbarDejaInscrit.innerHTML = `
-                <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/home">Acceuil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/flux">Flux</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarProfil">
-                            <a class="dropdown-item" href="/profil/${localStorage.tokenId}">Mon profil</a>
-                            <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Déconnection</a>
+                            <nav class="navbar navbar-expand-lg navbar-dark ">
+                            <a class="navbar-brand" href="/home"><img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">BookYourWilder</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                            <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+                                <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/home">Acceuil</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">Inscription</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/flux">Flux</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarProfil">
+                                        <a class="dropdown-item" href="/profil/${localStorage.tokenId}">Mon profil</a>
+                                        <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" id="disconnect" href="/">Déconnection</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/admin">Admin</a>
+                                    </li>
+                                </ul>
+                                <form class="form-inline my-2 my-lg-0">
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
+                                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
+                                </form>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin">Admin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Add a wilder</a>
-                        </li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
-                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recherche</button>
-                    </form>
-                </div>
-            </nav>`
+                        </nav>`
                         }
                     })
             })
         } else {
             render('<h1 class="text-center pt-5"><u>Vous êtes déja authentifié...</u></h1>')
+            //stores the token
+            document.getElementById('disconnect').addEventListener('click', () => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('tokenId')
+                localStorage.removeItem('tokenFirstName')
+                localStorage.removeItem('tokenLastName')
+            })
         }
     },
 
@@ -259,7 +234,7 @@ const controllers = {
         .then(wilders => wilders.reduce((carry, wilder) => carry + makeCard(wilder), ''))
         .then(album => {
             render(`
-    <div class="container">
+    <div class="container home">
       <div class="row mt-5 mb-5">
           <div class="col">
               <div class="info-header mb-5 text-center">
@@ -270,7 +245,13 @@ const controllers = {
       </div>
       <div class="row">${album}</div>
     </div>`)
-        }),
+        //stores the token
+        document.getElementById('disconnect').addEventListener('click', () => {
+            localStorage.removeItem('token')
+            localStorage.removeItem('tokenId')
+            localStorage.removeItem('tokenFirstName')
+            localStorage.removeItem('tokenLastName')
+        })}),
 
     '/profil/:wilder_id': ctx => {
     const { wilder_id } = ctx.params
@@ -281,128 +262,144 @@ const controllers = {
     })
     .then(wilder => { 
       render(`
-  <div class="container text-center">
-    <div class="jumbotron">
-      <div>
-        
-      </div>
-      <div class="card mb-3" style="background-color: rgb(243, 166, 31);box-shadow: 1px 2px 10px rgba(0,0,0,0.5);">
-        <img src="../Téléchargements/Bg/bg.jpg" alt="#" class="card-img-top" style="height: 300px; border-bottom: 2px solid white;">
-      <div class="card-body text-center" style="padding-top: 0px; border-top: 2px solid white;">
-      <div class="row" id="divBtnEditProfile">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="btnEditProfile">Edit profile</button>
-      </div>
-      <img src="" id="imgProfile" alt="#" class="rounded-circle">
-      <h2 class="card-title pt-3" id="h2NameProfil"></h2>
-      <h5 class="card-text text-mute" id="pTitle"></h5>
-      <hr>
-      <p class="card-text" id="bioArea"></p>
-      <div  id="divBtnReadMore" class="row justify-content-around">
-        <button type="button" class="btn btn-primary">Read More</button>
-      /div>
-    </div>
-  </div>
-  <div class="card mb-3" style="box-shadow: 1px 2px 10px rgba(0,0,0,0.5);background-color: rgb(255, 127, 43);">
-    <div class="card-body text-center">
-      <h2 class="card-title">Côté Wild</h2>
-      <p class="card-text" id="pCoteWild"></p>
-    </div>
-  </div>
-  <div class="card" style="box-shadow: 1px 2px 10px rgba(0,0,0,0.5);background-color: rgb(255, 95, 1);">
-    <div class="card-body">
-      <div class="row justify-content-around pb-5">
-        <p class="card-text"><b>Adress :</b><span id="inpAdress"></span></p>
-        <p class="card-text"><b>Mobility :</b><span id="inpMobility"></span></p>
-      </div>
-      <div class="row justify-content-around" id="divLinks">
-      </div>
-    </div>
-  </div>
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">Edit profile</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+      <div class="container profil text-center">
+      <div class="card mb-3">
+          <img src="../images/bg.jpg" alt="#" class="card-img-top">
+          <div class="card-body card-border text-center">
+              <div class="row pt-3 pl-2" id="divBtnEditProfile">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="btnEditProfile">Edit profile</button>
               </div>
-              <div class="modal-body" id="editeur">
-                <form id="changeProfile">
-                  <fieldset id="fsWilder">
-                    <input type="hidden" name="wilderChange_id" class="form-control">
-                    <fieldset class="form-group" id="nameWilder">
-                      <div class="row justify-content-around">
-                        <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
-                        <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+              <img src="" id="imgProfile" alt="#" class="rounded-circle avatar">
+              <h2 class="card-title pt-3" id="h2NameProfil"></h2>
+              <h5 class="card-text text-mute" id="pTitle"></h5>
+              <hr>
+              <p class="card-text" id="bioArea"></p>
+              <div id="divBtnReadMore" class="row justify-content-around">
+                  <button type="button" class="btn btn-primary">Read More</button>
+              </div>
+          </div>
+      </div>
+      <div class="card mb-3">
+          <div class="card-body text-center">
+              <h2 class="card-title">Côté Wild</h2>
+              <p class="card-text" id="pCoteWild"></p>
+          </div>
+      </div>
+      <div class="card">
+          <div class="card-body">
+              <div class="row justify-content-around">
+                  <p class="card-text"><b>Adress : </b><span id="inpAdress"></span></p>
+                  <p class="card-text"><b>Mobility : </b><span id="inpMobility"></span></p>
+              </div>
+              <hr/>
+              <div class="row justify-content-around" id="divLinks">
+              </div>
+          </div>
+      </div>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h3 class="modal-title text-center" id="exampleModalLabel">Edit profile</h3>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       </div>
-                      <div class="row justify-content-around">
-                      <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
-                        <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                      <div class="modal-body" id="editeur">
+                      <form id="changeProfile">
+                        <fieldset id="fsWilder">
+                            <input type="hidden" name="wilderChange_id" class="form-control">
+                            <fieldset class="form-group" id="nameWilder">
+                                <div class="row justify-content-around">
+                                    <label for="inputFirstName" class="col-12 col-sm-5">First Name</label>
+                                    <label for="inputLastName" class="col-12 col-sm-5">Last name</label>
+                                </div>
+                                <div class="row justify-content-around">
+                                    <input maxlength="40" name="firstName" type="text" value="" class="form-control col-12 col-sm-5" id="inputFirstName" placeholder="${wilder.firstName}">
+                                    <input maxlength="40" name="lastName" type="text" class="form-control col-12 col-sm-5" id="inputLastName" placeholder="${wilder.lastName}">
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <div class="row justify-content-around">
+                                    <label for="inputTitle" class="col-11">Title</label>
+                                    <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <div class="row justify-content-around">
+                                    <label for="inputImageUrl" class="col-11">Image URL</label>
+                                    <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <div class="row justify-content-around">
+                                    <label for="inputProjet" class="col-11">Projet</label>
+                                    <textarea maxlength="200" name="projet" class="form-control col-11" id="txtProjet" placeholder="${wilder.projet}"></textarea>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <div class="row justify-content-around">
+                                    <label for="inputBio" class="col-11">Bio</label>
+                                    <textarea maxlength="200" name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <div class="row justify-content-around">
+                                    <label for="inputCoteWild" class="col-11">Cote Wild</label>
+                                    <input maxlength="40" name="coteWild" type="text" class="form-control col-11" id="inputCoteWild" placeholder="${wilder.coteWild}">
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <div class="row justify-content-around">
+                                    <label for="inputMail" class="col-12 col-sm-5">Mail</label>
+                                    <label for="inputMdp" class="col-12 col-sm-5">password</label>
+                                </div>
+                                <div class="row justify-content-around">
+                                    <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
+                                    <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group" id="links">
+                                <div class="row justify-content-around">
+                                    <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
+                                    <label for="inputGithub" class="col-12 col-sm-5">Github</label>
+                                </div>
+                                <div class="row justify-content-around">
+                                    <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
+                                    <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group" id="locations">
+                                <div class="row justify-content-around">
+                                    <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
+                                    <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
+                                </div>
+                                <div class="row justify-content-around">
+                                    <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="${wilder.adress}">
+                                    <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="${wilder.mobility}">
+                                </div>
+                            </fieldset>
+                        </fieldset>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
+                        </div>
+                    </form>
                       </div>
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputTitle" class="col-11">Title</label>
-                      <input maxlength="40" name="title" type="text" class="form-control col-11" id="inputTitle" placeholder="${wilder.title}">
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputImageUrl" class="col-11">Image URL</label>
-                      <input name="image" type="text" class="form-control col-11" id="inputImageUrl" placeholder="${wilder.image}">
-                    </fieldset>
-                    <fieldset class="form-group row justify-content-around">
-                      <label for="inputBio" class="col-11">Bio</label>
-                      <textarea maxlength="500" name="bio" class="form-control col-11" id="txtBio" placeholder="${wilder.bio}"></textarea>
-                    </fieldset>
-                    <fieldset class="form-group">
-                      <div class="row justify-content-around">
-                        <label for="inputMail" class="col-12 col-sm-5">Mail</label>
-                        <label for="inputMdp" class="col-12 col-sm-5">password</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input maxlength="255" name="mail" type="text" class="form-control col-12 col-sm-5" id="inputMail" placeholder="${wilder.mail}">
-                        <input name="password" type="text" class="form-control col-12 col-sm-5" id="inputMdp" placeholder="${wilder.password}">
-                      </div>
-                    </fieldset>
-                    <fieldset class="form-group" id="links">
-                      <div class="row justify-content-around">
-                        <label for="inputLinkedin" class="col-12 col-sm-5">Linkedin</label>
-                        <label for="inputGithub" class="col-12 col-sm-5">Github</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input name="urlLi" type="text" class="form-control col-12 col-sm-5" id="inputLinkedin" placeholder="${wilder.urlLi}">
-                        <input name="urlGh" type="text" class="form-control col-12 col-sm-5" id="inputGithub" placeholder="${wilder.urlGh}">
-                      </div>
-                    </fieldset>
-                    <fieldset class="form-group" id="locations">
-                      <div class="row justify-content-around">
-                        <label for="inputAdress" class="col-12 col-sm-5">Adress</label>
-                        <label for="inputMobility" class="col-12 col-sm-5">Mobility</label>
-                      </div>
-                      <div class="row justify-content-around">
-                        <input name="adress" type="text" class="form-control col-12 col-sm-5" id="inputAdress" placeholder="${wilder.adress}">
-                        <input name="mobility" type="text" class="form-control col-12 col-sm-5" id="inputMobility" placeholder="${wilder.mobility}">
-                      </div>
-                    </fieldset>
-                  </fieldset>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="btnChangeOption">Save changes</button>
                   </div>
-                </form>
-       
               </div>
-            </div>
-        </div>
-      </div>
-  <!-- end modale -->
-  </div>
-  </div>
-  </div>
+          </div>
+      <!-- end modale -->
+</div>
   `)
 
+        //stores the token
+        document.getElementById('disconnect').addEventListener('click', () => {
+            localStorage.removeItem('token')
+            localStorage.removeItem('tokenId')
+            localStorage.removeItem('tokenFirstName')
+            localStorage.removeItem('tokenLastName')
+        })
                 // define display wilder function in profile jumbotron
-
                 const pBio = document.getElementById('bioArea')
                 const pTitle = document.getElementById('pTitle')
                 const h2NameProfil = document.getElementById('h2NameProfil')
@@ -539,6 +536,14 @@ const controllers = {
     </form>
     <div class="row" id="listFluxs">${listFluxs}</div>
   </div>`)
+
+  //stores the token
+  document.getElementById('disconnect').addEventListener('click', () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('tokenId')
+    localStorage.removeItem('tokenFirstName')
+    localStorage.removeItem('tokenLastName')
+})
 
                 const form = document.getElementById("add-fluxs")
                 form.addEventListener('submit', e => {
