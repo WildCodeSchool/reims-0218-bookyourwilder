@@ -80,7 +80,7 @@ const html = `
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarProfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarProfil">
-                                <a class="dropdown-item" href="#">Mon profil</a>
+                                <a class="dropdown-item" href="/profil/">Mon profil</a>
                                 <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" id="disconnect" href="/">Déconnection</a>
                                 </div>
@@ -141,19 +141,10 @@ const html = `
                 </div>
             </footer>
 
-            <script>
-            //stores the token
-            document.getElementById('disconnect').addEventListener('click', () => {
-                localStorage.removeItem('token')
-                localStorage.removeItem('tokenId')
-            })
-
-            </script>
-
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://unpkg.com/sweetalert2@7.19.3/dist/sweetalert2.all.js"></script>
         <script src="/page.js"></script>
         <script src="/app.js"></script>
     </body>
@@ -214,7 +205,7 @@ app.post('/fluxs', (req, res) => {
 
 //READ
 app.get('/wilders', (req, res) => {
-  db.all('SELECT * from users ORDER BY lastName')
+  db.all('SELECT * from users')
   .then(records => res.json(records))
 })
 
