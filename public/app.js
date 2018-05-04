@@ -574,40 +574,36 @@ const controllers = {
 
     '/notification': () => render('<h1>Page notification</h1>'),
 
-    '/admin': () => render(`<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between d-flex">
-      <a class="navbar-brand p-3" href="#">Administration</a>
-      <p class="p-6">Bienvenue sur votre panneau d'administration.</p>
-      <button class="btn btn-outline-danger my-2 my-sm-0 p-3" type="submit">Se déconnecter</button>
-    </nav>
+    '/admin': () => {
+        render(`
+        <audio src="https://www.dropbox.com/s/4ea6v7bkq5lmkfg/NyanCat.mp3?raw=1"></audio>
+        <div class="text-center">
+        <button type="button" class="btn btn-success btn-lg play mt-5">play</button>
+        <button type="button" class="btn btn-danger btn-lg pause mt-5">pause</button></div>`)
 
-    <div class="container-fluid">
-      <div class="row justify-content-center">
-        <div class="col-xs-12 col-md-5 mt-2 mb-2">
-          <div class="adminPanel bg-info jumbotron">
-            <h1 class="display-4">Bloc 1</h1>
-            <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
-          </div>
-        </div>
-        <div class="col-xs-12 col-md-5 md-offset-2  mt-2 mb-2">
-          <div class="adminPanel bg-info jumbotron">
-            <h1 class="display-4">Bloc 2</h1>
-            <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
-          </div>
-        </div>
-        <div class="col-xs-12 col-md-5 mt-2 mb-2">
-          <div class="adminPanel bg-info jumbotron">
-            <h1 class="display-4">Bloc 3</h1>
-            <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
-          </div>
-        </div>
-        <div class="col-xs-12 col-md-5 md-offset-2 mt-2 mb-2">
-          <div class="adminPanel bg-info jumbotron">
-            <h1 class="display-4">Bloc 4</h1>
-            <p class="lead">Je suis désolé sensei, c'est parce que Monsieur Youpi est parti boire un verre dans la fosse à scorpions à cause d'une reconnaissante carte piège qui est apparue comme par magie...</p>
-          </div>
-        </div>
-      </div>
-    </div>`),
+    const playButton = document.querySelector('.play')
+    const pauseButton = document.querySelector('.pause')
+    const audio = document.querySelector('audio')
+
+    playButton.addEventListener("click", function(){
+        audio.play()
+        swal({
+            title: 'Custom width, padding, background.',
+            width: 600,
+            padding: 100,
+            confirmButtonText: 'Cool',
+            backdrop: `
+              rgba(0,0,123,0.4)
+              url("https://raw.githubusercontent.com/sweetalert2/sweetalert2.github.io/master/images/nyan-cat.gif")
+              center left
+              no-repeat
+            `
+          })
+    })
+    pauseButton.addEventListener("click", function(){
+        audio.pause()
+    })
+    },
 
     '*': () => render('<h1>Not Found</h1>')
 }

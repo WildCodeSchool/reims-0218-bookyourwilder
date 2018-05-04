@@ -1,3 +1,18 @@
+html,body{
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+#main{
+    height: auto;
+}
+
+footer{
+    display: table-row;
+    height: 1px;
+}
+
 h1, h4 {
     font-family: alwyn-new-web, sans-serif;
     font-style: normal;
@@ -153,10 +168,6 @@ footer .btn-primary:hover{
 
 footer .btn-primary:hover a{
     text-decoration: none;
-}
-
-#main {
-    min-height: 555px;
 }
 
 #main > .inscription{
